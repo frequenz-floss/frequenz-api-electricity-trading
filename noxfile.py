@@ -3,6 +3,9 @@
 
 """Configuration file for nox."""
 
-from frequenz.repo.config import RepositoryType, nox
+from frequenz.repo.config import nox
+from frequenz.repo.config.nox import default
 
-nox.configure(RepositoryType.API)
+config = default.api_config.copy()
+config.source_paths = ["py/frequenz/client/electricity_trading"]
+nox.configure(config)
