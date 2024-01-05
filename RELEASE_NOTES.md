@@ -15,6 +15,7 @@ Commiting the API definitions and preparing the repo to the pass all CI tests.
 - Update to latest repo config v0.8.
 - Commiting the electricity trading api specs.
 - Rename PublicOrders to PublicTrades
+- Add a python client with pyton wrappers for methods & classes and support for streaming orders.
 
 ## Bug Fixes
 
