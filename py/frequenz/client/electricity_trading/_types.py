@@ -144,46 +144,6 @@ class Energy:
         decimal_mwh.value = str(self.mwh)
         return energy_pb2.Energy(mwh=decimal_mwh)
 
-    def as_watt_hours(self) -> Decimal:
-        """Return the energy in watt hours.
-
-        Returns:
-            The energy in watt hours.
-        """
-        return self.mwh * Decimal(1e6)
-
-    def as_kilowatt_hours(self) -> Decimal:
-        """Return the energy in kilowatt hours.
-
-        Returns:
-            The energy in kilowatt hours.
-        """
-        return self.mwh * Decimal(1e3)
-
-    @classmethod
-    def from_watt_hours(cls, watt_hours: Decimal) -> Self:
-        """Initialize a new energy quantity from watt hours.
-
-        Args:
-            watt_hours: The energy in watt hours.
-
-        Returns:
-            A new energy quantity.
-        """
-        return cls(mwh=watt_hours / Decimal(1e6))
-
-    @classmethod
-    def from_kilowatt_hours(cls, kilowatt_hours: Decimal) -> Self:
-        """Initialize a new energy quantity from kilowatt hours.
-
-        Args:
-            kilowatt_hours: The energy in kilowatt hours.
-
-        Returns:
-            A new energy quantity.
-        """
-        return cls(mwh=kilowatt_hours / Decimal(1e3))
-
 
 class EnergyMarketCodeType(enum.Enum):
     """

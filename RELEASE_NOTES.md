@@ -16,7 +16,6 @@ Commiting the API definitions and preparing the repo to the pass all CI tests.
 - Commiting the electricity trading api specs.
 - Rename PublicOrders to PublicTrades
 - Add a python client with pyton wrappers for methods & classes and support for streaming orders.
-- Add unit conversion methods to the Energy type
 
 ## Bug Fixes
 
