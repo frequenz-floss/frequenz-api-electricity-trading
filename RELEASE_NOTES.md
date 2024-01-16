@@ -2,11 +2,10 @@
 
 ## Summary
 
-Commiting the API definitions and preparing the repo to the pass all CI tests.
+This is the first release of the Electricity Trading API.
 
-## Upgrading
+It includes protobuf definitions of the Electricity Trading API and a python client with support for streaming of orders and public trades.
 
-<!-- Here goes notes on how to upgrade from previous versions, including deprecations and what they should be replaced with -->
 
 ## New Features
 
@@ -16,7 +15,3 @@ Commiting the API definitions and preparing the repo to the pass all CI tests.
 - Commiting the electricity trading api specs.
 - Rename PublicOrders to PublicTrades
 - Add a python client with pyton wrappers for methods & classes and support for streaming orders.
-
-## Bug Fixes
-
-<!-- Here goes notable bug fixes that are worth a special mention or explanation -->
