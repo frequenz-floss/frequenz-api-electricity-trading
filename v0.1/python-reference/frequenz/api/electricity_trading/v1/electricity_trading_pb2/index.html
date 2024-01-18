@@ -6715,8 +6715,8 @@ expected to be fulfilled.</p>
 
   <div class="doc doc-contents ">
   
-      <p>Applicable for ICEBERG orders. This is the quantity of the order to be
-displayed in the order book.</p>
+      <p>Optional; Applicable for ICEBERG orders. This is the quantity
+of the order to be displayed in the order book.</p>
   </div>
 
 </div>
@@ -6809,8 +6809,8 @@ the electricity mentioned in the example JSON payload.</p>
 
   <div class="doc doc-contents ">
   
-      <p>Applicable for ICEBERG orders. This is the price difference between the
-peak price and the limit price.</p>
+      <p>Optional; Applicable for ICEBERG orders.
+This is the price difference between the peak price and the limit price.</p>
   </div>
 
 </div>
@@ -6903,8 +6903,8 @@ price for a BUY order or the minimum price for a SELL order.</p>
 
   <div class="doc doc-contents ">
   
-      <p>Applicable for STOP_LIMIT orders. This is the stop price that triggers the
-limit order.</p>
+      <p>Optional; Applicable for STOP_LIMIT orders. This is the stop price
+that triggers the limit order.</p>
   </div>
 
 </div>
@@ -6974,9 +6974,9 @@ This determines how the order is to be executed in the market.</p>
 
   <div class="doc doc-contents ">
   
-      <p>Do not use if ExecutionOption is set to FOK or IOC. This is an optional UTC
-timestamp defining the time after which the order should be cancelled if
-not filled.</p>
+      <p>Optional; Do not use if ExecutionOption is set to FOK or IOC.
+This is an optional UTC timestamp defining the time after which
+the order should be cancelled if not filled.</p>
   </div>
 
 </div>
@@ -7743,10 +7743,10 @@ These options provide control on how an order is handled in the market.</p>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-64">64</a></span>
 <span class="normal"><a href="#__codelineno-0-65">65</a></span>
 <span class="normal"><a href="#__codelineno-0-66">66</a></span>
-<span class="normal"><a href="#__codelineno-0-67">67</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-64"><a id="__codelineno-0-64" name="__codelineno-0-64"></a><span class="n">_globals</span><span class="p">[</span><span class="s1">&#39;_UPDATEGRIDPOOLORDERREQUEST_UPDATEORDER&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_serialized_end</span><span class="o">=</span><span class="mi">5335</span>
-</span><span id="__span-0-65"><a id="__codelineno-0-65" name="__codelineno-0-65"></a><span class="n">_globals</span><span class="p">[</span><span class="s1">&#39;_UPDATEGRIDPOOLORDERRESPONSE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_serialized_start</span><span class="o">=</span><span class="mi">5338</span>
-</span><span id="__span-0-66"><a id="__codelineno-0-66" name="__codelineno-0-66"></a><span class="n">_globals</span><span class="p">[</span><span class="s1">&#39;_UPDATEGRIDPOOLORDERRESPONSE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_serialized_end</span><span class="o">=</span><span class="mi">5480</span>
-</span><span id="__span-0-67"><a id="__codelineno-0-67" name="__codelineno-0-67"></a><span class="n">_globals</span><span class="p">[</span><span class="s1">&#39;_CANCELGRIDPOOLORDERREQUEST&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_serialized_start</span><span class="o">=</span><span class="mi">5482</span>
+<span class="normal"><a href="#__codelineno-0-67">67</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-64"><a id="__codelineno-0-64" name="__codelineno-0-64"></a><span class="n">_globals</span><span class="p">[</span><span class="s1">&#39;_UPDATEGRIDPOOLORDERREQUEST_UPDATEORDER&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_serialized_end</span><span class="o">=</span><span class="mi">4966</span>
+</span><span id="__span-0-65"><a id="__codelineno-0-65" name="__codelineno-0-65"></a><span class="n">_globals</span><span class="p">[</span><span class="s1">&#39;_UPDATEGRIDPOOLORDERRESPONSE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_serialized_start</span><span class="o">=</span><span class="mi">4969</span>
+</span><span id="__span-0-66"><a id="__codelineno-0-66" name="__codelineno-0-66"></a><span class="n">_globals</span><span class="p">[</span><span class="s1">&#39;_UPDATEGRIDPOOLORDERRESPONSE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_serialized_end</span><span class="o">=</span><span class="mi">5111</span>
+</span><span id="__span-0-67"><a id="__codelineno-0-67" name="__codelineno-0-67"></a><span class="n">_globals</span><span class="p">[</span><span class="s1">&#39;_CANCELGRIDPOOLORDERREQUEST&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_serialized_start</span><span class="o">=</span><span class="mi">5113</span>
 </span></code></pre></div></td></tr></table></div>
             </details>
 
@@ -8103,7 +8103,7 @@ a specific delivery area.</p>
 
   <div class="doc doc-contents ">
   
-      <p>If set, only trades in this buy delivery area are returned.</p>
+      <p>Optional; If set, only trades in this buy delivery area are returned.</p>
   </div>
 
 </div>
@@ -8126,7 +8126,7 @@ a specific delivery area.</p>
 
   <div class="doc doc-contents ">
   
-      <p>If set, only trades with this delivery period are returned.</p>
+      <p>Optional; If set, only trades with this delivery period are returned.</p>
   </div>
 
 </div>
@@ -8149,7 +8149,7 @@ a specific delivery area.</p>
 
   <div class="doc doc-contents ">
   
-      <p>If set, only trades in this sell delivery area are returned.</p>
+      <p>Optional; If set, only trades in this sell delivery area are returned.</p>
   </div>
 
 </div>
@@ -8647,8 +8647,8 @@ take place.</p>
 
   <div class="doc doc-contents ">
   
-      <p>Applicable for ICEBERG orders. This is the updated quantity of the order
-to be displayed in the order book.</p>
+      <p>Optional; Applicable for ICEBERG orders. This is the updated quantity
+of the order to be displayed in the order book.</p>
   </div>
 
 </div>
@@ -8671,7 +8671,8 @@ to be displayed in the order book.</p>
 
   <div class="doc doc-contents ">
   
-      <p>Updated execution options such as All or None, Fill or Kill, etc.</p>
+      <p>Optional; Updated execution options such as All or None,
+Fill or Kill, etc.</p>
   </div>
 
 </div>
@@ -8694,7 +8695,7 @@ to be displayed in the order book.</p>
 
   <div class="doc doc-contents ">
   
-      <p>Updated user-defined payload individual to a specific order.
+      <p>Optional; Updated user-defined payload individual to a specific order.
 This can be any data that the user wants to associate with the order.</p>
   </div>
 
@@ -8718,8 +8719,8 @@ This can be any data that the user wants to associate with the order.</p>
 
   <div class="doc doc-contents ">
   
-      <p>Applicable for ICEBERG orders. This is the updated price difference
-between the peak price and the limit price.</p>
+      <p>Optional; Applicable for ICEBERG orders. This is the updated price
+difference between the peak price and the limit price.</p>
   </div>
 
 </div>
@@ -8742,7 +8743,7 @@ between the peak price and the limit price.</p>
 
   <div class="doc doc-contents ">
   
-      <p>The updated limit price at which the contract is to be traded.
+      <p>Optional; The updated limit price at which the contract is to be traded.
 This is the maximum price for a BUY order or the minimum price for a SELL
 order.</p>
   </div>
@@ -8767,7 +8768,8 @@ order.</p>
 
   <div class="doc doc-contents ">
   
-      <p>The updated quantity of the contract being traded, specified in MWh.</p>
+      <p>Optional; The updated quantity of the contract being traded,
+specified in MWh.</p>
   </div>
 
 </div>
@@ -8790,8 +8792,8 @@ order.</p>
 
   <div class="doc doc-contents ">
   
-      <p>Applicable for STOP_LIMIT orders. This is the updated stop price that
-triggers the limit order.</p>
+      <p>Optional; Applicable for STOP_LIMIT orders. This is the updated
+stop price that triggers the limit order.</p>
   </div>
 
 </div>
@@ -8814,7 +8816,7 @@ triggers the limit order.</p>
 
   <div class="doc doc-contents ">
   
-      <p>Updated user-defined tag to group related orders.</p>
+      <p>Optional; Updated user-defined tag to group related orders.</p>
   </div>
 
 </div>
@@ -8837,8 +8839,9 @@ triggers the limit order.</p>
 
   <div class="doc doc-contents ">
   
-      <p>This is an updated timestamp defining the time after which the order
-should be cancelled if not filled. The timestamp is in UTC.</p>
+      <p>Optional; This is an updated timestamp defining the time after
+which the order should be cancelled if not filled.
+The timestamp is in UTC.</p>
   </div>
 
 </div>

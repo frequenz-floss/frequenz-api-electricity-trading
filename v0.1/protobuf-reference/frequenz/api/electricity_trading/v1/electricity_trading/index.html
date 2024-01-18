@@ -2160,13 +2160,13 @@ market.</p>
 <tr>
 <td>delivery_period</td>
 <td><a href="#frequenz-api-common-v1-grid-DeliveryPeriod">frequenz.api.common.v1.grid.DeliveryPeriod</a></td>
-<td>optional</td>
+<td></td>
 <td>Optional filter for delivery period.</td>
 </tr>
 <tr>
 <td>delivery_area</td>
 <td><a href="#frequenz-api-common-v1-grid-DeliveryArea">frequenz.api.common.v1.grid.DeliveryArea</a></td>
-<td>optional</td>
+<td></td>
 <td>Optional filter for delivery area.</td>
 </tr>
 <tr>
@@ -2348,20 +2348,20 @@ backtesting trading strategies, and conducting market analysis.</p>
 <tr>
 <td>stop_price</td>
 <td><a href="#frequenz-api-common-v1-market-Price">frequenz.api.common.v1.market.Price</a></td>
-<td>optional</td>
-<td>Applicable for STOP_LIMIT orders. This is the stop price that triggers the limit order.</td>
+<td></td>
+<td>Optional; Applicable for STOP_LIMIT orders. This is the stop price that triggers the limit order.</td>
 </tr>
 <tr>
 <td>peak_price_delta</td>
 <td><a href="#frequenz-api-common-v1-market-Price">frequenz.api.common.v1.market.Price</a></td>
-<td>optional</td>
-<td>Applicable for ICEBERG orders. This is the price difference between the peak price and the limit price.</td>
+<td></td>
+<td>Optional; Applicable for ICEBERG orders. This is the price difference between the peak price and the limit price.</td>
 </tr>
 <tr>
 <td>display_quantity</td>
 <td><a href="#frequenz-api-common-v1-market-Energy">frequenz.api.common.v1.market.Energy</a></td>
-<td>optional</td>
-<td>Applicable for ICEBERG orders. This is the quantity of the order to be displayed in the order book.</td>
+<td></td>
+<td>Optional; Applicable for ICEBERG orders. This is the quantity of the order to be displayed in the order book.</td>
 </tr>
 <tr>
 <td>execution_option</td>
@@ -2372,13 +2372,13 @@ backtesting trading strategies, and conducting market analysis.</p>
 <tr>
 <td>valid_until</td>
 <td><a href="#google-protobuf-Timestamp">google.protobuf.Timestamp</a></td>
-<td>optional</td>
-<td>Do not use if ExecutionOption is set to FOK or IOC. This is an optional UTC timestamp defining the time after which the order should be cancelled if not filled.</td>
+<td></td>
+<td>Optional; Do not use if ExecutionOption is set to FOK or IOC. This is an optional UTC timestamp defining the time after which the order should be cancelled if not filled.</td>
 </tr>
 <tr>
 <td>payload</td>
 <td><a href="#google-protobuf-Struct">google.protobuf.Struct</a></td>
-<td>optional</td>
+<td></td>
 <td>Optional user-defined payload individual to a specific order. This can be any data that needs to be associated with the order.</td>
 </tr>
 </tbody>
@@ -2593,20 +2593,20 @@ a specific delivery area.</p>
 <tr>
 <td>delivery_period</td>
 <td><a href="#frequenz-api-common-v1-grid-DeliveryPeriod">frequenz.api.common.v1.grid.DeliveryPeriod</a></td>
-<td>optional</td>
-<td>If set, only trades with this delivery period are returned.</td>
+<td></td>
+<td>Optional; If set, only trades with this delivery period are returned.</td>
 </tr>
 <tr>
 <td>buy_delivery_area</td>
 <td><a href="#frequenz-api-common-v1-grid-DeliveryArea">frequenz.api.common.v1.grid.DeliveryArea</a></td>
-<td>optional</td>
-<td>If set, only trades in this buy delivery area are returned.</td>
+<td></td>
+<td>Optional; If set, only trades in this buy delivery area are returned.</td>
 </tr>
 <tr>
 <td>sell_delivery_area</td>
 <td><a href="#frequenz-api-common-v1-grid-DeliveryArea">frequenz.api.common.v1.grid.DeliveryArea</a></td>
-<td>optional</td>
-<td>If set, only trades in this sell delivery area are returned.</td>
+<td></td>
+<td>Optional; If set, only trades in this sell delivery area are returned.</td>
 </tr>
 </tbody>
 </table>
@@ -2764,56 +2764,56 @@ take place.</p>
 <tr>
 <td>price</td>
 <td><a href="#frequenz-api-common-v1-market-Price">frequenz.api.common.v1.market.Price</a></td>
-<td>optional</td>
-<td>The updated limit price at which the contract is to be traded. This is the maximum price for a BUY order or the minimum price for a SELL order.</td>
+<td></td>
+<td>Optional; The updated limit price at which the contract is to be traded. This is the maximum price for a BUY order or the minimum price for a SELL order.</td>
 </tr>
 <tr>
 <td>quantity</td>
 <td><a href="#frequenz-api-common-v1-market-Energy">frequenz.api.common.v1.market.Energy</a></td>
-<td>optional</td>
-<td>The updated quantity of the contract being traded, specified in MWh.</td>
+<td></td>
+<td>Optional; The updated quantity of the contract being traded, specified in MWh.</td>
 </tr>
 <tr>
 <td>stop_price</td>
 <td><a href="#frequenz-api-common-v1-market-Price">frequenz.api.common.v1.market.Price</a></td>
-<td>optional</td>
-<td>Applicable for STOP_LIMIT orders. This is the updated stop price that triggers the limit order.</td>
+<td></td>
+<td>Optional; Applicable for STOP_LIMIT orders. This is the updated stop price that triggers the limit order.</td>
 </tr>
 <tr>
 <td>peak_price_delta</td>
 <td><a href="#frequenz-api-common-v1-market-Price">frequenz.api.common.v1.market.Price</a></td>
-<td>optional</td>
-<td>Applicable for ICEBERG orders. This is the updated price difference between the peak price and the limit price.</td>
+<td></td>
+<td>Optional; Applicable for ICEBERG orders. This is the updated price difference between the peak price and the limit price.</td>
 </tr>
 <tr>
 <td>display_quantity</td>
 <td><a href="#frequenz-api-common-v1-market-Energy">frequenz.api.common.v1.market.Energy</a></td>
-<td>optional</td>
-<td>Applicable for ICEBERG orders. This is the updated quantity of the order to be displayed in the order book.</td>
+<td></td>
+<td>Optional; Applicable for ICEBERG orders. This is the updated quantity of the order to be displayed in the order book.</td>
 </tr>
 <tr>
 <td>execution_option</td>
 <td><a href="#frequenz-api-electricity_trading-electricity_trading-v1-OrderExecutionOption">OrderExecutionOption</a></td>
-<td>optional</td>
-<td>Updated execution options such as All or None, Fill or Kill, etc.</td>
+<td></td>
+<td>Optional; Updated execution options such as All or None, Fill or Kill, etc.</td>
 </tr>
 <tr>
 <td>valid_until</td>
 <td><a href="#google-protobuf-Timestamp">google.protobuf.Timestamp</a></td>
 <td></td>
-<td>This is an updated timestamp defining the time after which the order should be cancelled if not filled. The timestamp is in UTC.</td>
+<td>Optional; This is an updated timestamp defining the time after which the order should be cancelled if not filled. The timestamp is in UTC.</td>
 </tr>
 <tr>
 <td>payload</td>
 <td><a href="#google-protobuf-Struct">google.protobuf.Struct</a></td>
 <td></td>
-<td>Updated user-defined payload individual to a specific order. This can be any data that the user wants to associate with the order.</td>
+<td>Optional; Updated user-defined payload individual to a specific order. This can be any data that the user wants to associate with the order.</td>
 </tr>
 <tr>
 <td>tag</td>
 <td><a href="#string">string</a></td>
 <td>optional</td>
-<td>Updated user-defined tag to group related orders.</td>
+<td>Optional; Updated user-defined tag to group related orders.</td>
 </tr>
 </tbody>
 </table>
