@@ -2,16 +2,16 @@
 
 ## Summary
 
-This is the first release of the Electricity Trading API.
+<!-- Here goes a general summary of what this release is about -->
 
-It includes protobuf definitions of the Electricity Trading API and a python client with support for streaming of orders and public trades.
+## Upgrading
 
+<!-- Here goes notes on how to upgrade from previous versions, including deprecations and what they should be replaced with -->
 
 ## New Features
 
-- Update of the common repository with the latest Electricity related changes.
-- Use googleapis repository instead of api-common-protos.
-- Update to latest repo config v0.8.
-- Commiting the electricity trading api specs.
-- Rename PublicOrders to PublicTrades
-- Add a python client with pyton wrappers for methods & classes and support for streaming orders.
+<!-- Here goes the main new features and examples or instructions on how to use them -->
+
+## Bug Fixes
+
+<!-- Here goes notable bug fixes that are worth a special mention or explanation -->
