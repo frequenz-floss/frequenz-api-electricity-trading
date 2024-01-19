@@ -5,9 +5,12 @@
 
 from ._client import Client
 from ._types import (
+    Currency,
     DeliveryArea,
+    DeliveryDuration,
     DeliveryPeriod,
     Energy,
+    EnergyMarketCodeType,
     GridpoolOrderFilter,
     MarketSide,
     Order,
@@ -24,9 +27,12 @@ from ._types import (
 
 __all__ = [
     "Client",
+    "Currency",
     "DeliveryArea",
+    "DeliveryDuration",
     "DeliveryPeriod",
     "Energy",
+    "EnergyMarketCodeType",
     "GridpoolOrderFilter",
     "MarketSide",
     "Order",
