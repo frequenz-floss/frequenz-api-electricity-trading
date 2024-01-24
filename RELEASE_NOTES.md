@@ -12,6 +12,9 @@ stores them locally. This approach eliminates the dependency on the common
 repository for the time being, until the SDK is updated to a newer version
 of frequenz-api-common.
 
+A couple of additions were also made to the `__init__` and  `_types.py` files.
+
+
 ## Upgrading
 
 <!-- Here goes notes on how to upgrade from previous versions, including deprecations and what they should be replaced with -->
@@ -19,7 +22,9 @@ of frequenz-api-common.
 ## New Features
 
 * Addition of missing types to the `__init__` file
+* Addition of missing `to_pb()` methods in the `_types.py` file
 
 ## Bug Fixes
 
 * Remove dependency conflict on `frequenz-api-common` by adding it locally
+* Add a py.typed file
