@@ -755,28 +755,28 @@ class Order:  # pylint: disable=too-many-instance-attributes
     quantity: Energy
     """The quantity of the contract being traded."""
 
-    stop_price: Price | None
+    stop_price: Price | None = None
     """Applicable for STOP_LIMIT orders. The stop price that triggers the limit order."""
 
-    peak_price_delta: Price | None
+    peak_price_delta: Price | None = None
     """Applicable for ICEBERG orders. The price difference between the peak price and
     the limit price."""
 
-    display_quantity: Energy | None
+    display_quantity: Energy | None = None
     """Applicable for ICEBERG orders. The quantity of the order to be displayed in the order
     book."""
 
-    execution_option: OrderExecutionOption | None
+    execution_option: OrderExecutionOption | None = None
     """Order execution options such as All or None, Fill or Kill, etc."""
 
-    valid_until: datetime | None
+    valid_until: datetime | None = None
     """UTC timestamp defining the time after which the order should be cancelled if not filled."""
 
-    payload: dict[str, struct_pb2.Value] | None
+    payload: dict[str, struct_pb2.Value] | None = None
     """User-defined payload individual to a specific order. This can be any data that needs to be
     associated with the order."""
 
-    tag: str | None
+    tag: str | None = None
     """User-defined tag to group related orders."""
 
     @classmethod
@@ -980,19 +980,19 @@ class PublicTrade:  # pylint: disable=too-many-instance-attributes
 class GridpoolOrderFilter:
     """Parameters for filtering Gridpool orders."""
 
-    states: list[OrderState] | None
+    states: list[OrderState] | None = None
     """List of order states to filter for."""
 
-    side: MarketSide | None
+    side: MarketSide | None = None
     """Market side to filter for."""
 
-    delivery_period: DeliveryPeriod | None
+    delivery_period: DeliveryPeriod | None = None
     """Delivery period to filter for."""
 
-    delivery_area: DeliveryArea | None
+    delivery_area: DeliveryArea | None = None
     """Delivery area to filter for."""
 
-    tag: str | None
+    tag: str | None = None
     """Tag associated with the orders to be filtered."""
 
     @classmethod
@@ -1047,16 +1047,16 @@ class GridpoolOrderFilter:
 class PublicTradeFilter:
     """Parameters for filtering the historic, publicly executed orders (trades)."""
 
-    states: list[OrderState] | None
+    states: list[OrderState] | None = None
     """List of order states to filter for."""
 
-    delivery_period: DeliveryPeriod | None
+    delivery_period: DeliveryPeriod | None = None
     """Delivery period to filter for."""
 
-    buy_delivery_area: DeliveryArea | None
+    buy_delivery_area: DeliveryArea | None = None
     """Delivery area to filter for on the buy side."""
 
-    sell_delivery_area: DeliveryArea | None
+    sell_delivery_area: DeliveryArea | None = None
     """Delivery area to filter for on the sell side."""
 
     @classmethod
@@ -1115,37 +1115,37 @@ class UpdateOrder:  # pylint: disable=too-many-instance-attributes
     At least one of the optional fields must be set for an update to take place.
     """
 
-    price: Price | None
+    price: Price | None = None
     """The updated limit price at which the contract is to be traded.
     This is the maximum price for a BUY order or the minimum price for a SELL order."""
 
-    quantity: Energy | None
+    quantity: Energy | None = None
     """The updated quantity of the contract being traded, specified in MWh."""
 
-    stop_price: Price | None
+    stop_price: Price | None = None
     """Applicable for STOP_LIMIT orders. This is the updated stop price that triggers
     the limit order."""
 
-    peak_price_delta: Price | None
+    peak_price_delta: Price | None = None
     """Applicable for ICEBERG orders. This is the updated price difference
     between the peak price and the limit price."""
 
-    display_quantity: Energy | None
+    display_quantity: Energy | None = None
     """Applicable for ICEBERG orders. This is the updated quantity of the order
     to be displayed in the order book."""
 
-    execution_option: OrderExecutionOption | None
+    execution_option: OrderExecutionOption | None = None
     """Updated execution options such as All or None, Fill or Kill, etc."""
 
-    valid_until: datetime | None
+    valid_until: datetime | None = None
     """This is an updated timestamp defining the time after which the order should
     be cancelled if not filled. The timestamp is in UTC."""
 
-    payload: dict[str, struct_pb2.Value] | None
+    payload: dict[str, struct_pb2.Value] | None = None
     """Updated user-defined payload individual to a specific order. This can be any data
     that the user wants to associate with the order."""
 
-    tag: str | None
+    tag: str | None = None
     """Updated user-defined tag to group related orders."""
 
     @classmethod
