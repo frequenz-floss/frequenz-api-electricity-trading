@@ -426,6 +426,14 @@ class OrderExecutionOption(enum.Enum):
 
         return OrderExecutionOption(order_execution_option)
 
+    def to_pb(self) -> electricity_trading_pb2.OrderExecutionOption.ValueType:
+        """Convert a OrderExecutionOption object to protobuf OrderExecutionOption.
+
+        Returns:
+            Protobuf message corresponding to the OrderExecutionOption object.
+        """
+        return electricity_trading_pb2.OrderExecutionOption.ValueType(self.value)
+
 
 class OrderType(enum.Enum):
     """Type of the order (specifies how the order is to be executed in the market)."""
@@ -689,6 +697,16 @@ class StateReason(enum.Enum):
 
         return cls(state_reason)
 
+    def to_pb(
+        self,
+    ) -> electricity_trading_pb2.OrderDetail.StateDetail.StateReason.ValueType:
+        """Convert a StateReason enum to protobuf StateReason value.
+
+        Returns:
+            Protobuf message corresponding to the StateReason enum.
+        """
+        return self.value
+
 
 class MarketActor(enum.Enum):
     """Actors responsible for an order state change."""
@@ -731,6 +749,16 @@ class MarketActor(enum.Enum):
             return cls.UNSPECIFIED
 
         return cls(market_actor)
+
+    def to_pb(
+        self,
+    ) -> electricity_trading_pb2.OrderDetail.StateDetail.MarketActor.ValueType:
+        """Convert a MarketActor enum to protobuf MarketActor value.
+
+        Returns:
+            Protobuf message corresponding to the MarketActor enum.
+        """
+        return self.value
 
 
 @dataclass(frozen=True)
@@ -881,6 +909,22 @@ class StateDetail:
             market_actor=MarketActor.from_pb(state_detail.market_actor),
         )
 
+    def to_pb(self) -> electricity_trading_pb2.OrderDetail.StateDetail:
+        """Convert a StateDetail object to protobuf StateDetail.
+
+        Returns:
+            Protobuf message corresponding to the StateDetail object.
+        """
+        return electricity_trading_pb2.OrderDetail.StateDetail(
+            state=electricity_trading_pb2.OrderState.ValueType(self.state.value),
+            state_reason=electricity_trading_pb2.OrderDetail.StateDetail.StateReason.ValueType(
+                self.state_reason.value
+            ),
+            market_actor=electricity_trading_pb2.OrderDetail.StateDetail.MarketActor.ValueType(
+                self.market_actor.value
+            ),
+        )
+
 
 @dataclass(frozen=True)
 class OrderDetail:
@@ -923,6 +967,24 @@ class OrderDetail:
             filled_quantity=Energy.from_pb(order_detail.filled_quantity),
             create_time=order_detail.create_time.ToDatetime(),
             modification_time=order_detail.modification_time.ToDatetime(),
+        )
+
+    def to_pb(self) -> electricity_trading_pb2.OrderDetail:
+        """Convert an OrderDetail object to protobuf OrderDetail.
+
+        Returns:
+            Protobuf message corresponding to the OrderDetail object.
+        """
+        return electricity_trading_pb2.OrderDetail(
+            order_id=self.order_id,
+            order=self.order.to_pb(),
+            state_detail=self.state_detail.to_pb(),
+            open_quantity=self.open_quantity.to_pb(),
+            filled_quantity=self.filled_quantity.to_pb(),
+            create_time=timestamp_pb2.Timestamp().FromDatetime(self.create_time),
+            modification_time=timestamp_pb2.Timestamp().FromDatetime(
+                self.modification_time
+            ),
         )
 
 
@@ -973,6 +1035,25 @@ class PublicTrade:  # pylint: disable=too-many-instance-attributes
             price=Price.from_pb(public_trade.price),
             quantity=Energy.from_pb(public_trade.quantity),
             state=OrderState.from_pb(public_trade.state),
+        )
+
+    def to_pb(self) -> electricity_trading_pb2.PublicTrade:
+        """Convert a PublicTrade object to protobuf PublicTrade.
+
+        Returns:
+            Protobuf message corresponding to the PublicTrade object.
+        """
+        return electricity_trading_pb2.PublicTrade(
+            id=self.public_trade_id,
+            buy_delivery_area=self.buy_delivery_area.to_pb(),
+            sell_delivery_area=self.sell_delivery_area.to_pb(),
+            delivery_period=self.delivery_period.to_pb(),
+            modification_time=timestamp_pb2.Timestamp().FromDatetime(
+                self.modification_time
+            ),
+            price=self.price.to_pb(),
+            quantity=self.quantity.to_pb(),
+            state=electricity_trading_pb2.OrderState.ValueType(self.state.value),
         )
 
 
