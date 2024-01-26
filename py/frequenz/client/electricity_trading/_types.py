@@ -426,6 +426,14 @@ class OrderExecutionOption(enum.Enum):
 
         return OrderExecutionOption(order_execution_option)
 
+    def to_pb(self) -> electricity_trading_pb2.OrderExecutionOption.ValueType:
+        """Convert a OrderExecutionOption object to protobuf OrderExecutionOption.
+
+        Returns:
+            Protobuf message corresponding to the OrderExecutionOption object.
+        """
+        return electricity_trading_pb2.OrderExecutionOption.ValueType(self.value)
+
 
 class OrderType(enum.Enum):
     """Type of the order (specifies how the order is to be executed in the market)."""
@@ -689,6 +697,16 @@ class StateReason(enum.Enum):
 
         return cls(state_reason)
 
+    def to_pb(
+        self,
+    ) -> electricity_trading_pb2.OrderDetail.StateDetail.StateReason.ValueType:
+        """Convert a StateReason enum to protobuf StateReason value.
+
+        Returns:
+            Protobuf message corresponding to the StateReason enum.
+        """
+        return self.value
+
 
 class MarketActor(enum.Enum):
     """Actors responsible for an order state change."""
@@ -732,6 +750,16 @@ class MarketActor(enum.Enum):
 
         return cls(market_actor)
 
+    def to_pb(
+        self,
+    ) -> electricity_trading_pb2.OrderDetail.StateDetail.MarketActor.ValueType:
+        """Convert a MarketActor enum to protobuf MarketActor value.
+
+        Returns:
+            Protobuf message corresponding to the MarketActor enum.
+        """
+        return self.value
+
 
 @dataclass(frozen=True)
 class Order:  # pylint: disable=too-many-instance-attributes
@@ -755,28 +783,28 @@ class Order:  # pylint: disable=too-many-instance-attributes
     quantity: Energy
     """The quantity of the contract being traded."""
 
-    stop_price: Price | None
+    stop_price: Price | None = None
     """Applicable for STOP_LIMIT orders. The stop price that triggers the limit order."""
 
-    peak_price_delta: Price | None
+    peak_price_delta: Price | None = None
     """Applicable for ICEBERG orders. The price difference between the peak price and
     the limit price."""
 
-    display_quantity: Energy | None
+    display_quantity: Energy | None = None
     """Applicable for ICEBERG orders. The quantity of the order to be displayed in the order
     book."""
 
-    execution_option: OrderExecutionOption | None
+    execution_option: OrderExecutionOption | None = None
     """Order execution options such as All or None, Fill or Kill, etc."""
 
-    valid_until: datetime | None
+    valid_until: datetime | None = None
     """UTC timestamp defining the time after which the order should be cancelled if not filled."""
 
-    payload: dict[str, struct_pb2.Value] | None
+    payload: dict[str, struct_pb2.Value] | None = None
     """User-defined payload individual to a specific order. This can be any data that needs to be
     associated with the order."""
 
-    tag: str | None
+    tag: str | None = None
     """User-defined tag to group related orders."""
 
     @classmethod
@@ -881,6 +909,22 @@ class StateDetail:
             market_actor=MarketActor.from_pb(state_detail.market_actor),
         )
 
+    def to_pb(self) -> electricity_trading_pb2.OrderDetail.StateDetail:
+        """Convert a StateDetail object to protobuf StateDetail.
+
+        Returns:
+            Protobuf message corresponding to the StateDetail object.
+        """
+        return electricity_trading_pb2.OrderDetail.StateDetail(
+            state=electricity_trading_pb2.OrderState.ValueType(self.state.value),
+            state_reason=electricity_trading_pb2.OrderDetail.StateDetail.StateReason.ValueType(
+                self.state_reason.value
+            ),
+            market_actor=electricity_trading_pb2.OrderDetail.StateDetail.MarketActor.ValueType(
+                self.market_actor.value
+            ),
+        )
+
 
 @dataclass(frozen=True)
 class OrderDetail:
@@ -923,6 +967,24 @@ class OrderDetail:
             filled_quantity=Energy.from_pb(order_detail.filled_quantity),
             create_time=order_detail.create_time.ToDatetime(),
             modification_time=order_detail.modification_time.ToDatetime(),
+        )
+
+    def to_pb(self) -> electricity_trading_pb2.OrderDetail:
+        """Convert an OrderDetail object to protobuf OrderDetail.
+
+        Returns:
+            Protobuf message corresponding to the OrderDetail object.
+        """
+        return electricity_trading_pb2.OrderDetail(
+            order_id=self.order_id,
+            order=self.order.to_pb(),
+            state_detail=self.state_detail.to_pb(),
+            open_quantity=self.open_quantity.to_pb(),
+            filled_quantity=self.filled_quantity.to_pb(),
+            create_time=timestamp_pb2.Timestamp().FromDatetime(self.create_time),
+            modification_time=timestamp_pb2.Timestamp().FromDatetime(
+                self.modification_time
+            ),
         )
 
 
@@ -975,24 +1037,43 @@ class PublicTrade:  # pylint: disable=too-many-instance-attributes
             state=OrderState.from_pb(public_trade.state),
         )
 
+    def to_pb(self) -> electricity_trading_pb2.PublicTrade:
+        """Convert a PublicTrade object to protobuf PublicTrade.
+
+        Returns:
+            Protobuf message corresponding to the PublicTrade object.
+        """
+        return electricity_trading_pb2.PublicTrade(
+            id=self.public_trade_id,
+            buy_delivery_area=self.buy_delivery_area.to_pb(),
+            sell_delivery_area=self.sell_delivery_area.to_pb(),
+            delivery_period=self.delivery_period.to_pb(),
+            modification_time=timestamp_pb2.Timestamp().FromDatetime(
+                self.modification_time
+            ),
+            price=self.price.to_pb(),
+            quantity=self.quantity.to_pb(),
+            state=electricity_trading_pb2.OrderState.ValueType(self.state.value),
+        )
+
 
 @dataclass(frozen=True)
 class GridpoolOrderFilter:
     """Parameters for filtering Gridpool orders."""
 
-    states: list[OrderState] | None
+    states: list[OrderState] | None = None
     """List of order states to filter for."""
 
-    side: MarketSide | None
+    side: MarketSide | None = None
     """Market side to filter for."""
 
-    delivery_period: DeliveryPeriod | None
+    delivery_period: DeliveryPeriod | None = None
     """Delivery period to filter for."""
 
-    delivery_area: DeliveryArea | None
+    delivery_area: DeliveryArea | None = None
     """Delivery area to filter for."""
 
-    tag: str | None
+    tag: str | None = None
     """Tag associated with the orders to be filtered."""
 
     @classmethod
@@ -1047,16 +1128,16 @@ class GridpoolOrderFilter:
 class PublicTradeFilter:
     """Parameters for filtering the historic, publicly executed orders (trades)."""
 
-    states: list[OrderState] | None
+    states: list[OrderState] | None = None
     """List of order states to filter for."""
 
-    delivery_period: DeliveryPeriod | None
+    delivery_period: DeliveryPeriod | None = None
     """Delivery period to filter for."""
 
-    buy_delivery_area: DeliveryArea | None
+    buy_delivery_area: DeliveryArea | None = None
     """Delivery area to filter for on the buy side."""
 
-    sell_delivery_area: DeliveryArea | None
+    sell_delivery_area: DeliveryArea | None = None
     """Delivery area to filter for on the sell side."""
 
     @classmethod
@@ -1115,37 +1196,37 @@ class UpdateOrder:  # pylint: disable=too-many-instance-attributes
     At least one of the optional fields must be set for an update to take place.
     """
 
-    price: Price | None
+    price: Price | None = None
     """The updated limit price at which the contract is to be traded.
     This is the maximum price for a BUY order or the minimum price for a SELL order."""
 
-    quantity: Energy | None
+    quantity: Energy | None = None
     """The updated quantity of the contract being traded, specified in MWh."""
 
-    stop_price: Price | None
+    stop_price: Price | None = None
     """Applicable for STOP_LIMIT orders. This is the updated stop price that triggers
     the limit order."""
 
-    peak_price_delta: Price | None
+    peak_price_delta: Price | None = None
     """Applicable for ICEBERG orders. This is the updated price difference
     between the peak price and the limit price."""
 
-    display_quantity: Energy | None
+    display_quantity: Energy | None = None
     """Applicable for ICEBERG orders. This is the updated quantity of the order
     to be displayed in the order book."""
 
-    execution_option: OrderExecutionOption | None
+    execution_option: OrderExecutionOption | None = None
     """Updated execution options such as All or None, Fill or Kill, etc."""
 
-    valid_until: datetime | None
+    valid_until: datetime | None = None
     """This is an updated timestamp defining the time after which the order should
     be cancelled if not filled. The timestamp is in UTC."""
 
-    payload: dict[str, struct_pb2.Value] | None
+    payload: dict[str, struct_pb2.Value] | None = None
     """Updated user-defined payload individual to a specific order. This can be any data
     that the user wants to associate with the order."""
 
-    tag: str | None
+    tag: str | None = None
     """Updated user-defined tag to group related orders."""
 
     @classmethod
