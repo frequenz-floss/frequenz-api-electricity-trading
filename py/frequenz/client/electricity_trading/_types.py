@@ -209,7 +209,7 @@ class DeliveryArea:
     code: str
     """Code representing the unique identifier for the delivery area."""
 
-    code_type: delivery_area_pb2.EnergyMarketCodeType.ValueType
+    code_type: EnergyMarketCodeType
     """Type of code used for identifying the delivery area itself."""
 
     @classmethod
