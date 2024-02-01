@@ -60,7 +60,7 @@ dev-mkdocs = [
 dev-mypy = [
   "mypy == 1.8.0",
   "grpc-stubs == 1.53.0.5",
-  "types-Markdown == 3.5.0.3",
+  "types-Markdown == 3.5.0.20240129",
   # For checking the noxfile, docs/ script, and tests
   "frequenz-api-electricity-trading[dev-mkdocs,dev-noxfile,dev-pytest]",
 ]
