@@ -14,4 +14,4 @@
 
 ## Bug Fixes
 
-* Fix bug type for `EnergyMarketCodeType`
+* Remove `frequenz-api-common` files now that dependency conflict is solved
