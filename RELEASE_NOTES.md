@@ -10,7 +10,8 @@
 
 ## New Features
 
-<!-- Here goes the main new features and examples or instructions on how to use them -->
+* Make a distinction between Order and Trade in the protobuf definitions
+* Introduction of new endpoints to retrieve gridpool trades
 
 ## Bug Fixes
 

@@ -53,6 +53,14 @@ service ElectricityTradingService {
   rpc ReceiveGridpoolOrdersStream(ReceiveGridpoolOrdersStreamRequest)
       returns (stream ReceiveGridpoolOrdersStreamResponse);
 
+  // Lists all trades for a given Gridpool.
+  rpc ListGridpoolTrades(ListGridpoolTradesRequest)
+      returns (ListGridpoolTradesResponse);
+
+  // Stream trades for a given Gridpool.
+  rpc ReceiveGridpoolTradesStream(ReceiveGridpoolTradesStreamRequest)
+      returns (stream ReceiveGridpoolTradesStreamResponse);
+
   // Lists all historic public trades.
   rpc ListPublicTrades(ListPublicTradesRequest)
       returns (ListPublicTradesResponse);
@@ -61,6 +69,7 @@ service ElectricityTradingService {
   rpc ReceivePublicTradesStream(ReceivePublicTradesStreamRequest)
       returns (stream ReceivePublicTradesStreamResponse);
 }
+
 
 // OrderExecutionOption defines specific behavior for the execution of an order.
 // These options provide control on how an order is handled in the market.
@@ -176,21 +185,38 @@ enum OrderState {
   // exposed to the market. This could be due to certain conditions not yet
   // being met.
   ORDER_STATE_HIBERNATE = 9;
+}
 
-  // RECALL: The order has been recalled. This could be due to a system issue or
+// Enum for the state of a trade.
+enum TradeState {
+  // UNSPECIFIED: The state is not known.
+  TRADE_STATE_UNSPECIFIED = 0;
+
+  // ACTIVE: The trade has been executed in the market.
+  TRADE_STATE_ACTIVE = 1;
+
+  // CANCEL_REQUESTED: A cancellation request for the trade has been submitted.
+  TRADE_STATE_CANCEL_REQUESTED = 2;
+
+  // CANCEL_REJECTED: The trade cancellation request was rejected.
+  TRADE_STATE_CANCEL_REJECTED = 3;
+
+  // CANCELED: The trade has been cancelled. This can occur due to a
+  // cancellation request by the market participant, system, or market operator.
+  TRADE_STATE_CANCELED = 4;
+
+  // RECALL: The trade has been recalled. This could be due to a system issue or
   // a request from the market participant or market operator.
-  ORDER_STATE_RECALL = 10;
+  TRADE_STATE_RECALLED = 5;
 
-  // RECALL_REQUESTED: A recall request for the order has been submitted but the
-  // order is not yet removed from the order book.
-  ORDER_STATE_RECALL_REQUESTED = 11;
+  // RECALL_REQUESTED: A recall request for the trade has been submitted.
+  TRADE_STATE_RECALL_REQUESTED = 6;
 
-  // RECALL_REJECTED: The order recall request was rejected, likely due to it
-  // having already been filled or expired.
-  ORDER_STATE_RECALL_REJECTED = 12;
+  // RECALL_REJECTED: The trade recall request was rejected.
+  TRADE_STATE_RECALL_REJECTED = 7;
 
-  // APPROVAL: The order has been sent for approval.
-  ORDER_STATE_APPROVAL = 13;
+  // APPROVAL: An approval has been requested.
+  TRADE_STATE_APPROVAL_REQUESTED = 8;
 }
 
 // Represents an order in the electricity market.
@@ -337,6 +363,41 @@ message OrderDetail {
   google.protobuf.Timestamp modification_time = 7;
 }
 
+// Represents a private trade in the electricity market.
+//
+// !!! note
+//    This represents either the buy or sell side of a trade which is
+//    different to public trade information which always represents both
+//    sides of a market.
+message Trade {
+  // ID of the trade.
+  uint64 id = 1;
+
+  // ID of the order.
+  uint64 order_id = 2;
+
+  // Indicates if the trades order was on the Buy or Sell side of the market.
+  MarketSide side = 3;
+
+  // Delivery area of the trade.
+  frequenz.api.common.v1.grid.DeliveryArea delivery_area = 4;
+
+  // The delivery period for the contract.
+  frequenz.api.common.v1.grid.DeliveryPeriod delivery_period = 5;
+
+  // UTC Timestamp of the trades execution time.
+  google.protobuf.Timestamp execution_time = 6;
+
+  // The price at which the trade was executed.
+  frequenz.api.common.v1.market.Price price = 7;
+
+  // The executed quantity of the trade.
+  frequenz.api.common.v1.market.Energy quantity = 8;
+
+  // Current state of the trade.
+  TradeState state = 9;
+}
+
 // Represents a public trade in the market.
 //
 // Each `trade` within this response message represents two orders that were
@@ -378,7 +439,7 @@ message PublicTrade {
   frequenz.api.common.v1.market.Energy quantity = 7;
 
   // Final state of the trade.
-  OrderState state = 8;
+  TradeState state = 8;
 }
 
 // Parameters for filtering Gridpool orders.
@@ -405,6 +466,30 @@ message GridpoolOrderFilter {
   optional string tag = 5;
 }
 
+// Parameters for filtering Gridpool trades.
+//
+// !!! note
+//     Multiple filters can be used in combination to narrow down the returned
+//     results. For example, you can apply both state and side filters
+//     simultaneously to list only the trades on the buy side of the
+//     market.
+message GridpoolTradeFilter {
+  // Optional filter for the trade state.
+  repeated TradeState states = 1;
+
+  // Optional filter for the given order id´s.
+  repeated uint64 trade_id_lists = 2;
+
+  // Optional filter for the trades order side.
+  optional MarketSide side = 3;
+
+  // Optional filter for delivery period.
+  frequenz.api.common.v1.grid.DeliveryPeriod delivery_period = 4;
+
+  // Optional filter for delivery area.
+  frequenz.api.common.v1.grid.DeliveryArea delivery_area = 5;
+}
+
 // Parameters for filtering historic public trades.
 //
 // !!! note
@@ -418,7 +503,7 @@ message GridpoolOrderFilter {
 //     a specific delivery area.
 message PublicTradeFilter {
   // If set, only trades in this state are returned.
-  repeated OrderState states = 1;
+  repeated TradeState states = 1;
 
   // Optional; If set, only trades with this delivery period are returned.
   frequenz.api.common.v1.grid.DeliveryPeriod delivery_period = 2;
@@ -625,6 +710,46 @@ message ReceiveGridpoolOrdersStreamRequest {
 message ReceiveGridpoolOrdersStreamResponse {
   // Order detail response.
   OrderDetail order_detail = 1;
+}
+
+// Request to retrieve a list of trades for a specific Gridpool.
+message ListGridpoolTradesRequest {
+  // The Gridpool to retrieve the trades for.
+  uint64 gridpool_id = 1;
+
+  // Optional Gridpool trades filter.
+  GridpoolTradeFilter filter = 2;
+
+  // Pagination parameters.
+  frequenz.api.common.v1.pagination.PaginationParams pagination_params = 3;
+}
+
+// Response from listing trades for a given Gridpool.
+message ListGridpoolTradesResponse {
+  // List of all listed trades with their details.
+  repeated Trade trade_lists = 1;
+
+  // Metadata for pagination, including token for next page to retrieve.
+  frequenz.api.common.v1.pagination.PaginationInfo pagination_info = 2;
+}
+
+// Subscribe to the stream of gridpool trades.
+// This method provides real-time updates on newly executed gridpool trades,
+// making it useful dynamic analytics and real-time decision-making.
+message ReceiveGridpoolTradesStreamRequest {
+  // The Gridpool to retrieve the trades for.
+  uint64 gridpool_id = 1;
+
+  // Optional filter to specify which trades should be included in the stream.
+  GridpoolTradeFilter filter = 2;
+}
+
+// Response to a subscription request for a stream of Gridpool trades.
+// Real-time information on trades is pushed through this response.
+message ReceiveGridpoolTradesStreamResponse {
+  // The trade that has been executed and is being broadcasted in
+  // real-time.
+  Trade trade = 1;
 }
 
 // Request to list all historic public trades with optional filters.
