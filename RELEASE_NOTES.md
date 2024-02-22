@@ -12,6 +12,7 @@
 
 * Make a distinction between Order and Trade in the protobuf definitions
 * Introduction of new endpoints to retrieve gridpool trades
+* Addition of new definitions and support for trade state filters and streaming
 
 ## Bug Fixes
 

@@ -12,6 +12,7 @@ from ._types import (
     Energy,
     EnergyMarketCodeType,
     GridpoolOrderFilter,
+    GridpoolTradeFilter,
     MarketActor,
     MarketSide,
     Order,
@@ -25,6 +26,8 @@ from ._types import (
     PublicTradeFilter,
     StateDetail,
     StateReason,
+    Trade,
+    TradeState,
     UpdateOrder,
 )
 
@@ -37,6 +40,7 @@ __all__ = [
     "Energy",
     "EnergyMarketCodeType",
     "GridpoolOrderFilter",
+    "GridpoolTradeFilter",
     "MarketSide",
     "MarketActor",
     "Order",
@@ -51,4 +55,6 @@ __all__ = [
     "UpdateOrder",
     "StateDetail",
     "StateReason",
+    "Trade",
+    "TradeState",
 ]

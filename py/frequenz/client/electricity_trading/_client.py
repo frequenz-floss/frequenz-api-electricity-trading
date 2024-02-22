@@ -20,6 +20,7 @@ from ._types import (
     DeliveryPeriod,
     Energy,
     GridpoolOrderFilter,
+    GridpoolTradeFilter,
     MarketSide,
     Order,
     OrderDetail,
@@ -30,6 +31,8 @@ from ._types import (
     Price,
     PublicTrade,
     PublicTradeFilter,
+    Trade,
+    TradeState,
     UpdateOrder,
 )
 
@@ -58,6 +61,13 @@ class Client:
             tuple[int, GridpoolOrderFilter],
             GrpcStreamingHelper[
                 electricity_trading_pb2.ReceiveGridpoolOrdersStreamResponse, OrderDetail
+            ],
+        ] = {}
+
+        self._gridpool_trades_streams: dict[
+            tuple[int, GridpoolTradeFilter],
+            GrpcStreamingHelper[
+                electricity_trading_pb2.ReceiveGridpoolTradesStreamResponse, Trade
             ],
         ] = {}
 
@@ -91,15 +101,15 @@ class Client:
         Returns:
             Async generator of orders.
         """
-        gridpool_filter = GridpoolOrderFilter(
-            states=order_states,
+        gridpool_order_filter = GridpoolOrderFilter(
+            order_states=order_states,
             side=market_side,
             delivery_area=delivery_area,
             delivery_period=delivery_period,
             tag=tag,
         )
 
-        stream_key = (gridpool_id, gridpool_filter)
+        stream_key = (gridpool_id, gridpool_order_filter)
 
         if stream_key not in self._gridpool_orders_streams:
             self._gridpool_orders_streams[stream_key] = GrpcStreamingHelper(
@@ -107,22 +117,68 @@ class Client:
                 lambda: self._stub.ReceiveGridpoolOrdersStream(  # type: ignore
                     electricity_trading_pb2.ReceiveGridpoolOrdersStreamRequest(
                         gridpool_id=gridpool_id,
-                        filter=gridpool_filter.to_pb(),
+                        filter=gridpool_order_filter.to_pb(),
                     )
                 ),
                 lambda response: OrderDetail.from_pb(response.order_detail),
             )
         return self._gridpool_orders_streams[stream_key].new_receiver()
 
+    async def stream_gridpool_trades(  # pylint: disable=too-many-arguments
+        self,
+        gridpool_id: int,
+        trade_states: list[TradeState] | None = None,
+        trade_ids: list[int] | None = None,
+        market_side: MarketSide | None = None,
+        delivery_period: DeliveryPeriod | None = None,
+        delivery_area: DeliveryArea | None = None,
+    ) -> Receiver[Trade]:
+        """
+        Stream gridpool trades.
+
+        Args:
+            gridpool_id: The ID of the gridpool to stream trades for.
+            trade_states: List of trade states to filter for.
+            trade_ids: List of trade IDs to filter for.
+            market_side: The market side to filter for.
+            delivery_period: The delivery period to filter for.
+            delivery_area: The delivery area to filter for.
+
+        Returns:
+            The gridpool trades streamer.
+        """
+        gridpool_trade_filter = GridpoolTradeFilter(
+            trade_states=trade_states,
+            trade_id_lists=trade_ids,
+            side=market_side,
+            delivery_period=delivery_period,
+            delivery_area=delivery_area,
+        )
+
+        stream_key = (gridpool_id, gridpool_trade_filter)
+
+        if stream_key not in self._gridpool_trades_streams:
+            self._gridpool_trades_streams[stream_key] = GrpcStreamingHelper(
+                f"electricity-trading-{gridpool_trade_filter}",
+                lambda: self._stub.ReceiveGridpoolTradesStream(  # type: ignore
+                    electricity_trading_pb2.ReceiveGridpoolTradesStreamRequest(
+                        gridpool_id=gridpool_id,
+                        filter=gridpool_trade_filter.to_pb(),
+                    )
+                ),
+                lambda response: Trade.from_pb(response.trade),
+            )
+        return self._gridpool_trades_streams[stream_key].new_receiver()
+
     async def stream_public_trades(
         self,
-        states: list[OrderState] | None = None,
+        states: list[TradeState] | None = None,
         delivery_period: DeliveryPeriod | None = None,
         buy_delivery_area: DeliveryArea | None = None,
         sell_delivery_area: DeliveryArea | None = None,
     ) -> Receiver[PublicTrade]:
         """
-        Stream public orders.
+        Stream public trades.
 
         Args:
             states: List of order states to filter for.
@@ -378,7 +434,7 @@ class Client:
     async def list_gridpool_orders(  # pylint: disable=too-many-arguments
         self,
         gridpool_id: int,
-        states: list[OrderState] | None = None,
+        order_states: list[OrderState] | None = None,
         side: MarketSide | None = None,
         delivery_period: DeliveryPeriod | None = None,
         delivery_area: DeliveryArea | None = None,
@@ -391,7 +447,7 @@ class Client:
 
         Args:
             gridpool_id: The Gridpool to retrieve the orders for.
-            states: List of order states to filter by.
+            order_states: List of order states to filter by.
             side: The side of the market to filter by.
             delivery_period: The delivery period to filter by.
             delivery_area: The delivery area to filter by.
@@ -403,7 +459,7 @@ class Client:
             The list of orders for that gridpool.
         """
         gridpool_order_filer = GridpoolOrderFilter(
-            states=states,
+            order_states=order_states,
             side=side,
             delivery_period=delivery_period,
             delivery_area=delivery_area,
@@ -430,6 +486,59 @@ class Client:
             OrderDetail.from_pb(order_detail)
             for order_detail in response.order_detail_lists
         ]
+
+    async def list_gridpool_trades(  # pylint: disable=too-many-arguments
+        self,
+        gridpool_id: int,
+        trade_states: list[TradeState] | None = None,
+        trade_id_lists: list[int] | None = None,
+        market_side: MarketSide | None = None,
+        delivery_period: DeliveryPeriod | None = None,
+        delivery_area: DeliveryArea | None = None,
+        max_nr_orders: int | None = None,
+        page_token: str | None = None,
+    ) -> list[Trade]:
+        """
+        List trades for a specific Gridpool with optional filters.
+
+        Args:
+            gridpool_id: The Gridpool to retrieve the trades for.
+            trade_states: List of trade states to filter by.
+            trade_id_lists: List of trade IDs to filter by.
+            market_side: The side of the market to filter by.
+            delivery_period: The delivery period to filter by.
+            delivery_area: The delivery area to filter by.
+            max_nr_orders: The maximum number of orders to return.
+            page_token: The page token to use for pagination.
+
+        Returns:
+            The list of trades for the given gridpool.
+        """
+        gridpool_trade_filter = GridpoolTradeFilter(
+            trade_states=trade_states,
+            trade_id_lists=trade_id_lists,
+            side=market_side,
+            delivery_period=delivery_period,
+            delivery_area=delivery_area,
+        )
+
+        pagination_params = PaginationParams(
+            page_size=max_nr_orders,
+            page_token=page_token,
+        )
+
+        response = await cast(
+            Awaitable[electricity_trading_pb2.ListGridpoolTradesResponse],
+            self._stub.ListGridpoolTrades(
+                electricity_trading_pb2.ListGridpoolTradesRequest(
+                    gridpool_id=gridpool_id,
+                    filter=gridpool_trade_filter.to_pb(),
+                    pagination_params=pagination_params.to_pb(),
+                )
+            ),
+        )
+
+        return [Trade.from_pb(trade) for trade in response.trade_lists]
 
     async def list_public_trades(  # pylint: disable=too-many-arguments
         self,

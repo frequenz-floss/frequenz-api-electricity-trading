@@ -574,10 +574,6 @@ class OrderState(enum.Enum):
     """The order has been entered into the system but is not currently exposed to the market. This
     could be due to certain conditions not yet being met."""
 
-    RECALL = electricity_trading_pb2.OrderState.ORDER_STATE_RECALL
-    """The order has been recalled. This could be due to a system issue or a request from the
-    market participant or market operator."""
-
     @classmethod
     def from_pb(cls, order_state: electricity_trading_pb2.OrderState.ValueType) -> Self:
         """Convert a protobuf OrderState value to OrderState enum.
@@ -601,6 +597,67 @@ class OrderState(enum.Enum):
 
         Returns:
             Protobuf message corresponding to the OrderState enum.
+        """
+        return self.value
+
+
+class TradeState(enum.Enum):
+    """State of a trade."""
+
+    UNSPECIFIED = electricity_trading_pb2.TradeState.TRADE_STATE_UNSPECIFIED
+    """The state is not known."""
+
+    ACTIVE = electricity_trading_pb2.TradeState.TRADE_STATE_ACTIVE
+    """The trade has been executed in the market."""
+
+    CANCEL_REQUESTED = electricity_trading_pb2.TradeState.TRADE_STATE_CANCEL_REQUESTED
+    """A cancellation request for the trade has been submitted."""
+
+    CANCEL_REJECTED = electricity_trading_pb2.TradeState.TRADE_STATE_CANCEL_REJECTED
+    """The trade cancellation request was rejected."""
+
+    CANCELED = electricity_trading_pb2.TradeState.TRADE_STATE_CANCELED
+    """The trade has been cancelled. This can occur due to a cancellation request by the market
+    participant, system, or market operator."""
+
+    RECALL = electricity_trading_pb2.TradeState.TRADE_STATE_RECALLED
+    """The trade has been recalled. This could be due to a system issue or a request from the market
+    participant or market operator."""
+
+    RECALL_REQUESTED = electricity_trading_pb2.TradeState.TRADE_STATE_RECALL_REQUESTED
+    """A recall request for the trade has been submitted."""
+
+    RECALL_REJECTED = electricity_trading_pb2.TradeState.TRADE_STATE_RECALL_REJECTED
+    """The trade recall request was rejected."""
+
+    APPROVAL_REQUESTED = (
+        electricity_trading_pb2.TradeState.TRADE_STATE_APPROVAL_REQUESTED
+    )
+    """An approval has been requested."""
+
+    @classmethod
+    def from_pb(cls, trade_state: electricity_trading_pb2.TradeState.ValueType) -> Self:
+        """Convert a protobuf TradeState value to TradeState enum.
+
+        Args:
+            trade_state: The trade state to convert.
+
+        Returns:
+            Enum value corresponding to the protobuf message.
+        """
+        if not any(e.value == trade_state for e in cls):
+            _logger.warning(
+                "Unknown trade state %s. Returning UNSPECIFIED.", trade_state
+            )
+            return cls.UNSPECIFIED
+
+        return cls(trade_state)
+
+    def to_pb(self) -> electricity_trading_pb2.TradeState.ValueType:
+        """Convert a TradeState enum to protobuf TradeState value.
+
+        Returns:
+            Protobuf message corresponding to the TradeState enum.
         """
         return self.value
 
@@ -879,6 +936,79 @@ class Order:  # pylint: disable=too-many-instance-attributes
 
 
 @dataclass(frozen=True)
+class Trade:  # pylint: disable=too-many-instance-attributes
+    """Represents a private trade in the electricity market."""
+
+    id: int
+    """ID of the trade."""
+
+    order_id: int
+    """ID of the corresponding order."""
+
+    side: MarketSide
+    """Indicates if the trade's order was on the Buy or Sell side of the
+    market."""
+
+    delivery_area: DeliveryArea
+    """Delivery area of the trade."""
+
+    delivery_period: DeliveryPeriod
+    """The delivery period for the contract."""
+
+    execution_time: datetime
+    """UTC Timestamp of the trade's execution time."""
+
+    price: Price
+    """The price at which the trade was executed."""
+
+    quantity: Energy
+    """The executed quantity of the trade."""
+
+    state: TradeState
+    """Current state of the trade."""
+
+    @classmethod
+    def from_pb(cls, trade: electricity_trading_pb2.Trade) -> Self:
+        """Convert a protobuf Trade to Trade object.
+
+        Args:
+            trade: Trade to convert.
+
+        Returns:
+            Trade object corresponding to the protobuf message.
+        """
+        return cls(
+            id=trade.id,
+            order_id=trade.order_id,
+            side=MarketSide.from_pb(trade.side),
+            delivery_area=DeliveryArea.from_pb(trade.delivery_area),
+            delivery_period=DeliveryPeriod.from_pb(trade.delivery_period),
+            execution_time=trade.execution_time.ToDatetime(),
+            price=Price.from_pb(trade.price),
+            quantity=Energy.from_pb(trade.quantity),
+            state=TradeState.from_pb(trade.state),
+        )
+
+    def to_pb(self) -> electricity_trading_pb2.Trade:
+        """Convert a Trade object to protobuf Trade.
+
+        Returns:
+            Protobuf message corresponding to the Trade object.
+        """
+        return electricity_trading_pb2.Trade(
+            id=self.id,
+            order_id=self.order_id,
+            side=electricity_trading_pb2.MarketSide.ValueType(self.side.value),
+            delivery_area=self.delivery_area.to_pb(),
+            delivery_period=self.delivery_period.to_pb(),
+            execution_time=timestamp_pb2.Timestamp().FromDatetime(self.execution_time),
+            price=self.price.to_pb(),
+            quantity=self.quantity.to_pb(),
+            state=electricity_trading_pb2.TradeState.ValueType(self.state.value),
+        )
+
+
+@dataclass(frozen=True)
 class StateDetail:
     """Details about the current state of the order."""
 
@@ -1061,7 +1191,7 @@ class PublicTrade:  # pylint: disable=too-many-instance-attributes
 class GridpoolOrderFilter:
     """Parameters for filtering Gridpool orders."""
 
-    states: list[OrderState] | None = None
+    order_states: list[OrderState] | None = None
     """List of order states to filter for."""
 
     side: MarketSide | None = None
@@ -1089,7 +1219,7 @@ class GridpoolOrderFilter:
             GridpoolOrderFilter object corresponding to the protobuf message.
         """
         return cls(
-            states=[
+            order_states=[
                 OrderState.from_pb(state) for state in gridpool_order_filter.states
             ],
             side=MarketSide.from_pb(gridpool_order_filter.side),
@@ -1109,9 +1239,9 @@ class GridpoolOrderFilter:
         return electricity_trading_pb2.GridpoolOrderFilter(
             states=[
                 electricity_trading_pb2.OrderState.ValueType(state.value)
-                for state in self.states
+                for state in self.order_states
             ]
-            if self.states
+            if self.order_states
             else None,
             side=electricity_trading_pb2.MarketSide.ValueType(self.side.value)
             if self.side
@@ -1125,10 +1255,73 @@ class GridpoolOrderFilter:
 
 
 @dataclass(frozen=True)
+class GridpoolTradeFilter:
+    """Parameters for filtering Gridpool trades."""
+
+    trade_states: list[TradeState] | None = None
+    """List of trade states to filter for."""
+
+    trade_id_lists: list[int] | None = None
+    """List of trade ids to filter for."""
+
+    side: MarketSide | None = None
+    """Market side to filter for."""
+
+    delivery_period: DeliveryPeriod | None = None
+    """Delivery period to filter for."""
+
+    delivery_area: DeliveryArea | None = None
+    """Delivery area to filter for."""
+
+    @classmethod
+    def from_pb(
+        cls, gridpool_trade_filter: electricity_trading_pb2.GridpoolTradeFilter
+    ) -> Self:
+        """Convert a protobuf GridpoolTradeFilter to GridpoolTradeFilter object.
+
+        Args:
+            gridpool_trade_filter: GridpoolTradeFilter to convert.
+
+        Returns:
+            GridpoolTradeFilter object corresponding to the protobuf message.
+        """
+        return cls(
+            trade_states=[
+                TradeState.from_pb(state) for state in gridpool_trade_filter.states
+            ],
+            trade_id_lists=gridpool_trade_filter.trade_id_lists,
+            side=MarketSide.from_pb(gridpool_trade_filter.side),
+            delivery_period=DeliveryPeriod.from_pb(
+                gridpool_trade_filter.delivery_period
+            ),
+            delivery_area=DeliveryArea.from_pb(gridpool_trade_filter.delivery_area),
+        )
+
+    def to_pb(self) -> electricity_trading_pb2.GridpoolTradeFilter:
+        """
+        Convert a GridpoolTradeFilter object to protobuf GridpoolTradeFilter.
+
+        Returns:
+            Protobuf GridpoolTradeFilter corresponding to the object.
+        """
+        return electricity_trading_pb2.GridpoolTradeFilter(
+            states=[TradeState.to_pb(state) for state in self.trade_states]
+            if self.trade_states
+            else None,
+            trade_id_lists=self.trade_id_lists if self.trade_id_lists else None,
+            side=MarketSide.to_pb(self.side) if self.side else None,
+            delivery_period=self.delivery_period.to_pb()
+            if self.delivery_period
+            else None,
+            delivery_area=self.delivery_area.to_pb() if self.delivery_area else None,
+        )
+
+
+@dataclass(frozen=True)
 class PublicTradeFilter:
     """Parameters for filtering the historic, publicly executed orders (trades)."""
 
-    states: list[OrderState] | None = None
+    states: list[TradeState] | None = None
     """List of order states to filter for."""
 
     delivery_period: DeliveryPeriod | None = None
@@ -1153,7 +1346,7 @@ class PublicTradeFilter:
             PublicTradeFilter object corresponding to the protobuf message.
         """
         return cls(
-            states=[OrderState.from_pb(state) for state in public_trade_filter.states],
+            states=[TradeState.from_pb(state) for state in public_trade_filter.states],
             delivery_period=DeliveryPeriod.from_pb(public_trade_filter.delivery_period),
             buy_delivery_area=DeliveryArea.from_pb(
                 public_trade_filter.buy_delivery_area
