@@ -14,6 +14,7 @@
 * Introduction of new endpoints to retrieve gridpool trades
 * Addition of new definitions and support for trade state filters and streaming
 * Refactor DeliveryPeriod to take in a timedelta duration attribute instead of the DeliveryDuration Enum type
+* Public trades renamed from public_trade_lists to public trades and all _lists suffixes removed
 
 ## Bug Fixes
 

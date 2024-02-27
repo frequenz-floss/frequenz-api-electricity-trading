@@ -429,13 +429,13 @@ message PublicTrade {
   // The delivery period for the contract.
   frequenz.api.common.v1.grid.DeliveryPeriod delivery_period = 4;
 
-  // UTC Timestamp of the last order update or matching.
-  google.protobuf.Timestamp modification_time = 5;
+  // UTC Timestamp of the trades execution time.
+  google.protobuf.Timestamp execution_time = 5;
 
-  // The limit price at which the contract is to be traded.
+  // The price at which the trade was executed.
   frequenz.api.common.v1.market.Price price = 6;
 
-  // The quantity of the contract being traded in MWh.
+  // The executed quantity of the contract traded.
   frequenz.api.common.v1.market.Energy quantity = 7;
 
   // Final state of the trade.
