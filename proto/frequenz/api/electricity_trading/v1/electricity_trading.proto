@@ -478,7 +478,7 @@ message GridpoolTradeFilter {
   repeated TradeState states = 1;
 
   // Optional filter for the given order id´s.
-  repeated uint64 trade_id_lists = 2;
+  repeated uint64 trade_ids = 2;
 
   // Optional filter for the trades order side.
   optional MarketSide side = 3;
@@ -683,7 +683,7 @@ message ListGridpoolOrdersRequest {
 // Response from listing orders for a given Gridpool.
 message ListGridpoolOrdersResponse {
   // List of all listed orders with their details.
-  repeated OrderDetail order_detail_lists = 1;
+  repeated OrderDetail order_details = 1;
 
   // Metadata for pagination, including token for next page to retrieve.
   frequenz.api.common.v1.pagination.PaginationInfo pagination_info = 2;
@@ -727,7 +727,7 @@ message ListGridpoolTradesRequest {
 // Response from listing trades for a given Gridpool.
 message ListGridpoolTradesResponse {
   // List of all listed trades with their details.
-  repeated Trade trade_lists = 1;
+  repeated Trade trades = 1;
 
   // Metadata for pagination, including token for next page to retrieve.
   frequenz.api.common.v1.pagination.PaginationInfo pagination_info = 2;
@@ -769,7 +769,7 @@ message ListPublicTradesRequest {
 // backtesting trading strategies, and conducting market analysis.
 message ListPublicTradesResponse {
   // List of all public trades that met the specified filtering criteria.
-  repeated PublicTrade public_trade_lists = 1;
+  repeated PublicTrade public_trades = 1;
 
   // Metadata for pagination, including token for next page to retrieve.
   frequenz.api.common.v1.pagination.PaginationInfo pagination_info = 2;
