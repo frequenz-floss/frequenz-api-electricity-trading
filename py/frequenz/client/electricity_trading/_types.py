@@ -222,7 +222,10 @@ class DeliveryArea:
         Returns:
             DeliveryArea object corresponding to the protobuf message.
         """
-        return cls(code=delivery_area.code, code_type=delivery_area.code_type)
+        return cls(
+            code=delivery_area.code,
+            code_type=EnergyMarketCodeType.from_pb(delivery_area.code_type),
+        )
 
     def to_pb(self) -> delivery_area_pb2.DeliveryArea:
         """Convert a DeliveryArea object to protobuf DeliveryArea.
@@ -230,7 +233,9 @@ class DeliveryArea:
         Returns:
             Protobuf message corresponding to the DeliveryArea object.
         """
-        return delivery_area_pb2.DeliveryArea(code=self.code, code_type=self.code_type)
+        return delivery_area_pb2.DeliveryArea(
+            code=self.code, code_type=self.code_type.to_pb()
+        )
 
 
 class DeliveryDuration(enum.Enum):
