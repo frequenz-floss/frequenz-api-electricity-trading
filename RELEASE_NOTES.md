@@ -17,3 +17,4 @@
 ## Bug Fixes
 
 * Remove `frequenz-api-common` files now that dependency conflict is solved
+* Fix DeliveryArea from and to pb methods
