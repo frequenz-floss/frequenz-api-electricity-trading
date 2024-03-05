@@ -886,15 +886,17 @@ class Order:  # pylint: disable=too-many-instance-attributes
             side=MarketSide.from_pb(order.side),
             price=Price.from_pb(order.price),
             quantity=Energy.from_pb(order.quantity),
-            stop_price=Price.from_pb(order.stop_price) if order.stop_price else None,
+            stop_price=Price.from_pb(order.stop_price)
+            if order.HasField("stop_price")
+            else None,
             peak_price_delta=Price.from_pb(order.peak_price_delta)
-            if order.peak_price_delta
+            if order.HasField("peak_price_delta")
             else None,
             display_quantity=Energy.from_pb(order.display_quantity)
-            if order.display_quantity
+            if order.HasField("display_quantity")
             else None,
             execution_option=OrderExecutionOption.from_pb(order.execution_option)
-            if order.execution_option
+            if order.HasField("execution_option")
             else None,
             valid_until=order.valid_until.ToDatetime() if order.valid_until else None,
             payload=json_format.MessageToDict(order.payload) if order.payload else None,
