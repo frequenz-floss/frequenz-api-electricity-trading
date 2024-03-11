@@ -13,6 +13,7 @@
 * Make a distinction between Order and Trade in the protobuf definitions
 * Introduction of new endpoints to retrieve gridpool trades
 * Addition of new definitions and support for trade state filters and streaming
+* Refactor DeliveryPeriod to take in a timedelta duration attribute instead of the DeliveryDuration Enum type
 
 ## Bug Fixes
 

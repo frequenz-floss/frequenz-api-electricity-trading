@@ -10,7 +10,7 @@ from __future__ import annotations  # required for constructor type hinting
 import enum
 import logging
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timedelta
 from decimal import Decimal
 from typing import Self
 
@@ -291,7 +291,6 @@ class DeliveryDuration(enum.Enum):
         return delivery_duration_pb2.DeliveryDuration.ValueType(self.value)
 
 
-@dataclass(frozen=True)
 class DeliveryPeriod:
     """
     Time period during which the contract is delivered.
@@ -307,12 +306,36 @@ class DeliveryPeriod:
     duration: DeliveryDuration
     """The length of the delivery period."""
 
-    def __post_init__(self) -> None:
-        """Validate the parameters."""
-        if not isinstance(self.start, datetime):
-            raise ValueError("Start must be a datetime object.")
-        if not isinstance(self.duration, DeliveryDuration):
-            raise ValueError("Duration must be a DeliveryDuration object.")
+    def __init__(
+        self,
+        start: datetime,
+        duration: timedelta,
+    ) -> None:
+        """
+        Initialize the DeliveryPeriod object.
+
+        Args:
+            start: Start UTC timestamp represents the beginning of the delivery period.
+            duration: The length of the delivery period.
+
+        Raises:
+            ValueError: If the duration is not 5, 15, 30, or 60 minutes.
+        """
+        self.start = start
+        minutes = duration.total_seconds() / 60
+        match minutes:
+            case 5:
+                self.duration = DeliveryDuration.MINUTES_5
+            case 15:
+                self.duration = DeliveryDuration.MINUTES_15
+            case 30:
+                self.duration = DeliveryDuration.MINUTES_30
+            case 60:
+                self.duration = DeliveryDuration.MINUTES_60
+            case _:
+                raise ValueError(
+                    "Invalid duration value. Duration must be 5, 15, 30, or 60 minutes."
+                )
 
     @classmethod
     def from_pb(cls, delivery_period: delivery_duration_pb2.DeliveryPeriod) -> Self:
@@ -323,11 +346,27 @@ class DeliveryPeriod:
 
         Returns:
             DeliveryPeriod object corresponding to the protobuf message.
+
+        Raises:
+            ValueError: If the duration is not 5, 15, 30, or 60 minutes.
         """
-        return cls(
-            start=delivery_period.start.ToDatetime(),
-            duration=DeliveryDuration.from_pb(delivery_period.duration),
-        )
+        start = delivery_period.start.ToDatetime()
+        delivery_duration_enum = DeliveryDuration.from_pb(delivery_period.duration)
+
+        if delivery_duration_enum == DeliveryDuration.MINUTES_5:
+            duration = timedelta(minutes=5)
+        elif delivery_duration_enum == DeliveryDuration.MINUTES_15:
+            duration = timedelta(minutes=15)
+        elif delivery_duration_enum == DeliveryDuration.MINUTES_30:
+            duration = timedelta(minutes=30)
+        elif delivery_duration_enum == DeliveryDuration.MINUTES_60:
+            duration = timedelta(hours=1)
+        else:
+            raise ValueError(
+                "Invalid duration value. Duration must be 5, 15, 30, or 60 minutes."
+            )
+
+        return cls(start=start, duration=duration)
 
     def to_pb(self) -> delivery_duration_pb2.DeliveryPeriod:
         """Convert a DeliveryPeriod object to protobuf DeliveryPeriod.
