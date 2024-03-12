@@ -353,19 +353,19 @@ class DeliveryPeriod:
         start = delivery_period.start.ToDatetime()
         delivery_duration_enum = DeliveryDuration.from_pb(delivery_period.duration)
 
-        if delivery_duration_enum == DeliveryDuration.MINUTES_5:
-            duration = timedelta(minutes=5)
-        elif delivery_duration_enum == DeliveryDuration.MINUTES_15:
-            duration = timedelta(minutes=15)
-        elif delivery_duration_enum == DeliveryDuration.MINUTES_30:
-            duration = timedelta(minutes=30)
-        elif delivery_duration_enum == DeliveryDuration.MINUTES_60:
-            duration = timedelta(hours=1)
-        else:
-            raise ValueError(
-                "Invalid duration value. Duration must be 5, 15, 30, or 60 minutes."
-            )
-
+        match delivery_duration_enum:
+            case DeliveryDuration.MINUTES_5:
+                duration = timedelta(minutes=5)
+            case DeliveryDuration.MINUTES_15:
+                duration = timedelta(minutes=15)
+            case DeliveryDuration.MINUTES_30:
+                duration = timedelta(minutes=30)
+            case DeliveryDuration.MINUTES_60:
+                duration = timedelta(minutes=60)
+            case _:
+                raise ValueError(
+                    "Invalid duration value. Duration must be 5, 15, 30, or 60 minutes."
+                )
         return cls(start=start, duration=duration)
 
     def to_pb(self) -> delivery_duration_pb2.DeliveryPeriod:
