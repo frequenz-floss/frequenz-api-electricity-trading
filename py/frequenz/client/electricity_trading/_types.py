@@ -947,7 +947,9 @@ class Order:  # pylint: disable=too-many-instance-attributes
             execution_option=OrderExecutionOption.from_pb(order.execution_option)
             if order.HasField("execution_option")
             else None,
-            valid_until=order.valid_until.ToDatetime() if order.valid_until else None,
+            valid_until=order.valid_until.ToDatetime()
+            if order.HasField("valid_until")
+            else None,
             payload=json_format.MessageToDict(order.payload) if order.payload else None,
             tag=order.tag if order.tag else None,
         )
@@ -1051,13 +1053,16 @@ class Trade:  # pylint: disable=too-many-instance-attributes
         Returns:
             Protobuf message corresponding to the Trade object.
         """
+        execution_time = timestamp_pb2.Timestamp()
+        execution_time.FromDatetime(self.execution_time)
+
         return electricity_trading_pb2.Trade(
             id=self.id,
             order_id=self.order_id,
             side=electricity_trading_pb2.MarketSide.ValueType(self.side.value),
             delivery_area=self.delivery_area.to_pb(),
             delivery_period=self.delivery_period.to_pb(),
-            execution_time=timestamp_pb2.Timestamp().FromDatetime(self.execution_time),
+            execution_time=execution_time,
             price=self.price.to_pb(),
             quantity=self.quantity.to_pb(),
             state=electricity_trading_pb2.TradeState.ValueType(self.state.value),
@@ -1161,16 +1166,19 @@ class OrderDetail:
         Returns:
             Protobuf message corresponding to the OrderDetail object.
         """
+        create_time = timestamp_pb2.Timestamp()
+        create_time.FromDatetime(self.create_time)
+        modification_time = timestamp_pb2.Timestamp()
+        modification_time.FromDatetime(self.modification_time)
+
         return electricity_trading_pb2.OrderDetail(
             order_id=self.order_id,
             order=self.order.to_pb(),
             state_detail=self.state_detail.to_pb(),
             open_quantity=self.open_quantity.to_pb(),
             filled_quantity=self.filled_quantity.to_pb(),
-            create_time=timestamp_pb2.Timestamp().FromDatetime(self.create_time),
-            modification_time=timestamp_pb2.Timestamp().FromDatetime(
-                self.modification_time
-            ),
+            create_time=create_time,
+            modification_time=modification_time,
         )
 
 
@@ -1229,14 +1237,15 @@ class PublicTrade:  # pylint: disable=too-many-instance-attributes
         Returns:
             Protobuf message corresponding to the PublicTrade object.
         """
+        modification_time = timestamp_pb2.Timestamp()
+        modification_time.FromDatetime(self.modification_time)
+
         return electricity_trading_pb2.PublicTrade(
             id=self.public_trade_id,
             buy_delivery_area=self.buy_delivery_area.to_pb(),
             sell_delivery_area=self.sell_delivery_area.to_pb(),
             delivery_period=self.delivery_period.to_pb(),
-            modification_time=timestamp_pb2.Timestamp().FromDatetime(
-                self.modification_time
-            ),
+            modification_time=modification_time,
             price=self.price.to_pb(),
             quantity=self.quantity.to_pb(),
             state=electricity_trading_pb2.TradeState.ValueType(self.state.value),
