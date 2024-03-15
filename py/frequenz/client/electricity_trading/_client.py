@@ -3,6 +3,7 @@
 
 """Module to define the client class."""
 
+import logging
 from datetime import datetime
 from typing import Awaitable, cast
 
@@ -35,6 +36,8 @@ from ._types import (
     TradeState,
     UpdateOrder,
 )
+
+_logger = logging.getLogger(__name__)
 
 
 class _Sentinel:
@@ -100,6 +103,9 @@ class Client:
 
         Returns:
             Async generator of orders.
+
+        Raises:
+            grpc.RpcError: If an error occurs while streaming the orders.
         """
         gridpool_order_filter = GridpoolOrderFilter(
             order_states=order_states,
@@ -112,16 +118,22 @@ class Client:
         stream_key = (gridpool_id, gridpool_order_filter)
 
         if stream_key not in self._gridpool_orders_streams:
-            self._gridpool_orders_streams[stream_key] = GrpcStreamingHelper(
-                f"electricity-trading-{stream_key}",
-                lambda: self._stub.ReceiveGridpoolOrdersStream(  # type: ignore
-                    electricity_trading_pb2.ReceiveGridpoolOrdersStreamRequest(
-                        gridpool_id=gridpool_id,
-                        filter=gridpool_order_filter.to_pb(),
-                    )
-                ),
-                lambda response: OrderDetail.from_pb(response.order_detail),
-            )
+            try:
+                self._gridpool_orders_streams[stream_key] = GrpcStreamingHelper(
+                    f"electricity-trading-{stream_key}",
+                    lambda: self._stub.ReceiveGridpoolOrdersStream(  # type: ignore
+                        electricity_trading_pb2.ReceiveGridpoolOrdersStreamRequest(
+                            gridpool_id=gridpool_id,
+                            filter=gridpool_order_filter.to_pb(),
+                        )
+                    ),
+                    lambda response: OrderDetail.from_pb(response.order_detail),
+                )
+            except grpc.RpcError as e:
+                _logger.exception(
+                    "Error occurred while streaming gridpool orders: %s", e
+                )
+                raise e
         return self._gridpool_orders_streams[stream_key].new_receiver()
 
     async def stream_gridpool_trades(  # pylint: disable=too-many-arguments
@@ -146,6 +158,9 @@ class Client:
 
         Returns:
             The gridpool trades streamer.
+
+        Raises:
+            grpc.RpcError: If an error occurs while streaming gridpool trades.
         """
         gridpool_trade_filter = GridpoolTradeFilter(
             trade_states=trade_states,
@@ -158,16 +173,22 @@ class Client:
         stream_key = (gridpool_id, gridpool_trade_filter)
 
         if stream_key not in self._gridpool_trades_streams:
-            self._gridpool_trades_streams[stream_key] = GrpcStreamingHelper(
-                f"electricity-trading-{gridpool_trade_filter}",
-                lambda: self._stub.ReceiveGridpoolTradesStream(  # type: ignore
-                    electricity_trading_pb2.ReceiveGridpoolTradesStreamRequest(
-                        gridpool_id=gridpool_id,
-                        filter=gridpool_trade_filter.to_pb(),
-                    )
-                ),
-                lambda response: Trade.from_pb(response.trade),
-            )
+            try:
+                self._gridpool_trades_streams[stream_key] = GrpcStreamingHelper(
+                    f"electricity-trading-{stream_key}",
+                    lambda: self._stub.ReceiveGridpoolTradesStream(  # type: ignore
+                        electricity_trading_pb2.ReceiveGridpoolTradesStreamRequest(
+                            gridpool_id=gridpool_id,
+                            filter=gridpool_trade_filter.to_pb(),
+                        )
+                    ),
+                    lambda response: Trade.from_pb(response.trade),
+                )
+            except grpc.RpcError as e:
+                _logger.exception(
+                    "Error occurred while streaming gridpool trades: %s", e
+                )
+                raise e
         return self._gridpool_trades_streams[stream_key].new_receiver()
 
     async def stream_public_trades(
@@ -188,6 +209,9 @@ class Client:
 
         Returns:
             Async generator of orders.
+
+        Raises:
+            grpc.RpcError: If an error occurs while streaming public trades.
         """
         public_trade_filter = PublicTradeFilter(
             states=states,
@@ -197,15 +221,19 @@ class Client:
         )
 
         if public_trade_filter not in self._public_trades_streams:
-            self._public_trades_streams[public_trade_filter] = GrpcStreamingHelper(
-                f"electricity-trading-{public_trade_filter}",
-                lambda: self._stub.ReceivePublicTradesStream(  # type: ignore
-                    electricity_trading_pb2.ReceivePublicTradesStreamRequest(
-                        filter=public_trade_filter.to_pb(),
-                    )
-                ),
-                lambda response: PublicTrade.from_pb(response.public_trade),
-            )
+            try:
+                self._public_trades_streams[public_trade_filter] = GrpcStreamingHelper(
+                    f"electricity-trading-{public_trade_filter}",
+                    lambda: self._stub.ReceivePublicTradesStream(  # type: ignore
+                        electricity_trading_pb2.ReceivePublicTradesStreamRequest(
+                            filter=public_trade_filter.to_pb(),
+                        )
+                    ),
+                    lambda response: PublicTrade.from_pb(response.public_trade),
+                )
+            except grpc.RpcError as e:
+                _logger.exception("Error occurred while streaming public trades: %s", e)
+                raise e
         return self._public_trades_streams[public_trade_filter].new_receiver()
 
     async def create_gridpool_order(  # pylint: disable=too-many-arguments, too-many-locals
@@ -246,6 +274,9 @@ class Client:
 
         Returns:
             The created order.
+
+        Raises:
+            grpc.RpcError: An error occurred while creating the order.
         """
         order = Order(
             delivery_area=delivery_area,
@@ -263,15 +294,19 @@ class Client:
             tag=tag,
         )
 
-        response = await cast(
-            Awaitable[electricity_trading_pb2.CreateGridpoolOrderResponse],
-            self._stub.CreateGridpoolOrder(
-                electricity_trading_pb2.CreateGridpoolOrderRequest(
-                    gridpool_id=gridpool_id,
-                    order=order.to_pb(),
-                )
-            ),
-        )
+        try:
+            response = await cast(
+                Awaitable[electricity_trading_pb2.CreateGridpoolOrderResponse],
+                self._stub.CreateGridpoolOrder(
+                    electricity_trading_pb2.CreateGridpoolOrderRequest(
+                        gridpool_id=gridpool_id,
+                        order=order.to_pb(),
+                    )
+                ),
+            )
+        except grpc.RpcError as e:
+            _logger.exception("Error occurred while creating gridpool order: %s", e)
+            raise e
 
         return OrderDetail.from_pb(response.order_detail)
 
@@ -350,19 +385,23 @@ class Client:
             tag=None if tag is NO_VALUE else tag,
         )
 
-        response = await cast(
-            Awaitable[electricity_trading_pb2.UpdateGridpoolOrderResponse],
-            self._stub.UpdateGridpoolOrder(
-                electricity_trading_pb2.UpdateGridpoolOrderRequest(
-                    gridpool_id=gridpool_id,
-                    order_id=order_id,
-                    update_order_fields=update_order_fields.to_pb(),
-                    update_mask=update_mask,
-                )
-            ),
-        )
+        try:
+            response = await cast(
+                Awaitable[electricity_trading_pb2.UpdateGridpoolOrderResponse],
+                self._stub.UpdateGridpoolOrder(
+                    electricity_trading_pb2.UpdateGridpoolOrderRequest(
+                        gridpool_id=gridpool_id,
+                        order_id=order_id,
+                        update_order_fields=update_order_fields.to_pb(),
+                        update_mask=update_mask,
+                    )
+                ),
+            )
+            return OrderDetail.from_pb(response.order_detail)
 
-        return OrderDetail.from_pb(response.order_detail)
+        except grpc.RpcError as e:
+            _logger.exception("Error occurred while updating gridpool order: %s", e)
+            raise e
 
     async def cancel_gridpool_order(
         self, gridpool_id: int, order_id: int
@@ -376,17 +415,23 @@ class Client:
 
         Returns:
             The cancelled order.
-        """
-        response = await cast(
-            Awaitable[electricity_trading_pb2.CancelGridpoolOrderResponse],
-            self._stub.CancelGridpoolOrder(
-                electricity_trading_pb2.CancelGridpoolOrderRequest(
-                    gridpool_id=gridpool_id, order_id=order_id
-                )
-            ),
-        )
 
-        return OrderDetail.from_pb(response.order_detail)
+        Raises:
+            grpc.RpcError: If an error occurs while cancelling the gridpool order.
+        """
+        try:
+            response = await cast(
+                Awaitable[electricity_trading_pb2.CancelGridpoolOrderResponse],
+                self._stub.CancelGridpoolOrder(
+                    electricity_trading_pb2.CancelGridpoolOrderRequest(
+                        gridpool_id=gridpool_id, order_id=order_id
+                    )
+                ),
+            )
+            return OrderDetail.from_pb(response.order_detail)
+        except grpc.RpcError as e:
+            _logger.exception("Error occurred while cancelling gridpool order: %s", e)
+            raise e
 
     async def cancel_all_gridpool_orders(self, gridpool_id: int) -> int:
         """
@@ -397,17 +442,26 @@ class Client:
 
         Returns:
             The ID of the Gridpool for which the orders were cancelled.
-        """
-        response = await cast(
-            Awaitable[electricity_trading_pb2.CancelAllGridpoolOrdersResponse],
-            self._stub.CancelAllGridpoolOrders(
-                electricity_trading_pb2.CancelAllGridpoolOrdersRequest(
-                    gridpool_id=gridpool_id
-                )
-            ),
-        )
 
-        return response.gridpool_id
+        Raises:
+            grpc.RpcError: If an error occurs while cancelling all gridpool orders.
+        """
+        try:
+            response = await cast(
+                Awaitable[electricity_trading_pb2.CancelAllGridpoolOrdersResponse],
+                self._stub.CancelAllGridpoolOrders(
+                    electricity_trading_pb2.CancelAllGridpoolOrdersRequest(
+                        gridpool_id=gridpool_id
+                    )
+                ),
+            )
+
+            return response.gridpool_id
+        except grpc.RpcError as e:
+            _logger.exception(
+                "Error occurred while cancelling all gridpool orders: %s", e
+            )
+            raise e
 
     async def get_gridpool_order(self, gridpool_id: int, order_id: int) -> OrderDetail:
         """
@@ -419,17 +473,24 @@ class Client:
 
         Returns:
             The order.
-        """
-        response = await cast(
-            Awaitable[electricity_trading_pb2.GetGridpoolOrderResponse],
-            self._stub.GetGridpoolOrder(
-                electricity_trading_pb2.GetGridpoolOrderRequest(
-                    gridpool_id=gridpool_id, order_id=order_id
-                )
-            ),
-        )
 
-        return OrderDetail.from_pb(response.order_detail)
+        Raises:
+            grpc.RpcError: If an error occurs while getting the order.
+        """
+        try:
+            response = await cast(
+                Awaitable[electricity_trading_pb2.GetGridpoolOrderResponse],
+                self._stub.GetGridpoolOrder(
+                    electricity_trading_pb2.GetGridpoolOrderRequest(
+                        gridpool_id=gridpool_id, order_id=order_id
+                    )
+                ),
+            )
+
+            return OrderDetail.from_pb(response.order_detail)
+        except grpc.RpcError as e:
+            _logger.exception("Error occurred while getting gridpool order: %s", e)
+            raise e
 
     async def list_gridpool_orders(  # pylint: disable=too-many-arguments
         self,
@@ -457,6 +518,9 @@ class Client:
 
         Returns:
             The list of orders for that gridpool.
+
+        Raises:
+            grpc.RpcError: If an error occurs while listing the orders.
         """
         gridpool_order_filer = GridpoolOrderFilter(
             order_states=order_states,
@@ -471,20 +535,25 @@ class Client:
             page_token=page_token,
         )
 
-        response = await cast(
-            Awaitable[electricity_trading_pb2.ListGridpoolOrdersResponse],
-            self._stub.ListGridpoolOrders(
-                electricity_trading_pb2.ListGridpoolOrdersRequest(
-                    gridpool_id=gridpool_id,
-                    filter=gridpool_order_filer.to_pb(),
-                    pagination_params=pagination_params.to_pb(),
-                )
-            ),
-        )
+        try:
+            response = await cast(
+                Awaitable[electricity_trading_pb2.ListGridpoolOrdersResponse],
+                self._stub.ListGridpoolOrders(
+                    electricity_trading_pb2.ListGridpoolOrdersRequest(
+                        gridpool_id=gridpool_id,
+                        filter=gridpool_order_filer.to_pb(),
+                        pagination_params=pagination_params.to_pb(),
+                    )
+                ),
+            )
 
-        return [
-            OrderDetail.from_pb(order_detail) for order_detail in response.order_details
-        ]
+            return [
+                OrderDetail.from_pb(order_detail)
+                for order_detail in response.order_details
+            ]
+        except grpc.RpcError as e:
+            _logger.exception("Error occurred while listing gridpool orders: %s", e)
+            raise e
 
     async def list_gridpool_trades(  # pylint: disable=too-many-arguments
         self,
@@ -512,6 +581,9 @@ class Client:
 
         Returns:
             The list of trades for the given gridpool.
+
+        Raises:
+            grpc.RpcError: If an error occurs while listing gridpool trades.
         """
         gridpool_trade_filter = GridpoolTradeFilter(
             trade_states=trade_states,
@@ -526,18 +598,22 @@ class Client:
             page_token=page_token,
         )
 
-        response = await cast(
-            Awaitable[electricity_trading_pb2.ListGridpoolTradesResponse],
-            self._stub.ListGridpoolTrades(
-                electricity_trading_pb2.ListGridpoolTradesRequest(
-                    gridpool_id=gridpool_id,
-                    filter=gridpool_trade_filter.to_pb(),
-                    pagination_params=pagination_params.to_pb(),
-                )
-            ),
-        )
+        try:
+            response = await cast(
+                Awaitable[electricity_trading_pb2.ListGridpoolTradesResponse],
+                self._stub.ListGridpoolTrades(
+                    electricity_trading_pb2.ListGridpoolTradesRequest(
+                        gridpool_id=gridpool_id,
+                        filter=gridpool_trade_filter.to_pb(),
+                        pagination_params=pagination_params.to_pb(),
+                    )
+                ),
+            )
 
-        return [Trade.from_pb(trade) for trade in response.trades]
+            return [Trade.from_pb(trade) for trade in response.trades]
+        except grpc.RpcError as e:
+            _logger.exception("Error occurred while listing gridpool trades: %s", e)
+            raise e
 
     async def list_public_trades(  # pylint: disable=too-many-arguments
         self,
@@ -561,6 +637,9 @@ class Client:
 
         Returns:
             The list of public trades.
+
+        Raises:
+            grpc.RpcError: If an error occurs while listing public trades.
         """
         public_trade_filter = PublicTradeFilter(
             states=states,
@@ -574,16 +653,21 @@ class Client:
             page_token=page_token,
         )
 
-        response = await cast(
-            Awaitable[electricity_trading_pb2.ListPublicTradesResponse],
-            self._stub.ListPublicTrades(
-                electricity_trading_pb2.ListPublicTradesRequest(
-                    filter=public_trade_filter.to_pb(),
-                    pagination_params=pagination_params.to_pb(),
-                )
-            ),
-        )
+        try:
+            response = await cast(
+                Awaitable[electricity_trading_pb2.ListPublicTradesResponse],
+                self._stub.ListPublicTrades(
+                    electricity_trading_pb2.ListPublicTradesRequest(
+                        filter=public_trade_filter.to_pb(),
+                        pagination_params=pagination_params.to_pb(),
+                    )
+                ),
+            )
 
-        return [
-            PublicTrade.from_pb(public_trade) for public_trade in response.public_trades
-        ]
+            return [
+                PublicTrade.from_pb(public_trade)
+                for public_trade in response.public_trades
+            ]
+        except grpc.RpcError as e:
+            _logger.exception("Error occurred while listing public trades: %s", e)
+            raise e
