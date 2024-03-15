@@ -1189,7 +1189,7 @@ class PublicTrade:  # pylint: disable=too-many-instance-attributes
     quantity: Energy
     """The quantity of the contract being traded."""
 
-    state: OrderState
+    state: TradeState
     """State of the order."""
 
     @classmethod
@@ -1210,7 +1210,7 @@ class PublicTrade:  # pylint: disable=too-many-instance-attributes
             modification_time=public_trade.modification_time.ToDatetime(),
             price=Price.from_pb(public_trade.price),
             quantity=Energy.from_pb(public_trade.quantity),
-            state=OrderState.from_pb(public_trade.state),
+            state=TradeState.from_pb(public_trade.state),
         )
 
     def to_pb(self) -> electricity_trading_pb2.PublicTrade:
@@ -1229,7 +1229,7 @@ class PublicTrade:  # pylint: disable=too-many-instance-attributes
             ),
             price=self.price.to_pb(),
             quantity=self.quantity.to_pb(),
-            state=electricity_trading_pb2.OrderState.ValueType(self.state.value),
+            state=electricity_trading_pb2.TradeState.ValueType(self.state.value),
         )
 
 
