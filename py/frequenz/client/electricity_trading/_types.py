@@ -337,6 +337,15 @@ class DeliveryPeriod:
                     "Invalid duration value. Duration must be 5, 15, 30, or 60 minutes."
                 )
 
+    def __hash__(self) -> int:
+        """
+        Create hash of the DeliveryPeriod object.
+
+        Returns:
+            Hash of the DeliveryPeriod object.
+        """
+        return hash((self.start, self.duration))
+
     def __eq__(
         self,
         other: object,
@@ -1271,6 +1280,43 @@ class GridpoolOrderFilter:
     tag: str | None = None
     """Tag associated with the orders to be filtered."""
 
+    def __eq__(self, other: GridpoolOrderFilter) -> bool:
+        """
+        Check if two GridpoolOrderFilter objects are equal.
+
+        Args:
+            other: GridpoolOrderFilter object to compare with.
+
+        Returns:
+            True if the two GridpoolOrderFilter objects are equal, False otherwise.
+        """
+        if not isinstance(other, GridpoolOrderFilter):
+            return NotImplemented
+        return (
+            self.order_states == other.order_states
+            and self.side == other.side
+            and self.delivery_period == other.delivery_period
+            and self.delivery_area == other.delivery_area
+            and self.tag == other.tag
+        )
+
+    def __hash__(self) -> int:
+        """
+        Create hash of the GridpoolOrderFilter object.
+
+        Returns:
+            Hash of the GridpoolOrderFilter object.
+        """
+        return hash(
+            (
+                tuple(self.order_states) if self.order_states is not None else None,
+                self.side,
+                self.delivery_period,
+                self.delivery_area,
+                self.tag,
+            )
+        )
+
     @classmethod
     def from_pb(
         cls, gridpool_order_filter: electricity_trading_pb2.GridpoolOrderFilter
@@ -1338,6 +1384,43 @@ class GridpoolTradeFilter:
     delivery_area: DeliveryArea | None = None
     """Delivery area to filter for."""
 
+    def __eq__(self, other: GridpoolTradeFilter) -> bool:
+        """
+        Check if two GridpoolTradeFilter objects are equal.
+
+        Args:
+            other: GridpoolTradeFilter object to compare with.
+
+        Returns:
+            True if the two GridpoolTradeFilter objects are equal, False otherwise.
+        """
+        if not isinstance(other, GridpoolTradeFilter):
+            return NotImplemented
+        return (
+            self.trade_states == other.trade_states
+            and self.trade_ids == other.trade_ids
+            and self.side == other.side
+            and self.delivery_period == other.delivery_period
+            and self.delivery_area == other.delivery_area
+        )
+
+    def __hash__(self) -> int:
+        """
+        Create hash of the GridpoolTradeFilter object.
+
+        Returns:
+            Hash of the GridpoolTradeFilter object.
+        """
+        return hash(
+            (
+                tuple(self.trade_states) if self.trade_states is not None else None,
+                tuple(self.trade_ids) if self.trade_ids is not None else None,
+                self.side,
+                self.delivery_period,
+                self.delivery_area,
+            )
+        )
+
     @classmethod
     def from_pb(
         cls, gridpool_trade_filter: electricity_trading_pb2.GridpoolTradeFilter
@@ -1397,6 +1480,41 @@ class PublicTradeFilter:
 
     sell_delivery_area: DeliveryArea | None = None
     """Delivery area to filter for on the sell side."""
+
+    def __eq__(self, other: PublicTradeFilter) -> bool:
+        """
+        Check if two PublicTradeFilter objects are equal.
+
+        Args:
+            other: PublicTradeFilter object to compare with.
+
+        Returns:
+            True if the two PublicTradeFilter objects are equal, False otherwise.
+        """
+        if not isinstance(other, PublicTradeFilter):
+            return NotImplemented
+        return (
+            self.states == other.states
+            and self.delivery_period == other.delivery_period
+            and self.buy_delivery_area == other.buy_delivery_area
+            and self.sell_delivery_area == other.sell_delivery_area
+        )
+
+    def __hash__(self) -> int:
+        """
+        Create hash of the PublicTradeFilter object.
+
+        Returns:
+            Hash of the PublicTradeFilter object.
+        """
+        return hash(
+            (
+                tuple(self.states) if self.states is not None else None,
+                self.delivery_period,
+                self.buy_delivery_area,
+                self.sell_delivery_area,
+            )
+        )
 
     @classmethod
     def from_pb(
