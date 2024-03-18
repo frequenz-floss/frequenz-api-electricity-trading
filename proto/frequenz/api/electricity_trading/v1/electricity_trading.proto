@@ -429,13 +429,13 @@ message PublicTrade {
   // The delivery period for the contract.
   frequenz.api.common.v1.grid.DeliveryPeriod delivery_period = 4;
 
-  // UTC Timestamp of the last order update or matching.
-  google.protobuf.Timestamp modification_time = 5;
+  // UTC Timestamp of the trades execution time.
+  google.protobuf.Timestamp execution_time = 5;
 
-  // The limit price at which the contract is to be traded.
+  // The price at which the trade was executed.
   frequenz.api.common.v1.market.Price price = 6;
 
-  // The quantity of the contract being traded in MWh.
+  // The executed quantity of the contract traded.
   frequenz.api.common.v1.market.Energy quantity = 7;
 
   // Final state of the trade.
@@ -478,7 +478,7 @@ message GridpoolTradeFilter {
   repeated TradeState states = 1;
 
   // Optional filter for the given order id´s.
-  repeated uint64 trade_id_lists = 2;
+  repeated uint64 trade_ids = 2;
 
   // Optional filter for the trades order side.
   optional MarketSide side = 3;
@@ -683,7 +683,7 @@ message ListGridpoolOrdersRequest {
 // Response from listing orders for a given Gridpool.
 message ListGridpoolOrdersResponse {
   // List of all listed orders with their details.
-  repeated OrderDetail order_detail_lists = 1;
+  repeated OrderDetail order_details = 1;
 
   // Metadata for pagination, including token for next page to retrieve.
   frequenz.api.common.v1.pagination.PaginationInfo pagination_info = 2;
@@ -727,7 +727,7 @@ message ListGridpoolTradesRequest {
 // Response from listing trades for a given Gridpool.
 message ListGridpoolTradesResponse {
   // List of all listed trades with their details.
-  repeated Trade trade_lists = 1;
+  repeated Trade trades = 1;
 
   // Metadata for pagination, including token for next page to retrieve.
   frequenz.api.common.v1.pagination.PaginationInfo pagination_info = 2;
@@ -769,7 +769,7 @@ message ListPublicTradesRequest {
 // backtesting trading strategies, and conducting market analysis.
 message ListPublicTradesResponse {
   // List of all public trades that met the specified filtering criteria.
-  repeated PublicTrade public_trade_lists = 1;
+  repeated PublicTrade public_trades = 1;
 
   // Metadata for pagination, including token for next page to retrieve.
   frequenz.api.common.v1.pagination.PaginationInfo pagination_info = 2;
