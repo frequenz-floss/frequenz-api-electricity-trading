@@ -1307,7 +1307,7 @@ class GridpoolTradeFilter:
     trade_states: list[TradeState] | None = None
     """List of trade states to filter for."""
 
-    trade_id_lists: list[int] | None = None
+    trade_ids: list[int] | None = None
     """List of trade ids to filter for."""
 
     side: MarketSide | None = None
@@ -1335,7 +1335,7 @@ class GridpoolTradeFilter:
             trade_states=[
                 TradeState.from_pb(state) for state in gridpool_trade_filter.states
             ],
-            trade_id_lists=gridpool_trade_filter.trade_id_lists,
+            trade_ids=gridpool_trade_filter.trade_ids,
             side=MarketSide.from_pb(gridpool_trade_filter.side),
             delivery_period=DeliveryPeriod.from_pb(
                 gridpool_trade_filter.delivery_period
@@ -1354,7 +1354,7 @@ class GridpoolTradeFilter:
             states=[TradeState.to_pb(state) for state in self.trade_states]
             if self.trade_states
             else None,
-            trade_id_lists=self.trade_id_lists if self.trade_id_lists else None,
+            trade_ids=self.trade_ids if self.trade_ids else None,
             side=MarketSide.to_pb(self.side) if self.side else None,
             delivery_period=self.delivery_period.to_pb()
             if self.delivery_period

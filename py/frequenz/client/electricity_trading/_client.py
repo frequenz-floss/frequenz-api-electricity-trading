@@ -149,7 +149,7 @@ class Client:
         """
         gridpool_trade_filter = GridpoolTradeFilter(
             trade_states=trade_states,
-            trade_id_lists=trade_ids,
+            trade_ids=trade_ids,
             side=market_side,
             delivery_period=delivery_period,
             delivery_area=delivery_area,
@@ -483,15 +483,14 @@ class Client:
         )
 
         return [
-            OrderDetail.from_pb(order_detail)
-            for order_detail in response.order_detail_lists
+            OrderDetail.from_pb(order_detail) for order_detail in response.order_details
         ]
 
     async def list_gridpool_trades(  # pylint: disable=too-many-arguments
         self,
         gridpool_id: int,
         trade_states: list[TradeState] | None = None,
-        trade_id_lists: list[int] | None = None,
+        trade_ids: list[int] | None = None,
         market_side: MarketSide | None = None,
         delivery_period: DeliveryPeriod | None = None,
         delivery_area: DeliveryArea | None = None,
@@ -504,7 +503,7 @@ class Client:
         Args:
             gridpool_id: The Gridpool to retrieve the trades for.
             trade_states: List of trade states to filter by.
-            trade_id_lists: List of trade IDs to filter by.
+            trade_ids: List of trade IDs to filter by.
             market_side: The side of the market to filter by.
             delivery_period: The delivery period to filter by.
             delivery_area: The delivery area to filter by.
@@ -516,7 +515,7 @@ class Client:
         """
         gridpool_trade_filter = GridpoolTradeFilter(
             trade_states=trade_states,
-            trade_id_lists=trade_id_lists,
+            trade_ids=trade_ids,
             side=market_side,
             delivery_period=delivery_period,
             delivery_area=delivery_area,
@@ -538,7 +537,7 @@ class Client:
             ),
         )
 
-        return [Trade.from_pb(trade) for trade in response.trade_lists]
+        return [Trade.from_pb(trade) for trade in response.trades]
 
     async def list_public_trades(  # pylint: disable=too-many-arguments
         self,
@@ -586,6 +585,5 @@ class Client:
         )
 
         return [
-            PublicTrade.from_pb(public_trade)
-            for public_trade in response.public_trade_lists
+            PublicTrade.from_pb(public_trade) for public_trade in response.public_trades
         ]
