@@ -1940,9 +1940,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#frequenz.client.electricity_trading.GridpoolTradeFilter.trade_id_lists" class="md-nav__link">
+  <a href="#frequenz.client.electricity_trading.GridpoolTradeFilter.trade_ids" class="md-nav__link">
     <span class="md-ellipsis">
-      trade_id_lists
+      trade_ids
     </span>
   </a>
   
@@ -4535,9 +4535,7 @@
 <span class="normal"><a href="#__codelineno-0-586">586</a></span>
 <span class="normal"><a href="#__codelineno-0-587">587</a></span>
 <span class="normal"><a href="#__codelineno-0-588">588</a></span>
-<span class="normal"><a href="#__codelineno-0-589">589</a></span>
-<span class="normal"><a href="#__codelineno-0-590">590</a></span>
-<span class="normal"><a href="#__codelineno-0-591">591</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-47"><a id="__codelineno-0-47" name="__codelineno-0-47"></a><span class="k">class</span> <span class="nc">Client</span><span class="p">:</span>
+<span class="normal"><a href="#__codelineno-0-589">589</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-47"><a id="__codelineno-0-47" name="__codelineno-0-47"></a><span class="k">class</span> <span class="nc">Client</span><span class="p">:</span>
 </span><span id="__span-0-48"><a id="__codelineno-0-48" name="__codelineno-0-48"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Electricity trading client.&quot;&quot;&quot;</span>
 </span><span id="__span-0-49"><a id="__codelineno-0-49" name="__codelineno-0-49"></a>
 </span><span id="__span-0-50"><a id="__codelineno-0-50" name="__codelineno-0-50"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grpc_channel</span><span class="p">:</span> <span class="n">grpc</span><span class="o">.</span><span class="n">aio</span><span class="o">.</span><span class="n">Channel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -4642,7 +4640,7 @@
 </span><span id="__span-0-149"><a id="__codelineno-0-149" name="__codelineno-0-149"></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="__span-0-150"><a id="__codelineno-0-150" name="__codelineno-0-150"></a>        <span class="n">gridpool_trade_filter</span> <span class="o">=</span> <span class="n">GridpoolTradeFilter</span><span class="p">(</span>
 </span><span id="__span-0-151"><a id="__codelineno-0-151" name="__codelineno-0-151"></a>            <span class="n">trade_states</span><span class="o">=</span><span class="n">trade_states</span><span class="p">,</span>
-</span><span id="__span-0-152"><a id="__codelineno-0-152" name="__codelineno-0-152"></a>            <span class="n">trade_id_lists</span><span class="o">=</span><span class="n">trade_ids</span><span class="p">,</span>
+</span><span id="__span-0-152"><a id="__codelineno-0-152" name="__codelineno-0-152"></a>            <span class="n">trade_ids</span><span class="o">=</span><span class="n">trade_ids</span><span class="p">,</span>
 </span><span id="__span-0-153"><a id="__codelineno-0-153" name="__codelineno-0-153"></a>            <span class="n">side</span><span class="o">=</span><span class="n">market_side</span><span class="p">,</span>
 </span><span id="__span-0-154"><a id="__codelineno-0-154" name="__codelineno-0-154"></a>            <span class="n">delivery_period</span><span class="o">=</span><span class="n">delivery_period</span><span class="p">,</span>
 </span><span id="__span-0-155"><a id="__codelineno-0-155" name="__codelineno-0-155"></a>            <span class="n">delivery_area</span><span class="o">=</span><span class="n">delivery_area</span><span class="p">,</span>
@@ -4976,112 +4974,110 @@
 </span><span id="__span-0-483"><a id="__codelineno-0-483" name="__codelineno-0-483"></a>        <span class="p">)</span>
 </span><span id="__span-0-484"><a id="__codelineno-0-484" name="__codelineno-0-484"></a>
 </span><span id="__span-0-485"><a id="__codelineno-0-485" name="__codelineno-0-485"></a>        <span class="k">return</span> <span class="p">[</span>
-</span><span id="__span-0-486"><a id="__codelineno-0-486" name="__codelineno-0-486"></a>            <span class="n">OrderDetail</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">order_detail</span><span class="p">)</span>
-</span><span id="__span-0-487"><a id="__codelineno-0-487" name="__codelineno-0-487"></a>            <span class="k">for</span> <span class="n">order_detail</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">order_detail_lists</span>
-</span><span id="__span-0-488"><a id="__codelineno-0-488" name="__codelineno-0-488"></a>        <span class="p">]</span>
-</span><span id="__span-0-489"><a id="__codelineno-0-489" name="__codelineno-0-489"></a>
-</span><span id="__span-0-490"><a id="__codelineno-0-490" name="__codelineno-0-490"></a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">list_gridpool_trades</span><span class="p">(</span>  <span class="c1"># pylint: disable=too-many-arguments</span>
-</span><span id="__span-0-491"><a id="__codelineno-0-491" name="__codelineno-0-491"></a>        <span class="bp">self</span><span class="p">,</span>
-</span><span id="__span-0-492"><a id="__codelineno-0-492" name="__codelineno-0-492"></a>        <span class="n">gridpool_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-</span><span id="__span-0-493"><a id="__codelineno-0-493" name="__codelineno-0-493"></a>        <span class="n">trade_states</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">TradeState</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-494"><a id="__codelineno-0-494" name="__codelineno-0-494"></a>        <span class="n">trade_id_lists</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-495"><a id="__codelineno-0-495" name="__codelineno-0-495"></a>        <span class="n">market_side</span><span class="p">:</span> <span class="n">MarketSide</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-496"><a id="__codelineno-0-496" name="__codelineno-0-496"></a>        <span class="n">delivery_period</span><span class="p">:</span> <span class="n">DeliveryPeriod</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-497"><a id="__codelineno-0-497" name="__codelineno-0-497"></a>        <span class="n">delivery_area</span><span class="p">:</span> <span class="n">DeliveryArea</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-498"><a id="__codelineno-0-498" name="__codelineno-0-498"></a>        <span class="n">max_nr_orders</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-499"><a id="__codelineno-0-499" name="__codelineno-0-499"></a>        <span class="n">page_token</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-500"><a id="__codelineno-0-500" name="__codelineno-0-500"></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Trade</span><span class="p">]:</span>
-</span><span id="__span-0-501"><a id="__codelineno-0-501" name="__codelineno-0-501"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="__span-0-502"><a id="__codelineno-0-502" name="__codelineno-0-502"></a><span class="sd">        List trades for a specific Gridpool with optional filters.</span>
-</span><span id="__span-0-503"><a id="__codelineno-0-503" name="__codelineno-0-503"></a>
-</span><span id="__span-0-504"><a id="__codelineno-0-504" name="__codelineno-0-504"></a><span class="sd">        Args:</span>
-</span><span id="__span-0-505"><a id="__codelineno-0-505" name="__codelineno-0-505"></a><span class="sd">            gridpool_id: The Gridpool to retrieve the trades for.</span>
-</span><span id="__span-0-506"><a id="__codelineno-0-506" name="__codelineno-0-506"></a><span class="sd">            trade_states: List of trade states to filter by.</span>
-</span><span id="__span-0-507"><a id="__codelineno-0-507" name="__codelineno-0-507"></a><span class="sd">            trade_id_lists: List of trade IDs to filter by.</span>
-</span><span id="__span-0-508"><a id="__codelineno-0-508" name="__codelineno-0-508"></a><span class="sd">            market_side: The side of the market to filter by.</span>
-</span><span id="__span-0-509"><a id="__codelineno-0-509" name="__codelineno-0-509"></a><span class="sd">            delivery_period: The delivery period to filter by.</span>
-</span><span id="__span-0-510"><a id="__codelineno-0-510" name="__codelineno-0-510"></a><span class="sd">            delivery_area: The delivery area to filter by.</span>
-</span><span id="__span-0-511"><a id="__codelineno-0-511" name="__codelineno-0-511"></a><span class="sd">            max_nr_orders: The maximum number of orders to return.</span>
-</span><span id="__span-0-512"><a id="__codelineno-0-512" name="__codelineno-0-512"></a><span class="sd">            page_token: The page token to use for pagination.</span>
-</span><span id="__span-0-513"><a id="__codelineno-0-513" name="__codelineno-0-513"></a>
-</span><span id="__span-0-514"><a id="__codelineno-0-514" name="__codelineno-0-514"></a><span class="sd">        Returns:</span>
-</span><span id="__span-0-515"><a id="__codelineno-0-515" name="__codelineno-0-515"></a><span class="sd">            The list of trades for the given gridpool.</span>
-</span><span id="__span-0-516"><a id="__codelineno-0-516" name="__codelineno-0-516"></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="__span-0-517"><a id="__codelineno-0-517" name="__codelineno-0-517"></a>        <span class="n">gridpool_trade_filter</span> <span class="o">=</span> <span class="n">GridpoolTradeFilter</span><span class="p">(</span>
-</span><span id="__span-0-518"><a id="__codelineno-0-518" name="__codelineno-0-518"></a>            <span class="n">trade_states</span><span class="o">=</span><span class="n">trade_states</span><span class="p">,</span>
-</span><span id="__span-0-519"><a id="__codelineno-0-519" name="__codelineno-0-519"></a>            <span class="n">trade_id_lists</span><span class="o">=</span><span class="n">trade_id_lists</span><span class="p">,</span>
-</span><span id="__span-0-520"><a id="__codelineno-0-520" name="__codelineno-0-520"></a>            <span class="n">side</span><span class="o">=</span><span class="n">market_side</span><span class="p">,</span>
-</span><span id="__span-0-521"><a id="__codelineno-0-521" name="__codelineno-0-521"></a>            <span class="n">delivery_period</span><span class="o">=</span><span class="n">delivery_period</span><span class="p">,</span>
-</span><span id="__span-0-522"><a id="__codelineno-0-522" name="__codelineno-0-522"></a>            <span class="n">delivery_area</span><span class="o">=</span><span class="n">delivery_area</span><span class="p">,</span>
-</span><span id="__span-0-523"><a id="__codelineno-0-523" name="__codelineno-0-523"></a>        <span class="p">)</span>
-</span><span id="__span-0-524"><a id="__codelineno-0-524" name="__codelineno-0-524"></a>
-</span><span id="__span-0-525"><a id="__codelineno-0-525" name="__codelineno-0-525"></a>        <span class="n">pagination_params</span> <span class="o">=</span> <span class="n">PaginationParams</span><span class="p">(</span>
-</span><span id="__span-0-526"><a id="__codelineno-0-526" name="__codelineno-0-526"></a>            <span class="n">page_size</span><span class="o">=</span><span class="n">max_nr_orders</span><span class="p">,</span>
-</span><span id="__span-0-527"><a id="__codelineno-0-527" name="__codelineno-0-527"></a>            <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
-</span><span id="__span-0-528"><a id="__codelineno-0-528" name="__codelineno-0-528"></a>        <span class="p">)</span>
-</span><span id="__span-0-529"><a id="__codelineno-0-529" name="__codelineno-0-529"></a>
-</span><span id="__span-0-530"><a id="__codelineno-0-530" name="__codelineno-0-530"></a>        <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">cast</span><span class="p">(</span>
-</span><span id="__span-0-531"><a id="__codelineno-0-531" name="__codelineno-0-531"></a>            <span class="n">Awaitable</span><span class="p">[</span><span class="n">electricity_trading_pb2</span><span class="o">.</span><span class="n">ListGridpoolTradesResponse</span><span class="p">],</span>
-</span><span id="__span-0-532"><a id="__codelineno-0-532" name="__codelineno-0-532"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_stub</span><span class="o">.</span><span class="n">ListGridpoolTrades</span><span class="p">(</span>
-</span><span id="__span-0-533"><a id="__codelineno-0-533" name="__codelineno-0-533"></a>                <span class="n">electricity_trading_pb2</span><span class="o">.</span><span class="n">ListGridpoolTradesRequest</span><span class="p">(</span>
-</span><span id="__span-0-534"><a id="__codelineno-0-534" name="__codelineno-0-534"></a>                    <span class="n">gridpool_id</span><span class="o">=</span><span class="n">gridpool_id</span><span class="p">,</span>
-</span><span id="__span-0-535"><a id="__codelineno-0-535" name="__codelineno-0-535"></a>                    <span class="nb">filter</span><span class="o">=</span><span class="n">gridpool_trade_filter</span><span class="o">.</span><span class="n">to_pb</span><span class="p">(),</span>
-</span><span id="__span-0-536"><a id="__codelineno-0-536" name="__codelineno-0-536"></a>                    <span class="n">pagination_params</span><span class="o">=</span><span class="n">pagination_params</span><span class="o">.</span><span class="n">to_pb</span><span class="p">(),</span>
-</span><span id="__span-0-537"><a id="__codelineno-0-537" name="__codelineno-0-537"></a>                <span class="p">)</span>
-</span><span id="__span-0-538"><a id="__codelineno-0-538" name="__codelineno-0-538"></a>            <span class="p">),</span>
-</span><span id="__span-0-539"><a id="__codelineno-0-539" name="__codelineno-0-539"></a>        <span class="p">)</span>
-</span><span id="__span-0-540"><a id="__codelineno-0-540" name="__codelineno-0-540"></a>
-</span><span id="__span-0-541"><a id="__codelineno-0-541" name="__codelineno-0-541"></a>        <span class="k">return</span> <span class="p">[</span><span class="n">Trade</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">trade</span><span class="p">)</span> <span class="k">for</span> <span class="n">trade</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">trade_lists</span><span class="p">]</span>
-</span><span id="__span-0-542"><a id="__codelineno-0-542" name="__codelineno-0-542"></a>
-</span><span id="__span-0-543"><a id="__codelineno-0-543" name="__codelineno-0-543"></a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">list_public_trades</span><span class="p">(</span>  <span class="c1"># pylint: disable=too-many-arguments</span>
-</span><span id="__span-0-544"><a id="__codelineno-0-544" name="__codelineno-0-544"></a>        <span class="bp">self</span><span class="p">,</span>
-</span><span id="__span-0-545"><a id="__codelineno-0-545" name="__codelineno-0-545"></a>        <span class="n">states</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">OrderState</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-546"><a id="__codelineno-0-546" name="__codelineno-0-546"></a>        <span class="n">delivery_period</span><span class="p">:</span> <span class="n">DeliveryPeriod</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-547"><a id="__codelineno-0-547" name="__codelineno-0-547"></a>        <span class="n">buy_delivery_area</span><span class="p">:</span> <span class="n">DeliveryArea</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-548"><a id="__codelineno-0-548" name="__codelineno-0-548"></a>        <span class="n">sell_delivery_area</span><span class="p">:</span> <span class="n">DeliveryArea</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-549"><a id="__codelineno-0-549" name="__codelineno-0-549"></a>        <span class="n">max_nr_orders</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-550"><a id="__codelineno-0-550" name="__codelineno-0-550"></a>        <span class="n">page_token</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-551"><a id="__codelineno-0-551" name="__codelineno-0-551"></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">PublicTrade</span><span class="p">]:</span>
-</span><span id="__span-0-552"><a id="__codelineno-0-552" name="__codelineno-0-552"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="__span-0-553"><a id="__codelineno-0-553" name="__codelineno-0-553"></a><span class="sd">        List all executed public orders with optional filters.</span>
-</span><span id="__span-0-554"><a id="__codelineno-0-554" name="__codelineno-0-554"></a>
-</span><span id="__span-0-555"><a id="__codelineno-0-555" name="__codelineno-0-555"></a><span class="sd">        Args:</span>
-</span><span id="__span-0-556"><a id="__codelineno-0-556" name="__codelineno-0-556"></a><span class="sd">            states: List of order states to filter by.</span>
-</span><span id="__span-0-557"><a id="__codelineno-0-557" name="__codelineno-0-557"></a><span class="sd">            delivery_period: The delivery period to filter by.</span>
-</span><span id="__span-0-558"><a id="__codelineno-0-558" name="__codelineno-0-558"></a><span class="sd">            buy_delivery_area: The buy delivery area to filter by.</span>
-</span><span id="__span-0-559"><a id="__codelineno-0-559" name="__codelineno-0-559"></a><span class="sd">            sell_delivery_area: The sell delivery area to filter by.</span>
-</span><span id="__span-0-560"><a id="__codelineno-0-560" name="__codelineno-0-560"></a><span class="sd">            max_nr_orders: The maximum number of orders to return.</span>
-</span><span id="__span-0-561"><a id="__codelineno-0-561" name="__codelineno-0-561"></a><span class="sd">            page_token: The page token to use for pagination.</span>
-</span><span id="__span-0-562"><a id="__codelineno-0-562" name="__codelineno-0-562"></a>
-</span><span id="__span-0-563"><a id="__codelineno-0-563" name="__codelineno-0-563"></a><span class="sd">        Returns:</span>
-</span><span id="__span-0-564"><a id="__codelineno-0-564" name="__codelineno-0-564"></a><span class="sd">            The list of public trades.</span>
-</span><span id="__span-0-565"><a id="__codelineno-0-565" name="__codelineno-0-565"></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="__span-0-566"><a id="__codelineno-0-566" name="__codelineno-0-566"></a>        <span class="n">public_trade_filter</span> <span class="o">=</span> <span class="n">PublicTradeFilter</span><span class="p">(</span>
-</span><span id="__span-0-567"><a id="__codelineno-0-567" name="__codelineno-0-567"></a>            <span class="n">states</span><span class="o">=</span><span class="n">states</span><span class="p">,</span>
-</span><span id="__span-0-568"><a id="__codelineno-0-568" name="__codelineno-0-568"></a>            <span class="n">delivery_period</span><span class="o">=</span><span class="n">delivery_period</span><span class="p">,</span>
-</span><span id="__span-0-569"><a id="__codelineno-0-569" name="__codelineno-0-569"></a>            <span class="n">buy_delivery_area</span><span class="o">=</span><span class="n">buy_delivery_area</span><span class="p">,</span>
-</span><span id="__span-0-570"><a id="__codelineno-0-570" name="__codelineno-0-570"></a>            <span class="n">sell_delivery_area</span><span class="o">=</span><span class="n">sell_delivery_area</span><span class="p">,</span>
-</span><span id="__span-0-571"><a id="__codelineno-0-571" name="__codelineno-0-571"></a>        <span class="p">)</span>
-</span><span id="__span-0-572"><a id="__codelineno-0-572" name="__codelineno-0-572"></a>
-</span><span id="__span-0-573"><a id="__codelineno-0-573" name="__codelineno-0-573"></a>        <span class="n">pagination_params</span> <span class="o">=</span> <span class="n">PaginationParams</span><span class="p">(</span>
-</span><span id="__span-0-574"><a id="__codelineno-0-574" name="__codelineno-0-574"></a>            <span class="n">page_size</span><span class="o">=</span><span class="n">max_nr_orders</span><span class="p">,</span>
-</span><span id="__span-0-575"><a id="__codelineno-0-575" name="__codelineno-0-575"></a>            <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
-</span><span id="__span-0-576"><a id="__codelineno-0-576" name="__codelineno-0-576"></a>        <span class="p">)</span>
-</span><span id="__span-0-577"><a id="__codelineno-0-577" name="__codelineno-0-577"></a>
-</span><span id="__span-0-578"><a id="__codelineno-0-578" name="__codelineno-0-578"></a>        <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">cast</span><span class="p">(</span>
-</span><span id="__span-0-579"><a id="__codelineno-0-579" name="__codelineno-0-579"></a>            <span class="n">Awaitable</span><span class="p">[</span><span class="n">electricity_trading_pb2</span><span class="o">.</span><span class="n">ListPublicTradesResponse</span><span class="p">],</span>
-</span><span id="__span-0-580"><a id="__codelineno-0-580" name="__codelineno-0-580"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_stub</span><span class="o">.</span><span class="n">ListPublicTrades</span><span class="p">(</span>
-</span><span id="__span-0-581"><a id="__codelineno-0-581" name="__codelineno-0-581"></a>                <span class="n">electricity_trading_pb2</span><span class="o">.</span><span class="n">ListPublicTradesRequest</span><span class="p">(</span>
-</span><span id="__span-0-582"><a id="__codelineno-0-582" name="__codelineno-0-582"></a>                    <span class="nb">filter</span><span class="o">=</span><span class="n">public_trade_filter</span><span class="o">.</span><span class="n">to_pb</span><span class="p">(),</span>
-</span><span id="__span-0-583"><a id="__codelineno-0-583" name="__codelineno-0-583"></a>                    <span class="n">pagination_params</span><span class="o">=</span><span class="n">pagination_params</span><span class="o">.</span><span class="n">to_pb</span><span class="p">(),</span>
-</span><span id="__span-0-584"><a id="__codelineno-0-584" name="__codelineno-0-584"></a>                <span class="p">)</span>
-</span><span id="__span-0-585"><a id="__codelineno-0-585" name="__codelineno-0-585"></a>            <span class="p">),</span>
-</span><span id="__span-0-586"><a id="__codelineno-0-586" name="__codelineno-0-586"></a>        <span class="p">)</span>
-</span><span id="__span-0-587"><a id="__codelineno-0-587" name="__codelineno-0-587"></a>
-</span><span id="__span-0-588"><a id="__codelineno-0-588" name="__codelineno-0-588"></a>        <span class="k">return</span> <span class="p">[</span>
-</span><span id="__span-0-589"><a id="__codelineno-0-589" name="__codelineno-0-589"></a>            <span class="n">PublicTrade</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">public_trade</span><span class="p">)</span>
-</span><span id="__span-0-590"><a id="__codelineno-0-590" name="__codelineno-0-590"></a>            <span class="k">for</span> <span class="n">public_trade</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">public_trade_lists</span>
-</span><span id="__span-0-591"><a id="__codelineno-0-591" name="__codelineno-0-591"></a>        <span class="p">]</span>
+</span><span id="__span-0-486"><a id="__codelineno-0-486" name="__codelineno-0-486"></a>            <span class="n">OrderDetail</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">order_detail</span><span class="p">)</span> <span class="k">for</span> <span class="n">order_detail</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">order_details</span>
+</span><span id="__span-0-487"><a id="__codelineno-0-487" name="__codelineno-0-487"></a>        <span class="p">]</span>
+</span><span id="__span-0-488"><a id="__codelineno-0-488" name="__codelineno-0-488"></a>
+</span><span id="__span-0-489"><a id="__codelineno-0-489" name="__codelineno-0-489"></a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">list_gridpool_trades</span><span class="p">(</span>  <span class="c1"># pylint: disable=too-many-arguments</span>
+</span><span id="__span-0-490"><a id="__codelineno-0-490" name="__codelineno-0-490"></a>        <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-0-491"><a id="__codelineno-0-491" name="__codelineno-0-491"></a>        <span class="n">gridpool_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-0-492"><a id="__codelineno-0-492" name="__codelineno-0-492"></a>        <span class="n">trade_states</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">TradeState</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-493"><a id="__codelineno-0-493" name="__codelineno-0-493"></a>        <span class="n">trade_ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-494"><a id="__codelineno-0-494" name="__codelineno-0-494"></a>        <span class="n">market_side</span><span class="p">:</span> <span class="n">MarketSide</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-495"><a id="__codelineno-0-495" name="__codelineno-0-495"></a>        <span class="n">delivery_period</span><span class="p">:</span> <span class="n">DeliveryPeriod</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-496"><a id="__codelineno-0-496" name="__codelineno-0-496"></a>        <span class="n">delivery_area</span><span class="p">:</span> <span class="n">DeliveryArea</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-497"><a id="__codelineno-0-497" name="__codelineno-0-497"></a>        <span class="n">max_nr_orders</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-498"><a id="__codelineno-0-498" name="__codelineno-0-498"></a>        <span class="n">page_token</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-499"><a id="__codelineno-0-499" name="__codelineno-0-499"></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Trade</span><span class="p">]:</span>
+</span><span id="__span-0-500"><a id="__codelineno-0-500" name="__codelineno-0-500"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="__span-0-501"><a id="__codelineno-0-501" name="__codelineno-0-501"></a><span class="sd">        List trades for a specific Gridpool with optional filters.</span>
+</span><span id="__span-0-502"><a id="__codelineno-0-502" name="__codelineno-0-502"></a>
+</span><span id="__span-0-503"><a id="__codelineno-0-503" name="__codelineno-0-503"></a><span class="sd">        Args:</span>
+</span><span id="__span-0-504"><a id="__codelineno-0-504" name="__codelineno-0-504"></a><span class="sd">            gridpool_id: The Gridpool to retrieve the trades for.</span>
+</span><span id="__span-0-505"><a id="__codelineno-0-505" name="__codelineno-0-505"></a><span class="sd">            trade_states: List of trade states to filter by.</span>
+</span><span id="__span-0-506"><a id="__codelineno-0-506" name="__codelineno-0-506"></a><span class="sd">            trade_ids: List of trade IDs to filter by.</span>
+</span><span id="__span-0-507"><a id="__codelineno-0-507" name="__codelineno-0-507"></a><span class="sd">            market_side: The side of the market to filter by.</span>
+</span><span id="__span-0-508"><a id="__codelineno-0-508" name="__codelineno-0-508"></a><span class="sd">            delivery_period: The delivery period to filter by.</span>
+</span><span id="__span-0-509"><a id="__codelineno-0-509" name="__codelineno-0-509"></a><span class="sd">            delivery_area: The delivery area to filter by.</span>
+</span><span id="__span-0-510"><a id="__codelineno-0-510" name="__codelineno-0-510"></a><span class="sd">            max_nr_orders: The maximum number of orders to return.</span>
+</span><span id="__span-0-511"><a id="__codelineno-0-511" name="__codelineno-0-511"></a><span class="sd">            page_token: The page token to use for pagination.</span>
+</span><span id="__span-0-512"><a id="__codelineno-0-512" name="__codelineno-0-512"></a>
+</span><span id="__span-0-513"><a id="__codelineno-0-513" name="__codelineno-0-513"></a><span class="sd">        Returns:</span>
+</span><span id="__span-0-514"><a id="__codelineno-0-514" name="__codelineno-0-514"></a><span class="sd">            The list of trades for the given gridpool.</span>
+</span><span id="__span-0-515"><a id="__codelineno-0-515" name="__codelineno-0-515"></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="__span-0-516"><a id="__codelineno-0-516" name="__codelineno-0-516"></a>        <span class="n">gridpool_trade_filter</span> <span class="o">=</span> <span class="n">GridpoolTradeFilter</span><span class="p">(</span>
+</span><span id="__span-0-517"><a id="__codelineno-0-517" name="__codelineno-0-517"></a>            <span class="n">trade_states</span><span class="o">=</span><span class="n">trade_states</span><span class="p">,</span>
+</span><span id="__span-0-518"><a id="__codelineno-0-518" name="__codelineno-0-518"></a>            <span class="n">trade_ids</span><span class="o">=</span><span class="n">trade_ids</span><span class="p">,</span>
+</span><span id="__span-0-519"><a id="__codelineno-0-519" name="__codelineno-0-519"></a>            <span class="n">side</span><span class="o">=</span><span class="n">market_side</span><span class="p">,</span>
+</span><span id="__span-0-520"><a id="__codelineno-0-520" name="__codelineno-0-520"></a>            <span class="n">delivery_period</span><span class="o">=</span><span class="n">delivery_period</span><span class="p">,</span>
+</span><span id="__span-0-521"><a id="__codelineno-0-521" name="__codelineno-0-521"></a>            <span class="n">delivery_area</span><span class="o">=</span><span class="n">delivery_area</span><span class="p">,</span>
+</span><span id="__span-0-522"><a id="__codelineno-0-522" name="__codelineno-0-522"></a>        <span class="p">)</span>
+</span><span id="__span-0-523"><a id="__codelineno-0-523" name="__codelineno-0-523"></a>
+</span><span id="__span-0-524"><a id="__codelineno-0-524" name="__codelineno-0-524"></a>        <span class="n">pagination_params</span> <span class="o">=</span> <span class="n">PaginationParams</span><span class="p">(</span>
+</span><span id="__span-0-525"><a id="__codelineno-0-525" name="__codelineno-0-525"></a>            <span class="n">page_size</span><span class="o">=</span><span class="n">max_nr_orders</span><span class="p">,</span>
+</span><span id="__span-0-526"><a id="__codelineno-0-526" name="__codelineno-0-526"></a>            <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
+</span><span id="__span-0-527"><a id="__codelineno-0-527" name="__codelineno-0-527"></a>        <span class="p">)</span>
+</span><span id="__span-0-528"><a id="__codelineno-0-528" name="__codelineno-0-528"></a>
+</span><span id="__span-0-529"><a id="__codelineno-0-529" name="__codelineno-0-529"></a>        <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">cast</span><span class="p">(</span>
+</span><span id="__span-0-530"><a id="__codelineno-0-530" name="__codelineno-0-530"></a>            <span class="n">Awaitable</span><span class="p">[</span><span class="n">electricity_trading_pb2</span><span class="o">.</span><span class="n">ListGridpoolTradesResponse</span><span class="p">],</span>
+</span><span id="__span-0-531"><a id="__codelineno-0-531" name="__codelineno-0-531"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_stub</span><span class="o">.</span><span class="n">ListGridpoolTrades</span><span class="p">(</span>
+</span><span id="__span-0-532"><a id="__codelineno-0-532" name="__codelineno-0-532"></a>                <span class="n">electricity_trading_pb2</span><span class="o">.</span><span class="n">ListGridpoolTradesRequest</span><span class="p">(</span>
+</span><span id="__span-0-533"><a id="__codelineno-0-533" name="__codelineno-0-533"></a>                    <span class="n">gridpool_id</span><span class="o">=</span><span class="n">gridpool_id</span><span class="p">,</span>
+</span><span id="__span-0-534"><a id="__codelineno-0-534" name="__codelineno-0-534"></a>                    <span class="nb">filter</span><span class="o">=</span><span class="n">gridpool_trade_filter</span><span class="o">.</span><span class="n">to_pb</span><span class="p">(),</span>
+</span><span id="__span-0-535"><a id="__codelineno-0-535" name="__codelineno-0-535"></a>                    <span class="n">pagination_params</span><span class="o">=</span><span class="n">pagination_params</span><span class="o">.</span><span class="n">to_pb</span><span class="p">(),</span>
+</span><span id="__span-0-536"><a id="__codelineno-0-536" name="__codelineno-0-536"></a>                <span class="p">)</span>
+</span><span id="__span-0-537"><a id="__codelineno-0-537" name="__codelineno-0-537"></a>            <span class="p">),</span>
+</span><span id="__span-0-538"><a id="__codelineno-0-538" name="__codelineno-0-538"></a>        <span class="p">)</span>
+</span><span id="__span-0-539"><a id="__codelineno-0-539" name="__codelineno-0-539"></a>
+</span><span id="__span-0-540"><a id="__codelineno-0-540" name="__codelineno-0-540"></a>        <span class="k">return</span> <span class="p">[</span><span class="n">Trade</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">trade</span><span class="p">)</span> <span class="k">for</span> <span class="n">trade</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">trades</span><span class="p">]</span>
+</span><span id="__span-0-541"><a id="__codelineno-0-541" name="__codelineno-0-541"></a>
+</span><span id="__span-0-542"><a id="__codelineno-0-542" name="__codelineno-0-542"></a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">list_public_trades</span><span class="p">(</span>  <span class="c1"># pylint: disable=too-many-arguments</span>
+</span><span id="__span-0-543"><a id="__codelineno-0-543" name="__codelineno-0-543"></a>        <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-0-544"><a id="__codelineno-0-544" name="__codelineno-0-544"></a>        <span class="n">states</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">OrderState</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-545"><a id="__codelineno-0-545" name="__codelineno-0-545"></a>        <span class="n">delivery_period</span><span class="p">:</span> <span class="n">DeliveryPeriod</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-546"><a id="__codelineno-0-546" name="__codelineno-0-546"></a>        <span class="n">buy_delivery_area</span><span class="p">:</span> <span class="n">DeliveryArea</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-547"><a id="__codelineno-0-547" name="__codelineno-0-547"></a>        <span class="n">sell_delivery_area</span><span class="p">:</span> <span class="n">DeliveryArea</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-548"><a id="__codelineno-0-548" name="__codelineno-0-548"></a>        <span class="n">max_nr_orders</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-549"><a id="__codelineno-0-549" name="__codelineno-0-549"></a>        <span class="n">page_token</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-550"><a id="__codelineno-0-550" name="__codelineno-0-550"></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">PublicTrade</span><span class="p">]:</span>
+</span><span id="__span-0-551"><a id="__codelineno-0-551" name="__codelineno-0-551"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="__span-0-552"><a id="__codelineno-0-552" name="__codelineno-0-552"></a><span class="sd">        List all executed public orders with optional filters.</span>
+</span><span id="__span-0-553"><a id="__codelineno-0-553" name="__codelineno-0-553"></a>
+</span><span id="__span-0-554"><a id="__codelineno-0-554" name="__codelineno-0-554"></a><span class="sd">        Args:</span>
+</span><span id="__span-0-555"><a id="__codelineno-0-555" name="__codelineno-0-555"></a><span class="sd">            states: List of order states to filter by.</span>
+</span><span id="__span-0-556"><a id="__codelineno-0-556" name="__codelineno-0-556"></a><span class="sd">            delivery_period: The delivery period to filter by.</span>
+</span><span id="__span-0-557"><a id="__codelineno-0-557" name="__codelineno-0-557"></a><span class="sd">            buy_delivery_area: The buy delivery area to filter by.</span>
+</span><span id="__span-0-558"><a id="__codelineno-0-558" name="__codelineno-0-558"></a><span class="sd">            sell_delivery_area: The sell delivery area to filter by.</span>
+</span><span id="__span-0-559"><a id="__codelineno-0-559" name="__codelineno-0-559"></a><span class="sd">            max_nr_orders: The maximum number of orders to return.</span>
+</span><span id="__span-0-560"><a id="__codelineno-0-560" name="__codelineno-0-560"></a><span class="sd">            page_token: The page token to use for pagination.</span>
+</span><span id="__span-0-561"><a id="__codelineno-0-561" name="__codelineno-0-561"></a>
+</span><span id="__span-0-562"><a id="__codelineno-0-562" name="__codelineno-0-562"></a><span class="sd">        Returns:</span>
+</span><span id="__span-0-563"><a id="__codelineno-0-563" name="__codelineno-0-563"></a><span class="sd">            The list of public trades.</span>
+</span><span id="__span-0-564"><a id="__codelineno-0-564" name="__codelineno-0-564"></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="__span-0-565"><a id="__codelineno-0-565" name="__codelineno-0-565"></a>        <span class="n">public_trade_filter</span> <span class="o">=</span> <span class="n">PublicTradeFilter</span><span class="p">(</span>
+</span><span id="__span-0-566"><a id="__codelineno-0-566" name="__codelineno-0-566"></a>            <span class="n">states</span><span class="o">=</span><span class="n">states</span><span class="p">,</span>
+</span><span id="__span-0-567"><a id="__codelineno-0-567" name="__codelineno-0-567"></a>            <span class="n">delivery_period</span><span class="o">=</span><span class="n">delivery_period</span><span class="p">,</span>
+</span><span id="__span-0-568"><a id="__codelineno-0-568" name="__codelineno-0-568"></a>            <span class="n">buy_delivery_area</span><span class="o">=</span><span class="n">buy_delivery_area</span><span class="p">,</span>
+</span><span id="__span-0-569"><a id="__codelineno-0-569" name="__codelineno-0-569"></a>            <span class="n">sell_delivery_area</span><span class="o">=</span><span class="n">sell_delivery_area</span><span class="p">,</span>
+</span><span id="__span-0-570"><a id="__codelineno-0-570" name="__codelineno-0-570"></a>        <span class="p">)</span>
+</span><span id="__span-0-571"><a id="__codelineno-0-571" name="__codelineno-0-571"></a>
+</span><span id="__span-0-572"><a id="__codelineno-0-572" name="__codelineno-0-572"></a>        <span class="n">pagination_params</span> <span class="o">=</span> <span class="n">PaginationParams</span><span class="p">(</span>
+</span><span id="__span-0-573"><a id="__codelineno-0-573" name="__codelineno-0-573"></a>            <span class="n">page_size</span><span class="o">=</span><span class="n">max_nr_orders</span><span class="p">,</span>
+</span><span id="__span-0-574"><a id="__codelineno-0-574" name="__codelineno-0-574"></a>            <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
+</span><span id="__span-0-575"><a id="__codelineno-0-575" name="__codelineno-0-575"></a>        <span class="p">)</span>
+</span><span id="__span-0-576"><a id="__codelineno-0-576" name="__codelineno-0-576"></a>
+</span><span id="__span-0-577"><a id="__codelineno-0-577" name="__codelineno-0-577"></a>        <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">cast</span><span class="p">(</span>
+</span><span id="__span-0-578"><a id="__codelineno-0-578" name="__codelineno-0-578"></a>            <span class="n">Awaitable</span><span class="p">[</span><span class="n">electricity_trading_pb2</span><span class="o">.</span><span class="n">ListPublicTradesResponse</span><span class="p">],</span>
+</span><span id="__span-0-579"><a id="__codelineno-0-579" name="__codelineno-0-579"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_stub</span><span class="o">.</span><span class="n">ListPublicTrades</span><span class="p">(</span>
+</span><span id="__span-0-580"><a id="__codelineno-0-580" name="__codelineno-0-580"></a>                <span class="n">electricity_trading_pb2</span><span class="o">.</span><span class="n">ListPublicTradesRequest</span><span class="p">(</span>
+</span><span id="__span-0-581"><a id="__codelineno-0-581" name="__codelineno-0-581"></a>                    <span class="nb">filter</span><span class="o">=</span><span class="n">public_trade_filter</span><span class="o">.</span><span class="n">to_pb</span><span class="p">(),</span>
+</span><span id="__span-0-582"><a id="__codelineno-0-582" name="__codelineno-0-582"></a>                    <span class="n">pagination_params</span><span class="o">=</span><span class="n">pagination_params</span><span class="o">.</span><span class="n">to_pb</span><span class="p">(),</span>
+</span><span id="__span-0-583"><a id="__codelineno-0-583" name="__codelineno-0-583"></a>                <span class="p">)</span>
+</span><span id="__span-0-584"><a id="__codelineno-0-584" name="__codelineno-0-584"></a>            <span class="p">),</span>
+</span><span id="__span-0-585"><a id="__codelineno-0-585" name="__codelineno-0-585"></a>        <span class="p">)</span>
+</span><span id="__span-0-586"><a id="__codelineno-0-586" name="__codelineno-0-586"></a>
+</span><span id="__span-0-587"><a id="__codelineno-0-587" name="__codelineno-0-587"></a>        <span class="k">return</span> <span class="p">[</span>
+</span><span id="__span-0-588"><a id="__codelineno-0-588" name="__codelineno-0-588"></a>            <span class="n">PublicTrade</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">public_trade</span><span class="p">)</span> <span class="k">for</span> <span class="n">public_trade</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">public_trades</span>
+</span><span id="__span-0-589"><a id="__codelineno-0-589" name="__codelineno-0-589"></a>        <span class="p">]</span>
 </span></code></pre></div></td></tr></table></div>
             </details>
 
@@ -6308,8 +6304,7 @@
 <span class="normal"><a href="#__codelineno-0-484">484</a></span>
 <span class="normal"><a href="#__codelineno-0-485">485</a></span>
 <span class="normal"><a href="#__codelineno-0-486">486</a></span>
-<span class="normal"><a href="#__codelineno-0-487">487</a></span>
-<span class="normal"><a href="#__codelineno-0-488">488</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-434"><a id="__codelineno-0-434" name="__codelineno-0-434"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">list_gridpool_orders</span><span class="p">(</span>  <span class="c1"># pylint: disable=too-many-arguments</span>
+<span class="normal"><a href="#__codelineno-0-487">487</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-434"><a id="__codelineno-0-434" name="__codelineno-0-434"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">list_gridpool_orders</span><span class="p">(</span>  <span class="c1"># pylint: disable=too-many-arguments</span>
 </span><span id="__span-0-435"><a id="__codelineno-0-435" name="__codelineno-0-435"></a>    <span class="bp">self</span><span class="p">,</span>
 </span><span id="__span-0-436"><a id="__codelineno-0-436" name="__codelineno-0-436"></a>    <span class="n">gridpool_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
 </span><span id="__span-0-437"><a id="__codelineno-0-437" name="__codelineno-0-437"></a>    <span class="n">order_states</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">OrderState</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -6361,9 +6356,8 @@
 </span><span id="__span-0-483"><a id="__codelineno-0-483" name="__codelineno-0-483"></a>    <span class="p">)</span>
 </span><span id="__span-0-484"><a id="__codelineno-0-484" name="__codelineno-0-484"></a>
 </span><span id="__span-0-485"><a id="__codelineno-0-485" name="__codelineno-0-485"></a>    <span class="k">return</span> <span class="p">[</span>
-</span><span id="__span-0-486"><a id="__codelineno-0-486" name="__codelineno-0-486"></a>        <span class="n">OrderDetail</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">order_detail</span><span class="p">)</span>
-</span><span id="__span-0-487"><a id="__codelineno-0-487" name="__codelineno-0-487"></a>        <span class="k">for</span> <span class="n">order_detail</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">order_detail_lists</span>
-</span><span id="__span-0-488"><a id="__codelineno-0-488" name="__codelineno-0-488"></a>    <span class="p">]</span>
+</span><span id="__span-0-486"><a id="__codelineno-0-486" name="__codelineno-0-486"></a>        <span class="n">OrderDetail</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">order_detail</span><span class="p">)</span> <span class="k">for</span> <span class="n">order_detail</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">order_details</span>
+</span><span id="__span-0-487"><a id="__codelineno-0-487" name="__codelineno-0-487"></a>    <span class="p">]</span>
 </span></code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -6387,7 +6381,7 @@
 <div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">list_gridpool_trades</span><span class="p">(</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">gridpool_id</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span><span class="p">,</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">trade_states</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="frequenz.client.electricity_trading._types.TradeState" href="#frequenz.client.electricity_trading.TradeState">TradeState</a></span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">trade_id_lists</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">trade_ids</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">market_side</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="frequenz.client.electricity_trading._types.MarketSide" href="#frequenz.client.electricity_trading.MarketSide">MarketSide</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">delivery_period</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="frequenz.client.electricity_trading._types.DeliveryPeriod" href="#frequenz.client.electricity_trading.DeliveryPeriod">DeliveryPeriod</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="n">delivery_area</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="frequenz.client.electricity_trading._types.DeliveryArea" href="#frequenz.client.electricity_trading.DeliveryArea">DeliveryArea</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -6443,7 +6437,7 @@
           </td>
         </tr>
         <tr>
-          <td><code>trade_id_lists</code></td>
+          <td><code>trade_ids</code></td>
           <td class="doc-param-details">
             <div class="doc-md-description">
               <p>List of trade IDs to filter by.</p>
@@ -6580,7 +6574,8 @@
 
           <details class="quote">
             <summary>Source code in <code>frequenz/client/electricity_trading/_client.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-490">490</a></span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-489">489</a></span>
+<span class="normal"><a href="#__codelineno-0-490">490</a></span>
 <span class="normal"><a href="#__codelineno-0-491">491</a></span>
 <span class="normal"><a href="#__codelineno-0-492">492</a></span>
 <span class="normal"><a href="#__codelineno-0-493">493</a></span>
@@ -6630,59 +6625,58 @@
 <span class="normal"><a href="#__codelineno-0-537">537</a></span>
 <span class="normal"><a href="#__codelineno-0-538">538</a></span>
 <span class="normal"><a href="#__codelineno-0-539">539</a></span>
-<span class="normal"><a href="#__codelineno-0-540">540</a></span>
-<span class="normal"><a href="#__codelineno-0-541">541</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-490"><a id="__codelineno-0-490" name="__codelineno-0-490"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">list_gridpool_trades</span><span class="p">(</span>  <span class="c1"># pylint: disable=too-many-arguments</span>
-</span><span id="__span-0-491"><a id="__codelineno-0-491" name="__codelineno-0-491"></a>    <span class="bp">self</span><span class="p">,</span>
-</span><span id="__span-0-492"><a id="__codelineno-0-492" name="__codelineno-0-492"></a>    <span class="n">gridpool_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-</span><span id="__span-0-493"><a id="__codelineno-0-493" name="__codelineno-0-493"></a>    <span class="n">trade_states</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">TradeState</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-494"><a id="__codelineno-0-494" name="__codelineno-0-494"></a>    <span class="n">trade_id_lists</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-495"><a id="__codelineno-0-495" name="__codelineno-0-495"></a>    <span class="n">market_side</span><span class="p">:</span> <span class="n">MarketSide</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-496"><a id="__codelineno-0-496" name="__codelineno-0-496"></a>    <span class="n">delivery_period</span><span class="p">:</span> <span class="n">DeliveryPeriod</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-497"><a id="__codelineno-0-497" name="__codelineno-0-497"></a>    <span class="n">delivery_area</span><span class="p">:</span> <span class="n">DeliveryArea</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-498"><a id="__codelineno-0-498" name="__codelineno-0-498"></a>    <span class="n">max_nr_orders</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-499"><a id="__codelineno-0-499" name="__codelineno-0-499"></a>    <span class="n">page_token</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-500"><a id="__codelineno-0-500" name="__codelineno-0-500"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Trade</span><span class="p">]:</span>
-</span><span id="__span-0-501"><a id="__codelineno-0-501" name="__codelineno-0-501"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="__span-0-502"><a id="__codelineno-0-502" name="__codelineno-0-502"></a><span class="sd">    List trades for a specific Gridpool with optional filters.</span>
-</span><span id="__span-0-503"><a id="__codelineno-0-503" name="__codelineno-0-503"></a>
-</span><span id="__span-0-504"><a id="__codelineno-0-504" name="__codelineno-0-504"></a><span class="sd">    Args:</span>
-</span><span id="__span-0-505"><a id="__codelineno-0-505" name="__codelineno-0-505"></a><span class="sd">        gridpool_id: The Gridpool to retrieve the trades for.</span>
-</span><span id="__span-0-506"><a id="__codelineno-0-506" name="__codelineno-0-506"></a><span class="sd">        trade_states: List of trade states to filter by.</span>
-</span><span id="__span-0-507"><a id="__codelineno-0-507" name="__codelineno-0-507"></a><span class="sd">        trade_id_lists: List of trade IDs to filter by.</span>
-</span><span id="__span-0-508"><a id="__codelineno-0-508" name="__codelineno-0-508"></a><span class="sd">        market_side: The side of the market to filter by.</span>
-</span><span id="__span-0-509"><a id="__codelineno-0-509" name="__codelineno-0-509"></a><span class="sd">        delivery_period: The delivery period to filter by.</span>
-</span><span id="__span-0-510"><a id="__codelineno-0-510" name="__codelineno-0-510"></a><span class="sd">        delivery_area: The delivery area to filter by.</span>
-</span><span id="__span-0-511"><a id="__codelineno-0-511" name="__codelineno-0-511"></a><span class="sd">        max_nr_orders: The maximum number of orders to return.</span>
-</span><span id="__span-0-512"><a id="__codelineno-0-512" name="__codelineno-0-512"></a><span class="sd">        page_token: The page token to use for pagination.</span>
-</span><span id="__span-0-513"><a id="__codelineno-0-513" name="__codelineno-0-513"></a>
-</span><span id="__span-0-514"><a id="__codelineno-0-514" name="__codelineno-0-514"></a><span class="sd">    Returns:</span>
-</span><span id="__span-0-515"><a id="__codelineno-0-515" name="__codelineno-0-515"></a><span class="sd">        The list of trades for the given gridpool.</span>
-</span><span id="__span-0-516"><a id="__codelineno-0-516" name="__codelineno-0-516"></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="__span-0-517"><a id="__codelineno-0-517" name="__codelineno-0-517"></a>    <span class="n">gridpool_trade_filter</span> <span class="o">=</span> <span class="n">GridpoolTradeFilter</span><span class="p">(</span>
-</span><span id="__span-0-518"><a id="__codelineno-0-518" name="__codelineno-0-518"></a>        <span class="n">trade_states</span><span class="o">=</span><span class="n">trade_states</span><span class="p">,</span>
-</span><span id="__span-0-519"><a id="__codelineno-0-519" name="__codelineno-0-519"></a>        <span class="n">trade_id_lists</span><span class="o">=</span><span class="n">trade_id_lists</span><span class="p">,</span>
-</span><span id="__span-0-520"><a id="__codelineno-0-520" name="__codelineno-0-520"></a>        <span class="n">side</span><span class="o">=</span><span class="n">market_side</span><span class="p">,</span>
-</span><span id="__span-0-521"><a id="__codelineno-0-521" name="__codelineno-0-521"></a>        <span class="n">delivery_period</span><span class="o">=</span><span class="n">delivery_period</span><span class="p">,</span>
-</span><span id="__span-0-522"><a id="__codelineno-0-522" name="__codelineno-0-522"></a>        <span class="n">delivery_area</span><span class="o">=</span><span class="n">delivery_area</span><span class="p">,</span>
-</span><span id="__span-0-523"><a id="__codelineno-0-523" name="__codelineno-0-523"></a>    <span class="p">)</span>
-</span><span id="__span-0-524"><a id="__codelineno-0-524" name="__codelineno-0-524"></a>
-</span><span id="__span-0-525"><a id="__codelineno-0-525" name="__codelineno-0-525"></a>    <span class="n">pagination_params</span> <span class="o">=</span> <span class="n">PaginationParams</span><span class="p">(</span>
-</span><span id="__span-0-526"><a id="__codelineno-0-526" name="__codelineno-0-526"></a>        <span class="n">page_size</span><span class="o">=</span><span class="n">max_nr_orders</span><span class="p">,</span>
-</span><span id="__span-0-527"><a id="__codelineno-0-527" name="__codelineno-0-527"></a>        <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
-</span><span id="__span-0-528"><a id="__codelineno-0-528" name="__codelineno-0-528"></a>    <span class="p">)</span>
-</span><span id="__span-0-529"><a id="__codelineno-0-529" name="__codelineno-0-529"></a>
-</span><span id="__span-0-530"><a id="__codelineno-0-530" name="__codelineno-0-530"></a>    <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">cast</span><span class="p">(</span>
-</span><span id="__span-0-531"><a id="__codelineno-0-531" name="__codelineno-0-531"></a>        <span class="n">Awaitable</span><span class="p">[</span><span class="n">electricity_trading_pb2</span><span class="o">.</span><span class="n">ListGridpoolTradesResponse</span><span class="p">],</span>
-</span><span id="__span-0-532"><a id="__codelineno-0-532" name="__codelineno-0-532"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_stub</span><span class="o">.</span><span class="n">ListGridpoolTrades</span><span class="p">(</span>
-</span><span id="__span-0-533"><a id="__codelineno-0-533" name="__codelineno-0-533"></a>            <span class="n">electricity_trading_pb2</span><span class="o">.</span><span class="n">ListGridpoolTradesRequest</span><span class="p">(</span>
-</span><span id="__span-0-534"><a id="__codelineno-0-534" name="__codelineno-0-534"></a>                <span class="n">gridpool_id</span><span class="o">=</span><span class="n">gridpool_id</span><span class="p">,</span>
-</span><span id="__span-0-535"><a id="__codelineno-0-535" name="__codelineno-0-535"></a>                <span class="nb">filter</span><span class="o">=</span><span class="n">gridpool_trade_filter</span><span class="o">.</span><span class="n">to_pb</span><span class="p">(),</span>
-</span><span id="__span-0-536"><a id="__codelineno-0-536" name="__codelineno-0-536"></a>                <span class="n">pagination_params</span><span class="o">=</span><span class="n">pagination_params</span><span class="o">.</span><span class="n">to_pb</span><span class="p">(),</span>
-</span><span id="__span-0-537"><a id="__codelineno-0-537" name="__codelineno-0-537"></a>            <span class="p">)</span>
-</span><span id="__span-0-538"><a id="__codelineno-0-538" name="__codelineno-0-538"></a>        <span class="p">),</span>
-</span><span id="__span-0-539"><a id="__codelineno-0-539" name="__codelineno-0-539"></a>    <span class="p">)</span>
-</span><span id="__span-0-540"><a id="__codelineno-0-540" name="__codelineno-0-540"></a>
-</span><span id="__span-0-541"><a id="__codelineno-0-541" name="__codelineno-0-541"></a>    <span class="k">return</span> <span class="p">[</span><span class="n">Trade</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">trade</span><span class="p">)</span> <span class="k">for</span> <span class="n">trade</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">trade_lists</span><span class="p">]</span>
+<span class="normal"><a href="#__codelineno-0-540">540</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-489"><a id="__codelineno-0-489" name="__codelineno-0-489"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">list_gridpool_trades</span><span class="p">(</span>  <span class="c1"># pylint: disable=too-many-arguments</span>
+</span><span id="__span-0-490"><a id="__codelineno-0-490" name="__codelineno-0-490"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-0-491"><a id="__codelineno-0-491" name="__codelineno-0-491"></a>    <span class="n">gridpool_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-0-492"><a id="__codelineno-0-492" name="__codelineno-0-492"></a>    <span class="n">trade_states</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">TradeState</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-493"><a id="__codelineno-0-493" name="__codelineno-0-493"></a>    <span class="n">trade_ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-494"><a id="__codelineno-0-494" name="__codelineno-0-494"></a>    <span class="n">market_side</span><span class="p">:</span> <span class="n">MarketSide</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-495"><a id="__codelineno-0-495" name="__codelineno-0-495"></a>    <span class="n">delivery_period</span><span class="p">:</span> <span class="n">DeliveryPeriod</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-496"><a id="__codelineno-0-496" name="__codelineno-0-496"></a>    <span class="n">delivery_area</span><span class="p">:</span> <span class="n">DeliveryArea</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-497"><a id="__codelineno-0-497" name="__codelineno-0-497"></a>    <span class="n">max_nr_orders</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-498"><a id="__codelineno-0-498" name="__codelineno-0-498"></a>    <span class="n">page_token</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-499"><a id="__codelineno-0-499" name="__codelineno-0-499"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Trade</span><span class="p">]:</span>
+</span><span id="__span-0-500"><a id="__codelineno-0-500" name="__codelineno-0-500"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="__span-0-501"><a id="__codelineno-0-501" name="__codelineno-0-501"></a><span class="sd">    List trades for a specific Gridpool with optional filters.</span>
+</span><span id="__span-0-502"><a id="__codelineno-0-502" name="__codelineno-0-502"></a>
+</span><span id="__span-0-503"><a id="__codelineno-0-503" name="__codelineno-0-503"></a><span class="sd">    Args:</span>
+</span><span id="__span-0-504"><a id="__codelineno-0-504" name="__codelineno-0-504"></a><span class="sd">        gridpool_id: The Gridpool to retrieve the trades for.</span>
+</span><span id="__span-0-505"><a id="__codelineno-0-505" name="__codelineno-0-505"></a><span class="sd">        trade_states: List of trade states to filter by.</span>
+</span><span id="__span-0-506"><a id="__codelineno-0-506" name="__codelineno-0-506"></a><span class="sd">        trade_ids: List of trade IDs to filter by.</span>
+</span><span id="__span-0-507"><a id="__codelineno-0-507" name="__codelineno-0-507"></a><span class="sd">        market_side: The side of the market to filter by.</span>
+</span><span id="__span-0-508"><a id="__codelineno-0-508" name="__codelineno-0-508"></a><span class="sd">        delivery_period: The delivery period to filter by.</span>
+</span><span id="__span-0-509"><a id="__codelineno-0-509" name="__codelineno-0-509"></a><span class="sd">        delivery_area: The delivery area to filter by.</span>
+</span><span id="__span-0-510"><a id="__codelineno-0-510" name="__codelineno-0-510"></a><span class="sd">        max_nr_orders: The maximum number of orders to return.</span>
+</span><span id="__span-0-511"><a id="__codelineno-0-511" name="__codelineno-0-511"></a><span class="sd">        page_token: The page token to use for pagination.</span>
+</span><span id="__span-0-512"><a id="__codelineno-0-512" name="__codelineno-0-512"></a>
+</span><span id="__span-0-513"><a id="__codelineno-0-513" name="__codelineno-0-513"></a><span class="sd">    Returns:</span>
+</span><span id="__span-0-514"><a id="__codelineno-0-514" name="__codelineno-0-514"></a><span class="sd">        The list of trades for the given gridpool.</span>
+</span><span id="__span-0-515"><a id="__codelineno-0-515" name="__codelineno-0-515"></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="__span-0-516"><a id="__codelineno-0-516" name="__codelineno-0-516"></a>    <span class="n">gridpool_trade_filter</span> <span class="o">=</span> <span class="n">GridpoolTradeFilter</span><span class="p">(</span>
+</span><span id="__span-0-517"><a id="__codelineno-0-517" name="__codelineno-0-517"></a>        <span class="n">trade_states</span><span class="o">=</span><span class="n">trade_states</span><span class="p">,</span>
+</span><span id="__span-0-518"><a id="__codelineno-0-518" name="__codelineno-0-518"></a>        <span class="n">trade_ids</span><span class="o">=</span><span class="n">trade_ids</span><span class="p">,</span>
+</span><span id="__span-0-519"><a id="__codelineno-0-519" name="__codelineno-0-519"></a>        <span class="n">side</span><span class="o">=</span><span class="n">market_side</span><span class="p">,</span>
+</span><span id="__span-0-520"><a id="__codelineno-0-520" name="__codelineno-0-520"></a>        <span class="n">delivery_period</span><span class="o">=</span><span class="n">delivery_period</span><span class="p">,</span>
+</span><span id="__span-0-521"><a id="__codelineno-0-521" name="__codelineno-0-521"></a>        <span class="n">delivery_area</span><span class="o">=</span><span class="n">delivery_area</span><span class="p">,</span>
+</span><span id="__span-0-522"><a id="__codelineno-0-522" name="__codelineno-0-522"></a>    <span class="p">)</span>
+</span><span id="__span-0-523"><a id="__codelineno-0-523" name="__codelineno-0-523"></a>
+</span><span id="__span-0-524"><a id="__codelineno-0-524" name="__codelineno-0-524"></a>    <span class="n">pagination_params</span> <span class="o">=</span> <span class="n">PaginationParams</span><span class="p">(</span>
+</span><span id="__span-0-525"><a id="__codelineno-0-525" name="__codelineno-0-525"></a>        <span class="n">page_size</span><span class="o">=</span><span class="n">max_nr_orders</span><span class="p">,</span>
+</span><span id="__span-0-526"><a id="__codelineno-0-526" name="__codelineno-0-526"></a>        <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
+</span><span id="__span-0-527"><a id="__codelineno-0-527" name="__codelineno-0-527"></a>    <span class="p">)</span>
+</span><span id="__span-0-528"><a id="__codelineno-0-528" name="__codelineno-0-528"></a>
+</span><span id="__span-0-529"><a id="__codelineno-0-529" name="__codelineno-0-529"></a>    <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">cast</span><span class="p">(</span>
+</span><span id="__span-0-530"><a id="__codelineno-0-530" name="__codelineno-0-530"></a>        <span class="n">Awaitable</span><span class="p">[</span><span class="n">electricity_trading_pb2</span><span class="o">.</span><span class="n">ListGridpoolTradesResponse</span><span class="p">],</span>
+</span><span id="__span-0-531"><a id="__codelineno-0-531" name="__codelineno-0-531"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_stub</span><span class="o">.</span><span class="n">ListGridpoolTrades</span><span class="p">(</span>
+</span><span id="__span-0-532"><a id="__codelineno-0-532" name="__codelineno-0-532"></a>            <span class="n">electricity_trading_pb2</span><span class="o">.</span><span class="n">ListGridpoolTradesRequest</span><span class="p">(</span>
+</span><span id="__span-0-533"><a id="__codelineno-0-533" name="__codelineno-0-533"></a>                <span class="n">gridpool_id</span><span class="o">=</span><span class="n">gridpool_id</span><span class="p">,</span>
+</span><span id="__span-0-534"><a id="__codelineno-0-534" name="__codelineno-0-534"></a>                <span class="nb">filter</span><span class="o">=</span><span class="n">gridpool_trade_filter</span><span class="o">.</span><span class="n">to_pb</span><span class="p">(),</span>
+</span><span id="__span-0-535"><a id="__codelineno-0-535" name="__codelineno-0-535"></a>                <span class="n">pagination_params</span><span class="o">=</span><span class="n">pagination_params</span><span class="o">.</span><span class="n">to_pb</span><span class="p">(),</span>
+</span><span id="__span-0-536"><a id="__codelineno-0-536" name="__codelineno-0-536"></a>            <span class="p">)</span>
+</span><span id="__span-0-537"><a id="__codelineno-0-537" name="__codelineno-0-537"></a>        <span class="p">),</span>
+</span><span id="__span-0-538"><a id="__codelineno-0-538" name="__codelineno-0-538"></a>    <span class="p">)</span>
+</span><span id="__span-0-539"><a id="__codelineno-0-539" name="__codelineno-0-539"></a>
+</span><span id="__span-0-540"><a id="__codelineno-0-540" name="__codelineno-0-540"></a>    <span class="k">return</span> <span class="p">[</span><span class="n">Trade</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">trade</span><span class="p">)</span> <span class="k">for</span> <span class="n">trade</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">trades</span><span class="p">]</span>
 </span></code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -6865,7 +6859,8 @@
 
           <details class="quote">
             <summary>Source code in <code>frequenz/client/electricity_trading/_client.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-543">543</a></span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-542">542</a></span>
+<span class="normal"><a href="#__codelineno-0-543">543</a></span>
 <span class="normal"><a href="#__codelineno-0-544">544</a></span>
 <span class="normal"><a href="#__codelineno-0-545">545</a></span>
 <span class="normal"><a href="#__codelineno-0-546">546</a></span>
@@ -6911,57 +6906,54 @@
 <span class="normal"><a href="#__codelineno-0-586">586</a></span>
 <span class="normal"><a href="#__codelineno-0-587">587</a></span>
 <span class="normal"><a href="#__codelineno-0-588">588</a></span>
-<span class="normal"><a href="#__codelineno-0-589">589</a></span>
-<span class="normal"><a href="#__codelineno-0-590">590</a></span>
-<span class="normal"><a href="#__codelineno-0-591">591</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-543"><a id="__codelineno-0-543" name="__codelineno-0-543"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">list_public_trades</span><span class="p">(</span>  <span class="c1"># pylint: disable=too-many-arguments</span>
-</span><span id="__span-0-544"><a id="__codelineno-0-544" name="__codelineno-0-544"></a>    <span class="bp">self</span><span class="p">,</span>
-</span><span id="__span-0-545"><a id="__codelineno-0-545" name="__codelineno-0-545"></a>    <span class="n">states</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">OrderState</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-546"><a id="__codelineno-0-546" name="__codelineno-0-546"></a>    <span class="n">delivery_period</span><span class="p">:</span> <span class="n">DeliveryPeriod</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-547"><a id="__codelineno-0-547" name="__codelineno-0-547"></a>    <span class="n">buy_delivery_area</span><span class="p">:</span> <span class="n">DeliveryArea</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-548"><a id="__codelineno-0-548" name="__codelineno-0-548"></a>    <span class="n">sell_delivery_area</span><span class="p">:</span> <span class="n">DeliveryArea</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-549"><a id="__codelineno-0-549" name="__codelineno-0-549"></a>    <span class="n">max_nr_orders</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-550"><a id="__codelineno-0-550" name="__codelineno-0-550"></a>    <span class="n">page_token</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-551"><a id="__codelineno-0-551" name="__codelineno-0-551"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">PublicTrade</span><span class="p">]:</span>
-</span><span id="__span-0-552"><a id="__codelineno-0-552" name="__codelineno-0-552"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="__span-0-553"><a id="__codelineno-0-553" name="__codelineno-0-553"></a><span class="sd">    List all executed public orders with optional filters.</span>
-</span><span id="__span-0-554"><a id="__codelineno-0-554" name="__codelineno-0-554"></a>
-</span><span id="__span-0-555"><a id="__codelineno-0-555" name="__codelineno-0-555"></a><span class="sd">    Args:</span>
-</span><span id="__span-0-556"><a id="__codelineno-0-556" name="__codelineno-0-556"></a><span class="sd">        states: List of order states to filter by.</span>
-</span><span id="__span-0-557"><a id="__codelineno-0-557" name="__codelineno-0-557"></a><span class="sd">        delivery_period: The delivery period to filter by.</span>
-</span><span id="__span-0-558"><a id="__codelineno-0-558" name="__codelineno-0-558"></a><span class="sd">        buy_delivery_area: The buy delivery area to filter by.</span>
-</span><span id="__span-0-559"><a id="__codelineno-0-559" name="__codelineno-0-559"></a><span class="sd">        sell_delivery_area: The sell delivery area to filter by.</span>
-</span><span id="__span-0-560"><a id="__codelineno-0-560" name="__codelineno-0-560"></a><span class="sd">        max_nr_orders: The maximum number of orders to return.</span>
-</span><span id="__span-0-561"><a id="__codelineno-0-561" name="__codelineno-0-561"></a><span class="sd">        page_token: The page token to use for pagination.</span>
-</span><span id="__span-0-562"><a id="__codelineno-0-562" name="__codelineno-0-562"></a>
-</span><span id="__span-0-563"><a id="__codelineno-0-563" name="__codelineno-0-563"></a><span class="sd">    Returns:</span>
-</span><span id="__span-0-564"><a id="__codelineno-0-564" name="__codelineno-0-564"></a><span class="sd">        The list of public trades.</span>
-</span><span id="__span-0-565"><a id="__codelineno-0-565" name="__codelineno-0-565"></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="__span-0-566"><a id="__codelineno-0-566" name="__codelineno-0-566"></a>    <span class="n">public_trade_filter</span> <span class="o">=</span> <span class="n">PublicTradeFilter</span><span class="p">(</span>
-</span><span id="__span-0-567"><a id="__codelineno-0-567" name="__codelineno-0-567"></a>        <span class="n">states</span><span class="o">=</span><span class="n">states</span><span class="p">,</span>
-</span><span id="__span-0-568"><a id="__codelineno-0-568" name="__codelineno-0-568"></a>        <span class="n">delivery_period</span><span class="o">=</span><span class="n">delivery_period</span><span class="p">,</span>
-</span><span id="__span-0-569"><a id="__codelineno-0-569" name="__codelineno-0-569"></a>        <span class="n">buy_delivery_area</span><span class="o">=</span><span class="n">buy_delivery_area</span><span class="p">,</span>
-</span><span id="__span-0-570"><a id="__codelineno-0-570" name="__codelineno-0-570"></a>        <span class="n">sell_delivery_area</span><span class="o">=</span><span class="n">sell_delivery_area</span><span class="p">,</span>
-</span><span id="__span-0-571"><a id="__codelineno-0-571" name="__codelineno-0-571"></a>    <span class="p">)</span>
-</span><span id="__span-0-572"><a id="__codelineno-0-572" name="__codelineno-0-572"></a>
-</span><span id="__span-0-573"><a id="__codelineno-0-573" name="__codelineno-0-573"></a>    <span class="n">pagination_params</span> <span class="o">=</span> <span class="n">PaginationParams</span><span class="p">(</span>
-</span><span id="__span-0-574"><a id="__codelineno-0-574" name="__codelineno-0-574"></a>        <span class="n">page_size</span><span class="o">=</span><span class="n">max_nr_orders</span><span class="p">,</span>
-</span><span id="__span-0-575"><a id="__codelineno-0-575" name="__codelineno-0-575"></a>        <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
-</span><span id="__span-0-576"><a id="__codelineno-0-576" name="__codelineno-0-576"></a>    <span class="p">)</span>
-</span><span id="__span-0-577"><a id="__codelineno-0-577" name="__codelineno-0-577"></a>
-</span><span id="__span-0-578"><a id="__codelineno-0-578" name="__codelineno-0-578"></a>    <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">cast</span><span class="p">(</span>
-</span><span id="__span-0-579"><a id="__codelineno-0-579" name="__codelineno-0-579"></a>        <span class="n">Awaitable</span><span class="p">[</span><span class="n">electricity_trading_pb2</span><span class="o">.</span><span class="n">ListPublicTradesResponse</span><span class="p">],</span>
-</span><span id="__span-0-580"><a id="__codelineno-0-580" name="__codelineno-0-580"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_stub</span><span class="o">.</span><span class="n">ListPublicTrades</span><span class="p">(</span>
-</span><span id="__span-0-581"><a id="__codelineno-0-581" name="__codelineno-0-581"></a>            <span class="n">electricity_trading_pb2</span><span class="o">.</span><span class="n">ListPublicTradesRequest</span><span class="p">(</span>
-</span><span id="__span-0-582"><a id="__codelineno-0-582" name="__codelineno-0-582"></a>                <span class="nb">filter</span><span class="o">=</span><span class="n">public_trade_filter</span><span class="o">.</span><span class="n">to_pb</span><span class="p">(),</span>
-</span><span id="__span-0-583"><a id="__codelineno-0-583" name="__codelineno-0-583"></a>                <span class="n">pagination_params</span><span class="o">=</span><span class="n">pagination_params</span><span class="o">.</span><span class="n">to_pb</span><span class="p">(),</span>
-</span><span id="__span-0-584"><a id="__codelineno-0-584" name="__codelineno-0-584"></a>            <span class="p">)</span>
-</span><span id="__span-0-585"><a id="__codelineno-0-585" name="__codelineno-0-585"></a>        <span class="p">),</span>
-</span><span id="__span-0-586"><a id="__codelineno-0-586" name="__codelineno-0-586"></a>    <span class="p">)</span>
-</span><span id="__span-0-587"><a id="__codelineno-0-587" name="__codelineno-0-587"></a>
-</span><span id="__span-0-588"><a id="__codelineno-0-588" name="__codelineno-0-588"></a>    <span class="k">return</span> <span class="p">[</span>
-</span><span id="__span-0-589"><a id="__codelineno-0-589" name="__codelineno-0-589"></a>        <span class="n">PublicTrade</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">public_trade</span><span class="p">)</span>
-</span><span id="__span-0-590"><a id="__codelineno-0-590" name="__codelineno-0-590"></a>        <span class="k">for</span> <span class="n">public_trade</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">public_trade_lists</span>
-</span><span id="__span-0-591"><a id="__codelineno-0-591" name="__codelineno-0-591"></a>    <span class="p">]</span>
+<span class="normal"><a href="#__codelineno-0-589">589</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-542"><a id="__codelineno-0-542" name="__codelineno-0-542"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">list_public_trades</span><span class="p">(</span>  <span class="c1"># pylint: disable=too-many-arguments</span>
+</span><span id="__span-0-543"><a id="__codelineno-0-543" name="__codelineno-0-543"></a>    <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-0-544"><a id="__codelineno-0-544" name="__codelineno-0-544"></a>    <span class="n">states</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">OrderState</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-545"><a id="__codelineno-0-545" name="__codelineno-0-545"></a>    <span class="n">delivery_period</span><span class="p">:</span> <span class="n">DeliveryPeriod</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-546"><a id="__codelineno-0-546" name="__codelineno-0-546"></a>    <span class="n">buy_delivery_area</span><span class="p">:</span> <span class="n">DeliveryArea</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-547"><a id="__codelineno-0-547" name="__codelineno-0-547"></a>    <span class="n">sell_delivery_area</span><span class="p">:</span> <span class="n">DeliveryArea</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-548"><a id="__codelineno-0-548" name="__codelineno-0-548"></a>    <span class="n">max_nr_orders</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-549"><a id="__codelineno-0-549" name="__codelineno-0-549"></a>    <span class="n">page_token</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-550"><a id="__codelineno-0-550" name="__codelineno-0-550"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">PublicTrade</span><span class="p">]:</span>
+</span><span id="__span-0-551"><a id="__codelineno-0-551" name="__codelineno-0-551"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="__span-0-552"><a id="__codelineno-0-552" name="__codelineno-0-552"></a><span class="sd">    List all executed public orders with optional filters.</span>
+</span><span id="__span-0-553"><a id="__codelineno-0-553" name="__codelineno-0-553"></a>
+</span><span id="__span-0-554"><a id="__codelineno-0-554" name="__codelineno-0-554"></a><span class="sd">    Args:</span>
+</span><span id="__span-0-555"><a id="__codelineno-0-555" name="__codelineno-0-555"></a><span class="sd">        states: List of order states to filter by.</span>
+</span><span id="__span-0-556"><a id="__codelineno-0-556" name="__codelineno-0-556"></a><span class="sd">        delivery_period: The delivery period to filter by.</span>
+</span><span id="__span-0-557"><a id="__codelineno-0-557" name="__codelineno-0-557"></a><span class="sd">        buy_delivery_area: The buy delivery area to filter by.</span>
+</span><span id="__span-0-558"><a id="__codelineno-0-558" name="__codelineno-0-558"></a><span class="sd">        sell_delivery_area: The sell delivery area to filter by.</span>
+</span><span id="__span-0-559"><a id="__codelineno-0-559" name="__codelineno-0-559"></a><span class="sd">        max_nr_orders: The maximum number of orders to return.</span>
+</span><span id="__span-0-560"><a id="__codelineno-0-560" name="__codelineno-0-560"></a><span class="sd">        page_token: The page token to use for pagination.</span>
+</span><span id="__span-0-561"><a id="__codelineno-0-561" name="__codelineno-0-561"></a>
+</span><span id="__span-0-562"><a id="__codelineno-0-562" name="__codelineno-0-562"></a><span class="sd">    Returns:</span>
+</span><span id="__span-0-563"><a id="__codelineno-0-563" name="__codelineno-0-563"></a><span class="sd">        The list of public trades.</span>
+</span><span id="__span-0-564"><a id="__codelineno-0-564" name="__codelineno-0-564"></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="__span-0-565"><a id="__codelineno-0-565" name="__codelineno-0-565"></a>    <span class="n">public_trade_filter</span> <span class="o">=</span> <span class="n">PublicTradeFilter</span><span class="p">(</span>
+</span><span id="__span-0-566"><a id="__codelineno-0-566" name="__codelineno-0-566"></a>        <span class="n">states</span><span class="o">=</span><span class="n">states</span><span class="p">,</span>
+</span><span id="__span-0-567"><a id="__codelineno-0-567" name="__codelineno-0-567"></a>        <span class="n">delivery_period</span><span class="o">=</span><span class="n">delivery_period</span><span class="p">,</span>
+</span><span id="__span-0-568"><a id="__codelineno-0-568" name="__codelineno-0-568"></a>        <span class="n">buy_delivery_area</span><span class="o">=</span><span class="n">buy_delivery_area</span><span class="p">,</span>
+</span><span id="__span-0-569"><a id="__codelineno-0-569" name="__codelineno-0-569"></a>        <span class="n">sell_delivery_area</span><span class="o">=</span><span class="n">sell_delivery_area</span><span class="p">,</span>
+</span><span id="__span-0-570"><a id="__codelineno-0-570" name="__codelineno-0-570"></a>    <span class="p">)</span>
+</span><span id="__span-0-571"><a id="__codelineno-0-571" name="__codelineno-0-571"></a>
+</span><span id="__span-0-572"><a id="__codelineno-0-572" name="__codelineno-0-572"></a>    <span class="n">pagination_params</span> <span class="o">=</span> <span class="n">PaginationParams</span><span class="p">(</span>
+</span><span id="__span-0-573"><a id="__codelineno-0-573" name="__codelineno-0-573"></a>        <span class="n">page_size</span><span class="o">=</span><span class="n">max_nr_orders</span><span class="p">,</span>
+</span><span id="__span-0-574"><a id="__codelineno-0-574" name="__codelineno-0-574"></a>        <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
+</span><span id="__span-0-575"><a id="__codelineno-0-575" name="__codelineno-0-575"></a>    <span class="p">)</span>
+</span><span id="__span-0-576"><a id="__codelineno-0-576" name="__codelineno-0-576"></a>
+</span><span id="__span-0-577"><a id="__codelineno-0-577" name="__codelineno-0-577"></a>    <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">cast</span><span class="p">(</span>
+</span><span id="__span-0-578"><a id="__codelineno-0-578" name="__codelineno-0-578"></a>        <span class="n">Awaitable</span><span class="p">[</span><span class="n">electricity_trading_pb2</span><span class="o">.</span><span class="n">ListPublicTradesResponse</span><span class="p">],</span>
+</span><span id="__span-0-579"><a id="__codelineno-0-579" name="__codelineno-0-579"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_stub</span><span class="o">.</span><span class="n">ListPublicTrades</span><span class="p">(</span>
+</span><span id="__span-0-580"><a id="__codelineno-0-580" name="__codelineno-0-580"></a>            <span class="n">electricity_trading_pb2</span><span class="o">.</span><span class="n">ListPublicTradesRequest</span><span class="p">(</span>
+</span><span id="__span-0-581"><a id="__codelineno-0-581" name="__codelineno-0-581"></a>                <span class="nb">filter</span><span class="o">=</span><span class="n">public_trade_filter</span><span class="o">.</span><span class="n">to_pb</span><span class="p">(),</span>
+</span><span id="__span-0-582"><a id="__codelineno-0-582" name="__codelineno-0-582"></a>                <span class="n">pagination_params</span><span class="o">=</span><span class="n">pagination_params</span><span class="o">.</span><span class="n">to_pb</span><span class="p">(),</span>
+</span><span id="__span-0-583"><a id="__codelineno-0-583" name="__codelineno-0-583"></a>            <span class="p">)</span>
+</span><span id="__span-0-584"><a id="__codelineno-0-584" name="__codelineno-0-584"></a>        <span class="p">),</span>
+</span><span id="__span-0-585"><a id="__codelineno-0-585" name="__codelineno-0-585"></a>    <span class="p">)</span>
+</span><span id="__span-0-586"><a id="__codelineno-0-586" name="__codelineno-0-586"></a>
+</span><span id="__span-0-587"><a id="__codelineno-0-587" name="__codelineno-0-587"></a>    <span class="k">return</span> <span class="p">[</span>
+</span><span id="__span-0-588"><a id="__codelineno-0-588" name="__codelineno-0-588"></a>        <span class="n">PublicTrade</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">public_trade</span><span class="p">)</span> <span class="k">for</span> <span class="n">public_trade</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">public_trades</span>
+</span><span id="__span-0-589"><a id="__codelineno-0-589" name="__codelineno-0-589"></a>    <span class="p">]</span>
 </span></code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -7476,7 +7468,7 @@
 </span><span id="__span-0-149"><a id="__codelineno-0-149" name="__codelineno-0-149"></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="__span-0-150"><a id="__codelineno-0-150" name="__codelineno-0-150"></a>    <span class="n">gridpool_trade_filter</span> <span class="o">=</span> <span class="n">GridpoolTradeFilter</span><span class="p">(</span>
 </span><span id="__span-0-151"><a id="__codelineno-0-151" name="__codelineno-0-151"></a>        <span class="n">trade_states</span><span class="o">=</span><span class="n">trade_states</span><span class="p">,</span>
-</span><span id="__span-0-152"><a id="__codelineno-0-152" name="__codelineno-0-152"></a>        <span class="n">trade_id_lists</span><span class="o">=</span><span class="n">trade_ids</span><span class="p">,</span>
+</span><span id="__span-0-152"><a id="__codelineno-0-152" name="__codelineno-0-152"></a>        <span class="n">trade_ids</span><span class="o">=</span><span class="n">trade_ids</span><span class="p">,</span>
 </span><span id="__span-0-153"><a id="__codelineno-0-153" name="__codelineno-0-153"></a>        <span class="n">side</span><span class="o">=</span><span class="n">market_side</span><span class="p">,</span>
 </span><span id="__span-0-154"><a id="__codelineno-0-154" name="__codelineno-0-154"></a>        <span class="n">delivery_period</span><span class="o">=</span><span class="n">delivery_period</span><span class="p">,</span>
 </span><span id="__span-0-155"><a id="__codelineno-0-155" name="__codelineno-0-155"></a>        <span class="n">delivery_area</span><span class="o">=</span><span class="n">delivery_area</span><span class="p">,</span>
@@ -11276,7 +11268,7 @@ different jurisdictional standards.</p>
 </span><span id="__span-0-1307"><a id="__codelineno-0-1307" name="__codelineno-0-1307"></a>    <span class="n">trade_states</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">TradeState</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
 </span><span id="__span-0-1308"><a id="__codelineno-0-1308" name="__codelineno-0-1308"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;List of trade states to filter for.&quot;&quot;&quot;</span>
 </span><span id="__span-0-1309"><a id="__codelineno-0-1309" name="__codelineno-0-1309"></a>
-</span><span id="__span-0-1310"><a id="__codelineno-0-1310" name="__codelineno-0-1310"></a>    <span class="n">trade_id_lists</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="__span-0-1310"><a id="__codelineno-0-1310" name="__codelineno-0-1310"></a>    <span class="n">trade_ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
 </span><span id="__span-0-1311"><a id="__codelineno-0-1311" name="__codelineno-0-1311"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;List of trade ids to filter for.&quot;&quot;&quot;</span>
 </span><span id="__span-0-1312"><a id="__codelineno-0-1312" name="__codelineno-0-1312"></a>
 </span><span id="__span-0-1313"><a id="__codelineno-0-1313" name="__codelineno-0-1313"></a>    <span class="n">side</span><span class="p">:</span> <span class="n">MarketSide</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
@@ -11304,7 +11296,7 @@ different jurisdictional standards.</p>
 </span><span id="__span-0-1335"><a id="__codelineno-0-1335" name="__codelineno-0-1335"></a>            <span class="n">trade_states</span><span class="o">=</span><span class="p">[</span>
 </span><span id="__span-0-1336"><a id="__codelineno-0-1336" name="__codelineno-0-1336"></a>                <span class="n">TradeState</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">state</span><span class="p">)</span> <span class="k">for</span> <span class="n">state</span> <span class="ow">in</span> <span class="n">gridpool_trade_filter</span><span class="o">.</span><span class="n">states</span>
 </span><span id="__span-0-1337"><a id="__codelineno-0-1337" name="__codelineno-0-1337"></a>            <span class="p">],</span>
-</span><span id="__span-0-1338"><a id="__codelineno-0-1338" name="__codelineno-0-1338"></a>            <span class="n">trade_id_lists</span><span class="o">=</span><span class="n">gridpool_trade_filter</span><span class="o">.</span><span class="n">trade_id_lists</span><span class="p">,</span>
+</span><span id="__span-0-1338"><a id="__codelineno-0-1338" name="__codelineno-0-1338"></a>            <span class="n">trade_ids</span><span class="o">=</span><span class="n">gridpool_trade_filter</span><span class="o">.</span><span class="n">trade_ids</span><span class="p">,</span>
 </span><span id="__span-0-1339"><a id="__codelineno-0-1339" name="__codelineno-0-1339"></a>            <span class="n">side</span><span class="o">=</span><span class="n">MarketSide</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">gridpool_trade_filter</span><span class="o">.</span><span class="n">side</span><span class="p">),</span>
 </span><span id="__span-0-1340"><a id="__codelineno-0-1340" name="__codelineno-0-1340"></a>            <span class="n">delivery_period</span><span class="o">=</span><span class="n">DeliveryPeriod</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span>
 </span><span id="__span-0-1341"><a id="__codelineno-0-1341" name="__codelineno-0-1341"></a>                <span class="n">gridpool_trade_filter</span><span class="o">.</span><span class="n">delivery_period</span>
@@ -11323,7 +11315,7 @@ different jurisdictional standards.</p>
 </span><span id="__span-0-1354"><a id="__codelineno-0-1354" name="__codelineno-0-1354"></a>            <span class="n">states</span><span class="o">=</span><span class="p">[</span><span class="n">TradeState</span><span class="o">.</span><span class="n">to_pb</span><span class="p">(</span><span class="n">state</span><span class="p">)</span> <span class="k">for</span> <span class="n">state</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">trade_states</span><span class="p">]</span>
 </span><span id="__span-0-1355"><a id="__codelineno-0-1355" name="__codelineno-0-1355"></a>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trade_states</span>
 </span><span id="__span-0-1356"><a id="__codelineno-0-1356" name="__codelineno-0-1356"></a>            <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-1357"><a id="__codelineno-0-1357" name="__codelineno-0-1357"></a>            <span class="n">trade_id_lists</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">trade_id_lists</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trade_id_lists</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-1357"><a id="__codelineno-0-1357" name="__codelineno-0-1357"></a>            <span class="n">trade_ids</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">trade_ids</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trade_ids</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
 </span><span id="__span-0-1358"><a id="__codelineno-0-1358" name="__codelineno-0-1358"></a>            <span class="n">side</span><span class="o">=</span><span class="n">MarketSide</span><span class="o">.</span><span class="n">to_pb</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">side</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">side</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
 </span><span id="__span-0-1359"><a id="__codelineno-0-1359" name="__codelineno-0-1359"></a>            <span class="n">delivery_period</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">delivery_period</span><span class="o">.</span><span class="n">to_pb</span><span class="p">()</span>
 </span><span id="__span-0-1360"><a id="__codelineno-0-1360" name="__codelineno-0-1360"></a>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">delivery_period</span>
@@ -11419,8 +11411,8 @@ different jurisdictional standards.</p>
 
 
 
-<h6 id="frequenz.client.electricity_trading.GridpoolTradeFilter.trade_id_lists" class="doc doc-heading">
-          <span class="doc doc-object-name doc-attribute-name">trade_id_lists</span>
+<h6 id="frequenz.client.electricity_trading.GridpoolTradeFilter.trade_ids" class="doc doc-heading">
+          <span class="doc doc-object-name doc-attribute-name">trade_ids</span>
 
   
   <span class="doc doc-labels">
@@ -11428,8 +11420,8 @@ different jurisdictional standards.</p>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-<a href="#frequenz.client.electricity_trading.GridpoolTradeFilter.trade_id_lists" class="headerlink" title="Permanent link">¤</a></h6>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">trade_id_lists</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<a href="#frequenz.client.electricity_trading.GridpoolTradeFilter.trade_ids" class="headerlink" title="Permanent link">¤</a></h6>
+<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">trade_ids</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
 </span></code></pre></div>
 
   <div class="doc doc-contents ">
@@ -11578,7 +11570,7 @@ different jurisdictional standards.</p>
 </span><span id="__span-0-1335"><a id="__codelineno-0-1335" name="__codelineno-0-1335"></a>        <span class="n">trade_states</span><span class="o">=</span><span class="p">[</span>
 </span><span id="__span-0-1336"><a id="__codelineno-0-1336" name="__codelineno-0-1336"></a>            <span class="n">TradeState</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">state</span><span class="p">)</span> <span class="k">for</span> <span class="n">state</span> <span class="ow">in</span> <span class="n">gridpool_trade_filter</span><span class="o">.</span><span class="n">states</span>
 </span><span id="__span-0-1337"><a id="__codelineno-0-1337" name="__codelineno-0-1337"></a>        <span class="p">],</span>
-</span><span id="__span-0-1338"><a id="__codelineno-0-1338" name="__codelineno-0-1338"></a>        <span class="n">trade_id_lists</span><span class="o">=</span><span class="n">gridpool_trade_filter</span><span class="o">.</span><span class="n">trade_id_lists</span><span class="p">,</span>
+</span><span id="__span-0-1338"><a id="__codelineno-0-1338" name="__codelineno-0-1338"></a>        <span class="n">trade_ids</span><span class="o">=</span><span class="n">gridpool_trade_filter</span><span class="o">.</span><span class="n">trade_ids</span><span class="p">,</span>
 </span><span id="__span-0-1339"><a id="__codelineno-0-1339" name="__codelineno-0-1339"></a>        <span class="n">side</span><span class="o">=</span><span class="n">MarketSide</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">gridpool_trade_filter</span><span class="o">.</span><span class="n">side</span><span class="p">),</span>
 </span><span id="__span-0-1340"><a id="__codelineno-0-1340" name="__codelineno-0-1340"></a>        <span class="n">delivery_period</span><span class="o">=</span><span class="n">DeliveryPeriod</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span>
 </span><span id="__span-0-1341"><a id="__codelineno-0-1341" name="__codelineno-0-1341"></a>            <span class="n">gridpool_trade_filter</span><span class="o">.</span><span class="n">delivery_period</span>
@@ -11663,7 +11655,7 @@ different jurisdictional standards.</p>
 </span><span id="__span-0-1354"><a id="__codelineno-0-1354" name="__codelineno-0-1354"></a>        <span class="n">states</span><span class="o">=</span><span class="p">[</span><span class="n">TradeState</span><span class="o">.</span><span class="n">to_pb</span><span class="p">(</span><span class="n">state</span><span class="p">)</span> <span class="k">for</span> <span class="n">state</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">trade_states</span><span class="p">]</span>
 </span><span id="__span-0-1355"><a id="__codelineno-0-1355" name="__codelineno-0-1355"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trade_states</span>
 </span><span id="__span-0-1356"><a id="__codelineno-0-1356" name="__codelineno-0-1356"></a>        <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-1357"><a id="__codelineno-0-1357" name="__codelineno-0-1357"></a>        <span class="n">trade_id_lists</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">trade_id_lists</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trade_id_lists</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-1357"><a id="__codelineno-0-1357" name="__codelineno-0-1357"></a>        <span class="n">trade_ids</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">trade_ids</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trade_ids</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
 </span><span id="__span-0-1358"><a id="__codelineno-0-1358" name="__codelineno-0-1358"></a>        <span class="n">side</span><span class="o">=</span><span class="n">MarketSide</span><span class="o">.</span><span class="n">to_pb</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">side</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">side</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
 </span><span id="__span-0-1359"><a id="__codelineno-0-1359" name="__codelineno-0-1359"></a>        <span class="n">delivery_period</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">delivery_period</span><span class="o">.</span><span class="n">to_pb</span><span class="p">()</span>
 </span><span id="__span-0-1360"><a id="__codelineno-0-1360" name="__codelineno-0-1360"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">delivery_period</span>
