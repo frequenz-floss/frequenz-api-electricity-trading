@@ -427,16 +427,16 @@ class OrderExecutionOption(enum.Enum):
     Specific behavior for the execution of an order.
 
     These options provide control on how an order is handled in the market.
+
+    If no OrderExecutionOption is set, the order remains open until it's fully
+    fulfilled, cancelled by the client, `valid_until` timestamp is reached, or
+    the end of the trading session.
     """
 
     UNSPECIFIED = (
         electricity_trading_pb2.OrderExecutionOption.ORDER_EXECUTION_OPTION_UNSPECIFIED
     )
     """The order execution option has not been set."""
-
-    NONE = electricity_trading_pb2.OrderExecutionOption.ORDER_EXECUTION_OPTION_NONE
-    """Order remains open until it's fully filled, cancelled by the client,
-    `valid_until` timestamp is reached, or the end of the trading session."""
 
     AON = electricity_trading_pb2.OrderExecutionOption.ORDER_EXECUTION_OPTION_AON
     """All or None: Order must be executed in its entirety, or not executed at all."""

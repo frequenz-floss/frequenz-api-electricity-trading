@@ -70,16 +70,15 @@ service ElectricityTradingService {
       returns (stream ReceivePublicTradesStreamResponse);
 }
 
-
-// OrderExecutionOption defines specific behavior for the execution of an order.
-// These options provide control on how an order is handled in the market.
+// OrderExecutionOption defines specific restriction behavior for the execution
+// of an order. These options provide control on how an order is handled in the
+// market.
+// If no OrderExecutionOption is set, the order remains open until it's fully
+// fulfilled, cancelled by the client, `valid_until` timestamp is reached, or
+// the end of the trading session.
 enum OrderExecutionOption {
   // UNSPECIFIED: The order execution option has not been set.
   ORDER_EXECUTION_OPTION_UNSPECIFIED = 0;
-
-  // Order remains open until it's fully fulfilled, cancelled by the client,
-  // `valid_until` timestamp is reached, or the end of the trading session.
-  ORDER_EXECUTION_OPTION_NONE = 1;
 
   // All or None: Order must be executed in its entirety, or not executed at
   // all.
@@ -583,7 +582,7 @@ message UpdateGridpoolOrderRequest {
 
     // Optional; Updated execution options such as All or None,
     // Fill or Kill, etc.
-    OrderExecutionOption execution_option = 7;
+    optional OrderExecutionOption execution_option = 7;
 
     // Optional; This is an updated timestamp defining the time after
     // which the order should be cancelled if not filled.
