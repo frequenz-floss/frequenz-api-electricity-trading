@@ -2465,15 +2465,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#frequenz.client.electricity_trading.OrderExecutionOption.NONE" class="md-nav__link">
-    <span class="md-ellipsis">
-      NONE
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#frequenz.client.electricity_trading.OrderExecutionOption.UNSPECIFIED" class="md-nav__link">
     <span class="md-ellipsis">
       UNSPECIFIED
@@ -13823,6 +13814,9 @@ the limit price.</p>
   
       <p>Specific behavior for the execution of an order.</p>
 <p>These options provide control on how an order is handled in the market.</p>
+<p>If no OrderExecutionOption is set, the order remains open until it's fully
+fulfilled, cancelled by the client, <code>valid_until</code> timestamp is reached, or
+the end of the trading session.</p>
 
             <details class="quote">
               <summary>Source code in <code>frequenz/client/electricity_trading/_types.py</code></summary>
@@ -13885,16 +13879,16 @@ the limit price.</p>
 </span><span id="__span-0-427"><a id="__codelineno-0-427" name="__codelineno-0-427"></a><span class="sd">    Specific behavior for the execution of an order.</span>
 </span><span id="__span-0-428"><a id="__codelineno-0-428" name="__codelineno-0-428"></a>
 </span><span id="__span-0-429"><a id="__codelineno-0-429" name="__codelineno-0-429"></a><span class="sd">    These options provide control on how an order is handled in the market.</span>
-</span><span id="__span-0-430"><a id="__codelineno-0-430" name="__codelineno-0-430"></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="__span-0-431"><a id="__codelineno-0-431" name="__codelineno-0-431"></a>
-</span><span id="__span-0-432"><a id="__codelineno-0-432" name="__codelineno-0-432"></a>    <span class="n">UNSPECIFIED</span> <span class="o">=</span> <span class="p">(</span>
-</span><span id="__span-0-433"><a id="__codelineno-0-433" name="__codelineno-0-433"></a>        <span class="n">electricity_trading_pb2</span><span class="o">.</span><span class="n">OrderExecutionOption</span><span class="o">.</span><span class="n">ORDER_EXECUTION_OPTION_UNSPECIFIED</span>
-</span><span id="__span-0-434"><a id="__codelineno-0-434" name="__codelineno-0-434"></a>    <span class="p">)</span>
-</span><span id="__span-0-435"><a id="__codelineno-0-435" name="__codelineno-0-435"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;The order execution option has not been set.&quot;&quot;&quot;</span>
-</span><span id="__span-0-436"><a id="__codelineno-0-436" name="__codelineno-0-436"></a>
-</span><span id="__span-0-437"><a id="__codelineno-0-437" name="__codelineno-0-437"></a>    <span class="n">NONE</span> <span class="o">=</span> <span class="n">electricity_trading_pb2</span><span class="o">.</span><span class="n">OrderExecutionOption</span><span class="o">.</span><span class="n">ORDER_EXECUTION_OPTION_NONE</span>
-</span><span id="__span-0-438"><a id="__codelineno-0-438" name="__codelineno-0-438"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Order remains open until it&#39;s fully filled, cancelled by the client,</span>
-</span><span id="__span-0-439"><a id="__codelineno-0-439" name="__codelineno-0-439"></a><span class="sd">    `valid_until` timestamp is reached, or the end of the trading session.&quot;&quot;&quot;</span>
+</span><span id="__span-0-430"><a id="__codelineno-0-430" name="__codelineno-0-430"></a>
+</span><span id="__span-0-431"><a id="__codelineno-0-431" name="__codelineno-0-431"></a><span class="sd">    If no OrderExecutionOption is set, the order remains open until it&#39;s fully</span>
+</span><span id="__span-0-432"><a id="__codelineno-0-432" name="__codelineno-0-432"></a><span class="sd">    fulfilled, cancelled by the client, `valid_until` timestamp is reached, or</span>
+</span><span id="__span-0-433"><a id="__codelineno-0-433" name="__codelineno-0-433"></a><span class="sd">    the end of the trading session.</span>
+</span><span id="__span-0-434"><a id="__codelineno-0-434" name="__codelineno-0-434"></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="__span-0-435"><a id="__codelineno-0-435" name="__codelineno-0-435"></a>
+</span><span id="__span-0-436"><a id="__codelineno-0-436" name="__codelineno-0-436"></a>    <span class="n">UNSPECIFIED</span> <span class="o">=</span> <span class="p">(</span>
+</span><span id="__span-0-437"><a id="__codelineno-0-437" name="__codelineno-0-437"></a>        <span class="n">electricity_trading_pb2</span><span class="o">.</span><span class="n">OrderExecutionOption</span><span class="o">.</span><span class="n">ORDER_EXECUTION_OPTION_UNSPECIFIED</span>
+</span><span id="__span-0-438"><a id="__codelineno-0-438" name="__codelineno-0-438"></a>    <span class="p">)</span>
+</span><span id="__span-0-439"><a id="__codelineno-0-439" name="__codelineno-0-439"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;The order execution option has not been set.&quot;&quot;&quot;</span>
 </span><span id="__span-0-440"><a id="__codelineno-0-440" name="__codelineno-0-440"></a>
 </span><span id="__span-0-441"><a id="__codelineno-0-441" name="__codelineno-0-441"></a>    <span class="n">AON</span> <span class="o">=</span> <span class="n">electricity_trading_pb2</span><span class="o">.</span><span class="n">OrderExecutionOption</span><span class="o">.</span><span class="n">ORDER_EXECUTION_OPTION_AON</span>
 </span><span id="__span-0-442"><a id="__codelineno-0-442" name="__codelineno-0-442"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;All or None: Order must be executed in its entirety, or not executed at all.&quot;&quot;&quot;</span>
@@ -14016,31 +14010,6 @@ the limit price.</p>
   <div class="doc doc-contents ">
   
       <p>Immediate or Cancel: Any portion of an order that cannot be filled     immediately will be cancelled.</p>
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-attribute">
-
-
-
-<h6 id="frequenz.client.electricity_trading.OrderExecutionOption.NONE" class="doc doc-heading">
-          <span class="doc doc-object-name doc-attribute-name">NONE</span>
-
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
-  </span>
-
-<a href="#frequenz.client.electricity_trading.OrderExecutionOption.NONE" class="headerlink" title="Permanent link">¤</a></h6>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">NONE</span> <span class="o">=</span> <span class="n"><span title="frequenz.api.electricity_trading.v1.electricity_trading_pb2.OrderExecutionOption.ORDER_EXECUTION_OPTION_NONE">ORDER_EXECUTION_OPTION_NONE</span></span>
-</span></code></pre></div>
-
-  <div class="doc doc-contents ">
-  
-      <p>Order remains open until it's fully filled, cancelled by the client,
-<code>valid_until</code> timestamp is reached, or the end of the trading session.</p>
   </div>
 
 </div>

@@ -1083,15 +1083,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#frequenz.api.electricity_trading.v1.electricity_trading_pb2.ORDER_EXECUTION_OPTION_NONE" class="md-nav__link">
-    <span class="md-ellipsis">
-      ORDER_EXECUTION_OPTION_NONE
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#frequenz.api.electricity_trading.v1.electricity_trading_pb2.ORDER_EXECUTION_OPTION_UNSPECIFIED" class="md-nav__link">
     <span class="md-ellipsis">
       ORDER_EXECUTION_OPTION_UNSPECIFIED
@@ -3412,15 +3403,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#frequenz.api.electricity_trading.v1.electricity_trading_pb2.ORDER_EXECUTION_OPTION_NONE" class="md-nav__link">
-    <span class="md-ellipsis">
-      ORDER_EXECUTION_OPTION_NONE
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#frequenz.api.electricity_trading.v1.electricity_trading_pb2.ORDER_EXECUTION_OPTION_UNSPECIFIED" class="md-nav__link">
     <span class="md-ellipsis">
       ORDER_EXECUTION_OPTION_UNSPECIFIED
@@ -5680,30 +5662,6 @@ all.</p>
   
       <p>Immediate or Cancel: Any portion of an order that cannot be filled
 immediately will be cancelled.</p>
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-attribute">
-
-
-
-<h4 id="frequenz.api.electricity_trading.v1.electricity_trading_pb2.ORDER_EXECUTION_OPTION_NONE" class="doc doc-heading">
-          <span class="doc doc-object-name doc-attribute-name">frequenz.api.electricity_trading.v1.electricity_trading_pb2.ORDER_EXECUTION_OPTION_NONE</span>
-
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
-  </span>
-
-<a href="#frequenz.api.electricity_trading.v1.electricity_trading_pb2.ORDER_EXECUTION_OPTION_NONE" class="headerlink" title="Permanent link">¤</a></h4>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">ORDER_EXECUTION_OPTION_NONE</span><span class="p">:</span> <span class="n"><span title="frequenz.api.electricity_trading.v1.electricity_trading_pb2.OrderExecutionOption.ValueType">ValueType</span></span>
-</span></code></pre></div>
-
-  <div class="doc doc-contents ">
-  
-      <p>Order remains open until it's fully fulfilled, cancelled by the client,
-<code>valid_until</code> timestamp is reached, or the end of the trading session.</p>
   </div>
 
 </div>
@@ -9070,15 +9028,27 @@ UTC timestamps.</p>
             Bases: <code><span title="frequenz.api.electricity_trading.v1.electricity_trading_pb2._OrderExecutionOption">_OrderExecutionOption</span></code></p>
 
   
-      <p>OrderExecutionOption defines specific behavior for the execution of an order.
-These options provide control on how an order is handled in the market.</p>
+      <p>OrderExecutionOption defines specific restriction behavior for the execution
+of an order. These options provide control on how an order is handled in the
+market.
+If no OrderExecutionOption is set, the order remains open until it's fully
+fulfilled, cancelled by the client, <code>valid_until</code> timestamp is reached, or
+the end of the trading session.</p>
 
             <details class="quote">
               <summary>Source code in <code>frequenz/api/electricity_trading/v1/electricity_trading_pb2.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-64">64</a></span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-60">60</a></span>
+<span class="normal"><a href="#__codelineno-0-61">61</a></span>
+<span class="normal"><a href="#__codelineno-0-62">62</a></span>
+<span class="normal"><a href="#__codelineno-0-63">63</a></span>
+<span class="normal"><a href="#__codelineno-0-64">64</a></span>
 <span class="normal"><a href="#__codelineno-0-65">65</a></span>
 <span class="normal"><a href="#__codelineno-0-66">66</a></span>
-<span class="normal"><a href="#__codelineno-0-67">67</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-64"><a id="__codelineno-0-64" name="__codelineno-0-64"></a><span class="n">_globals</span><span class="p">[</span><span class="s1">&#39;_CREATEGRIDPOOLORDERREQUEST&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_serialized_end</span><span class="o">=</span><span class="mi">4904</span>
+<span class="normal"><a href="#__codelineno-0-67">67</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-60"><a id="__codelineno-0-60" name="__codelineno-0-60"></a><span class="n">_globals</span><span class="p">[</span><span class="s1">&#39;_GRIDPOOLTRADEFILTER&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_serialized_end</span><span class="o">=</span><span class="mi">4455</span>
+</span><span id="__span-0-61"><a id="__codelineno-0-61" name="__codelineno-0-61"></a><span class="n">_globals</span><span class="p">[</span><span class="s1">&#39;_PUBLICTRADEFILTER&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_serialized_start</span><span class="o">=</span><span class="mi">4458</span>
+</span><span id="__span-0-62"><a id="__codelineno-0-62" name="__codelineno-0-62"></a><span class="n">_globals</span><span class="p">[</span><span class="s1">&#39;_PUBLICTRADEFILTER&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_serialized_end</span><span class="o">=</span><span class="mi">4773</span>
+</span><span id="__span-0-63"><a id="__codelineno-0-63" name="__codelineno-0-63"></a><span class="n">_globals</span><span class="p">[</span><span class="s1">&#39;_CREATEGRIDPOOLORDERREQUEST&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_serialized_start</span><span class="o">=</span><span class="mi">4776</span>
+</span><span id="__span-0-64"><a id="__codelineno-0-64" name="__codelineno-0-64"></a><span class="n">_globals</span><span class="p">[</span><span class="s1">&#39;_CREATEGRIDPOOLORDERREQUEST&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_serialized_end</span><span class="o">=</span><span class="mi">4904</span>
 </span><span id="__span-0-65"><a id="__codelineno-0-65" name="__codelineno-0-65"></a><span class="n">_globals</span><span class="p">[</span><span class="s1">&#39;_CREATEGRIDPOOLORDERRESPONSE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_serialized_start</span><span class="o">=</span><span class="mi">4907</span>
 </span><span id="__span-0-66"><a id="__codelineno-0-66" name="__codelineno-0-66"></a><span class="n">_globals</span><span class="p">[</span><span class="s1">&#39;_CREATEGRIDPOOLORDERRESPONSE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_serialized_end</span><span class="o">=</span><span class="mi">5049</span>
 </span><span id="__span-0-67"><a id="__codelineno-0-67" name="__codelineno-0-67"></a><span class="n">_globals</span><span class="p">[</span><span class="s1">&#39;_UPDATEGRIDPOOLORDERREQUEST&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_serialized_start</span><span class="o">=</span><span class="mi">5052</span>

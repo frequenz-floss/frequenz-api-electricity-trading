@@ -3165,7 +3165,7 @@ take place.</p>
 <tr>
 <td>execution_option</td>
 <td><a href="#frequenz-api-electricity_trading-electricity_trading-v1-OrderExecutionOption">OrderExecutionOption</a></td>
-<td></td>
+<td>optional</td>
 <td>Optional; Updated execution options such as All or None, Fill or Kill, etc.</td>
 </tr>
 <tr>
@@ -3364,8 +3364,12 @@ take place.</p>
 </table>
 <p><a name="frequenz-api-electricity_trading-electricity_trading-v1-OrderExecutionOption"></a></p>
 <h3 id="orderexecutionoption">OrderExecutionOption<a class="headerlink" href="#orderexecutionoption" title="Permanent link">¤</a></h3>
-<p>OrderExecutionOption defines specific behavior for the execution of an order.
-These options provide control on how an order is handled in the market.</p>
+<p>OrderExecutionOption defines specific restriction behavior for the execution
+of an order. These options provide control on how an order is handled in the
+market.
+If no OrderExecutionOption is set, the order remains open until it&#39;s fully
+fulfilled, cancelled by the client, <code>valid_until</code> timestamp is reached, or
+the end of the trading session.</p>
 <table>
 <thead>
 <tr>
@@ -3379,11 +3383,6 @@ These options provide control on how an order is handled in the market.</p>
 <td>ORDER_EXECUTION_OPTION_UNSPECIFIED</td>
 <td>0</td>
 <td>UNSPECIFIED: The order execution option has not been set.</td>
-</tr>
-<tr>
-<td>ORDER_EXECUTION_OPTION_NONE</td>
-<td>1</td>
-<td>Order remains open until it&#39;s fully fulfilled, cancelled by the client, <code>valid_until</code> timestamp is reached, or the end of the trading session.</td>
 </tr>
 <tr>
 <td>ORDER_EXECUTION_OPTION_AON</td>
