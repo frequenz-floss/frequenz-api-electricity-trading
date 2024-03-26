@@ -15,6 +15,7 @@
 * Addition of new definitions and support for trade state filters and streaming
 * Refactor DeliveryPeriod to take in a timedelta duration attribute instead of the DeliveryDuration Enum type
 * Public trades renamed from public_trade_lists to public trades and all _lists suffixes removed
+* Remove ORDER_EXECUTION_OPTION_NONE from OrderExecutionOption
 
 ## Bug Fixes
 
