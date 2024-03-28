@@ -76,6 +76,7 @@ dev-pylint = [
 ]
 dev-pytest = [
   "pytest == 7.4.4",
+  "deepdiff == 6.7.1",
   "frequenz-repo-config[extra-lint-examples] == 0.8.0",
 ]
 dev = [
@@ -155,7 +156,7 @@ packages = ["frequenz.api.electricity_trading"]
 strict = true
 
 [[tool.mypy.overrides]]
-module = ["mkdocs_macros.*", "sybil", "sybil.*"]
+module = ["mkdocs_macros.*", "sybil", "sybil.*", "deepdiff"]
 ignore_missing_imports = true
 
 [tool.setuptools.package-dir]
