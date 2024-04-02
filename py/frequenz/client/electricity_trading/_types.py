@@ -337,6 +337,16 @@ class DeliveryPeriod:
                     "Invalid duration value. Duration must be 5, 15, 30, or 60 minutes."
                 )
 
+    def __eq__(
+        self,
+        other: object,
+    ):
+        """Check if two DeliveryPeriod objects are equal."""
+        if not isinstance(other, DeliveryPeriod):
+            return NotImplemented
+
+        return self.start == other.start and self.duration == other.duration
+
     @classmethod
     def from_pb(cls, delivery_period: delivery_duration_pb2.DeliveryPeriod) -> Self:
         """Convert a protobuf DeliveryPeriod to DeliveryPeriod object.
