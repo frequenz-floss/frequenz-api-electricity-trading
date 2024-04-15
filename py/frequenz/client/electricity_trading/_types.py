@@ -10,7 +10,7 @@ from __future__ import annotations  # required for constructor type hinting
 import enum
 import logging
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from decimal import Decimal
 from typing import Self
 
@@ -319,9 +319,18 @@ class DeliveryPeriod:
             duration: The length of the delivery period.
 
         Raises:
+            ValueError: If the start timestamp does not have a timezone.
             ValueError: If the duration is not 5, 15, 30, or 60 minutes.
         """
+        if start.tzinfo is None:
+            raise ValueError("Start timestamp must have a timezone.")
+        if start.tzinfo != timezone.utc:
+            _logger.warning(
+                "Start timestamp is not in UTC timezone. Converting to UTC."
+            )
+            start = start.astimezone(timezone.utc)
         self.start = start
+
         minutes = duration.total_seconds() / 60
         match minutes:
             case 5:
@@ -336,6 +345,15 @@ class DeliveryPeriod:
                 raise ValueError(
                     "Invalid duration value. Duration must be 5, 15, 30, or 60 minutes."
                 )
+
+    def __hash__(self) -> int:
+        """
+        Create hash of the DeliveryPeriod object.
+
+        Returns:
+            Hash of the DeliveryPeriod object.
+        """
+        return hash((self.start, self.duration))
 
     def __eq__(
         self,
@@ -360,7 +378,7 @@ class DeliveryPeriod:
         Raises:
             ValueError: If the duration is not 5, 15, 30, or 60 minutes.
         """
-        start = delivery_period.start.ToDatetime()
+        start = delivery_period.start.ToDatetime(tzinfo=timezone.utc)
         delivery_duration_enum = DeliveryDuration.from_pb(delivery_period.duration)
 
         match delivery_duration_enum:
@@ -872,7 +890,7 @@ class MarketActor(enum.Enum):
         return self.value
 
 
-@dataclass(frozen=True)
+@dataclass()
 class Order:  # pylint: disable=too-many-instance-attributes
     """Represents an order in the electricity market."""
 
@@ -918,6 +936,15 @@ class Order:  # pylint: disable=too-many-instance-attributes
     tag: str | None = None
     """User-defined tag to group related orders."""
 
+    def __post_init__(self):
+        """Post initialization checks to ensure that all datetimes are UTC."""
+        if self.valid_until is not None:
+            if self.valid_until.tzinfo is None:
+                raise ValueError("Valid until must be a UTC datetime.")
+            if self.valid_until.tzinfo != timezone.utc:
+                _logger.warning("Valid until is not a UTC datetime. Converting to UTC.")
+                self.valid_until = self.valid_until.astimezone(timezone.utc)
+
     @classmethod
     def from_pb(cls, order: electricity_trading_pb2.Order) -> Self:
         """Convert a protobuf Order to Order object.
@@ -947,7 +974,9 @@ class Order:  # pylint: disable=too-many-instance-attributes
             execution_option=OrderExecutionOption.from_pb(order.execution_option)
             if order.HasField("execution_option")
             else None,
-            valid_until=order.valid_until.ToDatetime() if order.valid_until else None,
+            valid_until=order.valid_until.ToDatetime(tzinfo=timezone.utc)
+            if order.HasField("valid_until")
+            else None,
             payload=json_format.MessageToDict(order.payload) if order.payload else None,
             tag=order.tag if order.tag else None,
         )
@@ -991,7 +1020,7 @@ class Order:  # pylint: disable=too-many-instance-attributes
         )
 
 
-@dataclass(frozen=True)
+@dataclass()
 class Trade:  # pylint: disable=too-many-instance-attributes
     """Represents a private trade in the electricity market."""
 
@@ -1023,6 +1052,14 @@ class Trade:  # pylint: disable=too-many-instance-attributes
     state: TradeState
     """Current state of the trade."""
 
+    def __post_init__(self):
+        """Post initialization checks to ensure that all datetimes are UTC."""
+        if self.execution_time.tzinfo is None:
+            raise ValueError("Execution time must have timezone information")
+        if self.execution_time.tzinfo != timezone.utc:
+            _logger.warning("Execution timenis not in UTC timezone. Converting to UTC.")
+            self.execution_time = self.execution_time.astimezone(timezone.utc)
+
     @classmethod
     def from_pb(cls, trade: electricity_trading_pb2.Trade) -> Self:
         """Convert a protobuf Trade to Trade object.
@@ -1039,7 +1076,7 @@ class Trade:  # pylint: disable=too-many-instance-attributes
             side=MarketSide.from_pb(trade.side),
             delivery_area=DeliveryArea.from_pb(trade.delivery_area),
             delivery_period=DeliveryPeriod.from_pb(trade.delivery_period),
-            execution_time=trade.execution_time.ToDatetime(),
+            execution_time=trade.execution_time.ToDatetime(tzinfo=timezone.utc),
             price=Price.from_pb(trade.price),
             quantity=Energy.from_pb(trade.quantity),
             state=TradeState.from_pb(trade.state),
@@ -1051,13 +1088,16 @@ class Trade:  # pylint: disable=too-many-instance-attributes
         Returns:
             Protobuf message corresponding to the Trade object.
         """
+        execution_time = timestamp_pb2.Timestamp()
+        execution_time.FromDatetime(self.execution_time)
+
         return electricity_trading_pb2.Trade(
             id=self.id,
             order_id=self.order_id,
             side=electricity_trading_pb2.MarketSide.ValueType(self.side.value),
             delivery_area=self.delivery_area.to_pb(),
             delivery_period=self.delivery_period.to_pb(),
-            execution_time=timestamp_pb2.Timestamp().FromDatetime(self.execution_time),
+            execution_time=execution_time,
             price=self.price.to_pb(),
             quantity=self.quantity.to_pb(),
             state=electricity_trading_pb2.TradeState.ValueType(self.state.value),
@@ -1112,7 +1152,7 @@ class StateDetail:
         )
 
 
-@dataclass(frozen=True)
+@dataclass()
 class OrderDetail:
     """
     Represents an order with full details, including its ID, state, and associated UTC timestamps.
@@ -1135,6 +1175,28 @@ class OrderDetail:
     create_time: datetime
     modification_time: datetime
 
+    def __post_init__(self):
+        """
+        Post initialization checks to ensure that all datetimes are UTC.
+
+        Raises:
+            ValueError: If create_time or modification_time do not have timezone information.
+
+        """
+        if self.create_time.tzinfo is None:
+            raise ValueError("Create time must have timezone information")
+        if self.create_time.tzinfo != timezone.utc:
+            _logger.warning("Create time is not in UTC timezone. Converting to UTC.")
+            self.create_time = self.create_time.astimezone(timezone.utc)
+
+        if self.modification_time.tzinfo is None:
+            raise ValueError("Modification time must have timezone information")
+        if self.modification_time.tzinfo != timezone.utc:
+            _logger.warning(
+                "Modification time is not in UTC timezone. Converting to UTC."
+            )
+            self.modification_time = self.modification_time.astimezone(timezone.utc)
+
     @classmethod
     def from_pb(cls, order_detail: electricity_trading_pb2.OrderDetail) -> Self:
         """Convert a protobuf OrderDetail to OrderDetail object.
@@ -1151,8 +1213,10 @@ class OrderDetail:
             state_detail=StateDetail.from_pb(order_detail.state_detail),
             open_quantity=Energy.from_pb(order_detail.open_quantity),
             filled_quantity=Energy.from_pb(order_detail.filled_quantity),
-            create_time=order_detail.create_time.ToDatetime(),
-            modification_time=order_detail.modification_time.ToDatetime(),
+            create_time=order_detail.create_time.ToDatetime(tzinfo=timezone.utc),
+            modification_time=order_detail.modification_time.ToDatetime(
+                tzinfo=timezone.utc
+            ),
         )
 
     def to_pb(self) -> electricity_trading_pb2.OrderDetail:
@@ -1161,20 +1225,23 @@ class OrderDetail:
         Returns:
             Protobuf message corresponding to the OrderDetail object.
         """
+        create_time = timestamp_pb2.Timestamp()
+        create_time.FromDatetime(self.create_time)
+        modification_time = timestamp_pb2.Timestamp()
+        modification_time.FromDatetime(self.modification_time)
+
         return electricity_trading_pb2.OrderDetail(
             order_id=self.order_id,
             order=self.order.to_pb(),
             state_detail=self.state_detail.to_pb(),
             open_quantity=self.open_quantity.to_pb(),
             filled_quantity=self.filled_quantity.to_pb(),
-            create_time=timestamp_pb2.Timestamp().FromDatetime(self.create_time),
-            modification_time=timestamp_pb2.Timestamp().FromDatetime(
-                self.modification_time
-            ),
+            create_time=create_time,
+            modification_time=modification_time,
         )
 
 
-@dataclass(frozen=True)
+@dataclass()
 class PublicTrade:  # pylint: disable=too-many-instance-attributes
     """Represents a public order in the market."""
 
@@ -1202,6 +1269,16 @@ class PublicTrade:  # pylint: disable=too-many-instance-attributes
     state: TradeState
     """State of the order."""
 
+    def __post_init__(self):
+        """Post initialization checks to ensure that all datetimes are UTC."""
+        if self.modification_time.tzinfo is None:
+            raise ValueError("Modification time must have timezone information")
+        if self.modification_time.tzinfo != timezone.utc:
+            _logger.warning(
+                "Modification time is not in UTC timezone. Converting to UTC."
+            )
+            self.modification_time = self.modification_time.astimezone(timezone.utc)
+
     @classmethod
     def from_pb(cls, public_trade: electricity_trading_pb2.PublicTrade) -> Self:
         """Convert a protobuf PublicTrade to PublicTrade object.
@@ -1217,7 +1294,9 @@ class PublicTrade:  # pylint: disable=too-many-instance-attributes
             buy_delivery_area=DeliveryArea.from_pb(public_trade.buy_delivery_area),
             sell_delivery_area=DeliveryArea.from_pb(public_trade.sell_delivery_area),
             delivery_period=DeliveryPeriod.from_pb(public_trade.delivery_period),
-            modification_time=public_trade.modification_time.ToDatetime(),
+            modification_time=public_trade.modification_time.ToDatetime(
+                tzinfo=timezone.utc
+            ),
             price=Price.from_pb(public_trade.price),
             quantity=Energy.from_pb(public_trade.quantity),
             state=TradeState.from_pb(public_trade.state),
@@ -1229,14 +1308,15 @@ class PublicTrade:  # pylint: disable=too-many-instance-attributes
         Returns:
             Protobuf message corresponding to the PublicTrade object.
         """
+        modification_time = timestamp_pb2.Timestamp()
+        modification_time.FromDatetime(self.modification_time)
+
         return electricity_trading_pb2.PublicTrade(
             id=self.public_trade_id,
             buy_delivery_area=self.buy_delivery_area.to_pb(),
             sell_delivery_area=self.sell_delivery_area.to_pb(),
             delivery_period=self.delivery_period.to_pb(),
-            modification_time=timestamp_pb2.Timestamp().FromDatetime(
-                self.modification_time
-            ),
+            modification_time=modification_time,
             price=self.price.to_pb(),
             quantity=self.quantity.to_pb(),
             state=electricity_trading_pb2.TradeState.ValueType(self.state.value),
@@ -1261,6 +1341,43 @@ class GridpoolOrderFilter:
 
     tag: str | None = None
     """Tag associated with the orders to be filtered."""
+
+    def __eq__(self, other: GridpoolOrderFilter) -> bool:
+        """
+        Check if two GridpoolOrderFilter objects are equal.
+
+        Args:
+            other: GridpoolOrderFilter object to compare with.
+
+        Returns:
+            True if the two GridpoolOrderFilter objects are equal, False otherwise.
+        """
+        if not isinstance(other, GridpoolOrderFilter):
+            return NotImplemented
+        return (
+            self.order_states == other.order_states
+            and self.side == other.side
+            and self.delivery_period == other.delivery_period
+            and self.delivery_area == other.delivery_area
+            and self.tag == other.tag
+        )
+
+    def __hash__(self) -> int:
+        """
+        Create hash of the GridpoolOrderFilter object.
+
+        Returns:
+            Hash of the GridpoolOrderFilter object.
+        """
+        return hash(
+            (
+                tuple(self.order_states) if self.order_states is not None else None,
+                self.side,
+                self.delivery_period,
+                self.delivery_area,
+                self.tag,
+            )
+        )
 
     @classmethod
     def from_pb(
@@ -1329,6 +1446,43 @@ class GridpoolTradeFilter:
     delivery_area: DeliveryArea | None = None
     """Delivery area to filter for."""
 
+    def __eq__(self, other: GridpoolTradeFilter) -> bool:
+        """
+        Check if two GridpoolTradeFilter objects are equal.
+
+        Args:
+            other: GridpoolTradeFilter object to compare with.
+
+        Returns:
+            True if the two GridpoolTradeFilter objects are equal, False otherwise.
+        """
+        if not isinstance(other, GridpoolTradeFilter):
+            return NotImplemented
+        return (
+            self.trade_states == other.trade_states
+            and self.trade_ids == other.trade_ids
+            and self.side == other.side
+            and self.delivery_period == other.delivery_period
+            and self.delivery_area == other.delivery_area
+        )
+
+    def __hash__(self) -> int:
+        """
+        Create hash of the GridpoolTradeFilter object.
+
+        Returns:
+            Hash of the GridpoolTradeFilter object.
+        """
+        return hash(
+            (
+                tuple(self.trade_states) if self.trade_states is not None else None,
+                tuple(self.trade_ids) if self.trade_ids is not None else None,
+                self.side,
+                self.delivery_period,
+                self.delivery_area,
+            )
+        )
+
     @classmethod
     def from_pb(
         cls, gridpool_trade_filter: electricity_trading_pb2.GridpoolTradeFilter
@@ -1389,6 +1543,41 @@ class PublicTradeFilter:
     sell_delivery_area: DeliveryArea | None = None
     """Delivery area to filter for on the sell side."""
 
+    def __eq__(self, other: PublicTradeFilter) -> bool:
+        """
+        Check if two PublicTradeFilter objects are equal.
+
+        Args:
+            other: PublicTradeFilter object to compare with.
+
+        Returns:
+            True if the two PublicTradeFilter objects are equal, False otherwise.
+        """
+        if not isinstance(other, PublicTradeFilter):
+            return NotImplemented
+        return (
+            self.states == other.states
+            and self.delivery_period == other.delivery_period
+            and self.buy_delivery_area == other.buy_delivery_area
+            and self.sell_delivery_area == other.sell_delivery_area
+        )
+
+    def __hash__(self) -> int:
+        """
+        Create hash of the PublicTradeFilter object.
+
+        Returns:
+            Hash of the PublicTradeFilter object.
+        """
+        return hash(
+            (
+                tuple(self.states) if self.states is not None else None,
+                self.delivery_period,
+                self.buy_delivery_area,
+                self.sell_delivery_area,
+            )
+        )
+
     @classmethod
     def from_pb(
         cls, public_trade_filter: electricity_trading_pb2.PublicTradeFilter
@@ -1437,7 +1626,7 @@ class PublicTradeFilter:
         )
 
 
-@dataclass(frozen=True)
+@dataclass()
 class UpdateOrder:  # pylint: disable=too-many-instance-attributes
     """
     Represents the order properties that can be updated after an order has been placed.
@@ -1478,6 +1667,15 @@ class UpdateOrder:  # pylint: disable=too-many-instance-attributes
     tag: str | None = None
     """Updated user-defined tag to group related orders."""
 
+    def __post_init__(self):
+        """Post initialization checks to ensure that all datetimes are UTC."""
+        if self.valid_until is not None:
+            if self.valid_until.tzinfo is None:
+                raise ValueError("Valid until must be a UTC datetime.")
+            if self.valid_until.tzinfo != timezone.utc:
+                _logger.warning("Valid until is not a UTC datetime. Converting to UTC.")
+                self.valid_until = self.valid_until.astimezone(timezone.utc)
+
     @classmethod
     def from_pb(
         cls,
@@ -1510,7 +1708,7 @@ class UpdateOrder:  # pylint: disable=too-many-instance-attributes
             execution_option=OrderExecutionOption.from_pb(update_order.execution_option)
             if update_order.HasField("execution_option")
             else None,
-            valid_until=update_order.valid_until.ToDatetime()
+            valid_until=update_order.valid_until.ToDatetime(tzinfo=timezone.utc)
             if update_order.HasField("valid_until")
             else None,
             payload=json_format.MessageToDict(update_order.payload)

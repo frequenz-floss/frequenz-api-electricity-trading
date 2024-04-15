@@ -16,9 +16,15 @@
 * Refactor DeliveryPeriod to take in a timedelta duration attribute instead of the DeliveryDuration Enum type
 * Public trades renamed from public_trade_lists to public trades and all _lists suffixes removed
 * Remove ORDER_EXECUTION_OPTION_NONE from OrderExecutionOption
+* Add unit tests for the client types and functions
+* Add error handling in the client for the gRPC errors that could be raised by the service
+
 
 ## Bug Fixes
 
 * Remove `frequenz-api-common` files now that dependency conflict is solved
 * Fix DeliveryArea from and to pb methods
 * Use HasFields method on protobuf messages
+* Make the `DeliveryPeriod` and all `Filter` types hashable
+* Force all timestamps to be timezone aware and UTC
+* Refactor some protofub timestamps that were falsly returning None values in the client
