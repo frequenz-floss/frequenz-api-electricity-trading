@@ -2,7 +2,7 @@
 
 ## Summary
 
-<!-- Here goes a general summary of what this release is about -->
+Key improvements of this release include a clear a distinction between Order and Trade in the protobuf definitions, improved handling of delivery period, gRPC error handling in the client and unit tests for the client types and functions.
 
 ## Upgrading
 
