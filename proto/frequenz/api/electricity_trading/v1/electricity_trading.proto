@@ -164,26 +164,24 @@ enum OrderState {
   // cancellation request by the market participant, system, or market operator.
   ORDER_STATE_CANCELED = 4;
 
-  // CANCEL_REQUESTED: A cancellation request for the order has been submitted
-  // but the order is not yet removed from the order book.
-  ORDER_STATE_CANCEL_REQUESTED = 5;
-
-  // CANCEL_REJECTED: The order cancellation request was rejected, likely due to
-  // it having already been filled or expired.
-  ORDER_STATE_CANCEL_REJECTED = 6;
-
   // EXPIRED: The order has not been filled within the defined duration and has
   // expired.
-  ORDER_STATE_EXPIRED = 7;
+  ORDER_STATE_EXPIRED = 5;
 
   // FAILED: The order submission failed and was unable to be placed on the
   // order book, usually due to a validation error or system issue.
-  ORDER_STATE_FAILED = 8;
+  ORDER_STATE_FAILED = 6;
 
   // HIBERNATE: The order has been entered into the system but is not currently
   // exposed to the market. This could be due to certain conditions not yet
   // being met.
-  ORDER_STATE_HIBERNATE = 9;
+  ORDER_STATE_HIBERNATE = 7;
+
+  // PARTIALLY_FILLED_AND_CANCELED: The order has been partially filled and
+  // partially canceled. This can occur when the order is partially filled and
+  // then a cancellation request is submitted for the remaining quantity.
+  ORDER_STATE_PARTIALLY_FILLED_AND_CANCELED = 8;
+
 }
 
 // Enum for the state of a trade.
