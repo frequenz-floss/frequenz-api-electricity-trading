@@ -3577,29 +3577,24 @@ the end of the trading session.</p>
 <td>CANCELED: The order has been cancelled. This can occur due to a cancellation request by the market participant, system, or market operator.</td>
 </tr>
 <tr>
-<td>ORDER_STATE_CANCEL_REQUESTED</td>
-<td>5</td>
-<td>CANCEL_REQUESTED: A cancellation request for the order has been submitted but the order is not yet removed from the order book.</td>
-</tr>
-<tr>
-<td>ORDER_STATE_CANCEL_REJECTED</td>
-<td>6</td>
-<td>CANCEL_REJECTED: The order cancellation request was rejected, likely due to it having already been filled or expired.</td>
-</tr>
-<tr>
 <td>ORDER_STATE_EXPIRED</td>
-<td>7</td>
+<td>5</td>
 <td>EXPIRED: The order has not been filled within the defined duration and has expired.</td>
 </tr>
 <tr>
 <td>ORDER_STATE_FAILED</td>
-<td>8</td>
+<td>6</td>
 <td>FAILED: The order submission failed and was unable to be placed on the order book, usually due to a validation error or system issue.</td>
 </tr>
 <tr>
 <td>ORDER_STATE_HIBERNATE</td>
-<td>9</td>
+<td>7</td>
 <td>HIBERNATE: The order has been entered into the system but is not currently exposed to the market. This could be due to certain conditions not yet being met.</td>
+</tr>
+<tr>
+<td>ORDER_STATE_PARTIALLY_FILLED_AND_CANCELED</td>
+<td>8</td>
+<td>PARTIALLY_FILLED_AND_CANCELED: The order has been partially filled and partially canceled. This can occur when the order is partially filled and then a cancellation request is submitted for the remaining quantity.</td>
 </tr>
 </tbody>
 </table>
