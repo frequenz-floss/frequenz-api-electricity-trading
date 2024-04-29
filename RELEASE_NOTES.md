@@ -6,9 +6,7 @@
 
 ## Upgrading
 
-- Refactor order states:
-  - Add new order state PARTIALLY_FILLED_AND_CANCELED
-  - Remove obsolete order states CANCEL_REQUESTED and CANCEL_REJECTED
+<!-- Here goes notes on how to upgrade from previous versions, including deprecations and what they should be replaced with -->
 
 ## New Features
 
