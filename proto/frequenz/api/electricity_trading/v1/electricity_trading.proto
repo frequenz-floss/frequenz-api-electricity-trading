@@ -145,7 +145,7 @@ enum MarketSide {
 enum OrderState {
   // UNSPECIFIED: The order state is not known. This is usually the default
   // state of a newly created order object before any operations have been
-  // applied.
+  // applied. The order may be unfilled or partially filled.
   ORDER_STATE_UNSPECIFIED = 0;
 
   // PENDING: The order has been sent to the marketplace but has not yet been
@@ -162,10 +162,11 @@ enum OrderState {
 
   // CANCELED: The order has been cancelled. This can occur due to a
   // cancellation request by the market participant, system, or market operator.
+  // The order may be unfilled or partially filled.
   ORDER_STATE_CANCELED = 4;
 
   // EXPIRED: The order has not been filled within the defined duration and has
-  // expired.
+  // expired. It may be unfilled or partially filled.
   ORDER_STATE_EXPIRED = 5;
 
   // FAILED: The order submission failed and was unable to be placed on the
@@ -174,13 +175,8 @@ enum OrderState {
 
   // HIBERNATE: The order has been entered into the system but is not currently
   // exposed to the market. This could be due to certain conditions not yet
-  // being met.
+  // being met. The order may be unfilled or partially filled.
   ORDER_STATE_HIBERNATE = 7;
-
-  // PARTIALLY_FILLED_AND_CANCELED: The order has been partially filled and
-  // partially canceled. This can occur when the order is partially filled and
-  // then a cancellation request is submitted for the remaining quantity.
-  ORDER_STATE_PARTIALLY_FILLED_AND_CANCELED = 8;
 
 }
 
