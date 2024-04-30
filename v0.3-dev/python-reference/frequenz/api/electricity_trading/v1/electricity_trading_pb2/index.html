@@ -1342,15 +1342,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#frequenz.api.electricity_trading.v1.electricity_trading_pb2.ORDER_STATE_PARTIALLY_FILLED_AND_CANCELED" class="md-nav__link">
-    <span class="md-ellipsis">
-      ORDER_STATE_PARTIALLY_FILLED_AND_CANCELED
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#frequenz.api.electricity_trading.v1.electricity_trading_pb2.ORDER_STATE_PENDING" class="md-nav__link">
     <span class="md-ellipsis">
       ORDER_STATE_PENDING
@@ -3591,15 +3582,6 @@
   <a href="#frequenz.api.electricity_trading.v1.electricity_trading_pb2.ORDER_STATE_HIBERNATE" class="md-nav__link">
     <span class="md-ellipsis">
       ORDER_STATE_HIBERNATE
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#frequenz.api.electricity_trading.v1.electricity_trading_pb2.ORDER_STATE_PARTIALLY_FILLED_AND_CANCELED" class="md-nav__link">
-    <span class="md-ellipsis">
-      ORDER_STATE_PARTIALLY_FILLED_AND_CANCELED
     </span>
   </a>
   
@@ -5854,7 +5836,8 @@ It may be unfilled or partially filled.</p>
   <div class="doc doc-contents ">
   
       <p>CANCELED: The order has been cancelled. This can occur due to a
-cancellation request by the market participant, system, or market operator.</p>
+cancellation request by the market participant, system, or market operator.
+The order may be unfilled or partially filled.</p>
   </div>
 
 </div>
@@ -5878,7 +5861,7 @@ cancellation request by the market participant, system, or market operator.</p>
   <div class="doc doc-contents ">
   
       <p>EXPIRED: The order has not been filled within the defined duration and has
-expired.</p>
+expired. It may be unfilled or partially filled.</p>
   </div>
 
 </div>
@@ -5951,32 +5934,7 @@ quantities on the order.</p>
   
       <p>HIBERNATE: The order has been entered into the system but is not currently
 exposed to the market. This could be due to certain conditions not yet
-being met.</p>
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-attribute">
-
-
-
-<h4 id="frequenz.api.electricity_trading.v1.electricity_trading_pb2.ORDER_STATE_PARTIALLY_FILLED_AND_CANCELED" class="doc doc-heading">
-          <span class="doc doc-object-name doc-attribute-name">frequenz.api.electricity_trading.v1.electricity_trading_pb2.ORDER_STATE_PARTIALLY_FILLED_AND_CANCELED</span>
-
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
-  </span>
-
-<a href="#frequenz.api.electricity_trading.v1.electricity_trading_pb2.ORDER_STATE_PARTIALLY_FILLED_AND_CANCELED" class="headerlink" title="Permanent link">¤</a></h4>
-<div class="doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">ORDER_STATE_PARTIALLY_FILLED_AND_CANCELED</span><span class="p">:</span> <span class="n"><span title="frequenz.api.electricity_trading.v1.electricity_trading_pb2.OrderState.ValueType">ValueType</span></span>
-</span></code></pre></div>
-
-  <div class="doc doc-contents ">
-  
-      <p>PARTIALLY_FILLED_AND_CANCELED: The order has been partially filled and
-partially canceled. This can occur when the order is partially filled and
-then a cancellation request is submitted for the remaining quantity.</p>
+being met. The order may be unfilled or partially filled.</p>
   </div>
 
 </div>
@@ -6025,7 +5983,7 @@ confirmed. This can be due to awaiting validation or system processing.</p>
   
       <p>UNSPECIFIED: The order state is not known. This is usually the default
 state of a newly created order object before any operations have been
-applied.</p>
+applied. The order may be unfilled or partially filled.</p>
   </div>
 
 </div>

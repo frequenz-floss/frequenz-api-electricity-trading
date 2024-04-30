@@ -3554,7 +3554,7 @@ the end of the trading session.</p>
 <tr>
 <td>ORDER_STATE_UNSPECIFIED</td>
 <td>0</td>
-<td>UNSPECIFIED: The order state is not known. This is usually the default state of a newly created order object before any operations have been applied.</td>
+<td>UNSPECIFIED: The order state is not known. This is usually the default state of a newly created order object before any operations have been applied. The order may be unfilled or partially filled.</td>
 </tr>
 <tr>
 <td>ORDER_STATE_PENDING</td>
@@ -3574,12 +3574,12 @@ the end of the trading session.</p>
 <tr>
 <td>ORDER_STATE_CANCELED</td>
 <td>4</td>
-<td>CANCELED: The order has been cancelled. This can occur due to a cancellation request by the market participant, system, or market operator.</td>
+<td>CANCELED: The order has been cancelled. This can occur due to a cancellation request by the market participant, system, or market operator. The order may be unfilled or partially filled.</td>
 </tr>
 <tr>
 <td>ORDER_STATE_EXPIRED</td>
 <td>5</td>
-<td>EXPIRED: The order has not been filled within the defined duration and has expired.</td>
+<td>EXPIRED: The order has not been filled within the defined duration and has expired. It may be unfilled or partially filled.</td>
 </tr>
 <tr>
 <td>ORDER_STATE_FAILED</td>
@@ -3589,12 +3589,7 @@ the end of the trading session.</p>
 <tr>
 <td>ORDER_STATE_HIBERNATE</td>
 <td>7</td>
-<td>HIBERNATE: The order has been entered into the system but is not currently exposed to the market. This could be due to certain conditions not yet being met.</td>
-</tr>
-<tr>
-<td>ORDER_STATE_PARTIALLY_FILLED_AND_CANCELED</td>
-<td>8</td>
-<td>PARTIALLY_FILLED_AND_CANCELED: The order has been partially filled and partially canceled. This can occur when the order is partially filled and then a cancellation request is submitted for the remaining quantity.</td>
+<td>HIBERNATE: The order has been entered into the system but is not currently exposed to the market. This could be due to certain conditions not yet being met. The order may be unfilled or partially filled.</td>
 </tr>
 </tbody>
 </table>
