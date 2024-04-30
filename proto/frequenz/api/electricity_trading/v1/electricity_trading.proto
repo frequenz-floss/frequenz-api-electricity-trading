@@ -177,11 +177,6 @@ enum OrderState {
   // being met.
   ORDER_STATE_HIBERNATE = 7;
 
-  // PARTIALLY_FILLED_AND_CANCELED: The order has been partially filled and
-  // partially canceled. This can occur when the order is partially filled and
-  // then a cancellation request is submitted for the remaining quantity.
-  ORDER_STATE_PARTIALLY_FILLED_AND_CANCELED = 8;
-
 }
 
 // Enum for the state of a trade.
