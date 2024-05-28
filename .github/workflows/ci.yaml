@@ -7,19 +7,19 @@ on:
     # We need to explicitly include tags because otherwise when adding
     # `branches-ignore` it will only trigger on branches.
     tags:
-      - '*'
+      - "*"
     branches-ignore:
       # Ignore pushes to merge queues.
       # We only want to test the merge commit (`merge_group` event), the hashes
       # in the push were already tested by the PR checks
-      - 'gh-readonly-queue/**'
-      - 'dependabot/**'
+      - "gh-readonly-queue/**"
+      - "dependabot/**"
   workflow_dispatch:
 
 env:
   # Please make sure this version is included in the `matrix`, as the
   # `matrix` section can't use `env`, so it must be entered manually
-  DEFAULT_PYTHON_VERSION: '3.11'
+  DEFAULT_PYTHON_VERSION: "3.11"
   # It would be nice to be able to also define a DEFAULT_UBUNTU_VERSION
   # but sadly `env` can't be used either in `runs-on`.
 
@@ -76,7 +76,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
-          cache: 'pip'
+          cache: "pip"
 
       - name: Install required Python packages
         run: |
@@ -141,7 +141,7 @@ jobs:
       - name: Fetch sources
         uses: actions/checkout@v4
         with:
-          submodules: true
+          submodules: recursive
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -243,7 +243,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.DEFAULT_PYTHON_VERSION }}
-          cache: 'pip'
+          cache: "pip"
 
       - name: Install required Python packages
         run: |
@@ -303,7 +303,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.DEFAULT_PYTHON_VERSION }}
-          cache: 'pip'
+          cache: "pip"
 
       - name: Install build dependencies
         run: |
@@ -345,7 +345,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.DEFAULT_PYTHON_VERSION }}
-          cache: 'pip'
+          cache: "pip"
 
       - name: Install build dependencies
         run: |
