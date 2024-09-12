@@ -10,7 +10,7 @@
 
 ## New Features
 
-<!-- Here goes the main new features and examples or instructions on how to use them -->
+- Update to latest version of frequenz-api-common
 
 ## Bug Fixes
 
