@@ -4,3 +4,4 @@
 
 - Update to latest version of frequenz-api-common
 - Bump grpc related dependencies
+- Remove the dependency on `googleapis`
