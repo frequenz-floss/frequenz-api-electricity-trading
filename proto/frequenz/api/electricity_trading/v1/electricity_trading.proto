@@ -18,7 +18,7 @@ import "google/protobuf/timestamp.proto";
 
 import "frequenz/api/common/v1/grid/delivery_area.proto";
 import "frequenz/api/common/v1/grid/delivery_duration.proto";
-import "frequenz/api/common/v1/market/energy.proto";
+import "frequenz/api/common/v1/market/power.proto";
 import "frequenz/api/common/v1/market/price.proto";
 import "frequenz/api/common/v1/pagination/pagination_info.proto";
 import "frequenz/api/common/v1/pagination/pagination_params.proto";
@@ -234,8 +234,8 @@ message Order {
   // price for a BUY order or the minimum price for a SELL order.
   frequenz.api.common.v1.market.Price price = 6;
 
-  // The quantity of the contract being traded, specified in MWh.
-  frequenz.api.common.v1.market.Energy quantity = 7;
+  // The quantity of the contract being traded, specified in MW.
+  frequenz.api.common.v1.market.Power quantity = 7;
 
   // Optional; Applicable for STOP_LIMIT orders. This is the stop price
   // that triggers the limit order.
@@ -247,7 +247,7 @@ message Order {
 
   // Optional; Applicable for ICEBERG orders. This is the quantity
   // of the order to be displayed in the order book.
-  frequenz.api.common.v1.market.Energy display_quantity = 10;
+  frequenz.api.common.v1.market.Power display_quantity = 10;
 
   // Optional execution options such as All or None, Fill or Kill, etc.
   optional OrderExecutionOption execution_option = 11;
@@ -275,11 +275,11 @@ message Order {
   //   "microgrids": [
   //     {
   //       "microgrid_id": "1",
-  //       "mwh": 1.0
+  //       "mw": 1.0
   //     },
   //     {
   //       "microgrid_id": "2",
-  //       "mwh": 0.5
+  //       "mw": 0.5
   //     }
   //   ]
   // }
@@ -344,10 +344,10 @@ message OrderDetail {
   StateDetail state_detail = 3;
 
   // Remaining open quantity for this order.
-  frequenz.api.common.v1.market.Energy open_quantity = 4;
+  frequenz.api.common.v1.market.Power open_quantity = 4;
 
   // Filled quantity for this order.
-  frequenz.api.common.v1.market.Energy filled_quantity = 5;
+  frequenz.api.common.v1.market.Power filled_quantity = 5;
 
   // UTC Timestamp when the order was created.
   google.protobuf.Timestamp create_time = 6;
@@ -385,7 +385,7 @@ message Trade {
   frequenz.api.common.v1.market.Price price = 7;
 
   // The executed quantity of the trade.
-  frequenz.api.common.v1.market.Energy quantity = 8;
+  frequenz.api.common.v1.market.Power quantity = 8;
 
   // Current state of the trade.
   TradeState state = 9;
@@ -429,7 +429,7 @@ message PublicTrade {
   frequenz.api.common.v1.market.Price price = 6;
 
   // The executed quantity of the contract traded.
-  frequenz.api.common.v1.market.Energy quantity = 7;
+  frequenz.api.common.v1.market.Power quantity = 7;
 
   // Final state of the trade.
   TradeState state = 8;
@@ -559,8 +559,8 @@ message UpdateGridpoolOrderRequest {
     frequenz.api.common.v1.market.Price price = 2;
 
     // Optional; The updated quantity of the contract being traded,
-    // specified in MWh.
-    frequenz.api.common.v1.market.Energy quantity = 3;
+    // specified in MW.
+    frequenz.api.common.v1.market.Power quantity = 3;
 
     // Optional; Applicable for STOP_LIMIT orders. This is the updated
     // stop price that triggers the limit order.
@@ -572,7 +572,7 @@ message UpdateGridpoolOrderRequest {
 
     // Optional; Applicable for ICEBERG orders. This is the updated quantity
     // of the order to be displayed in the order book.
-    frequenz.api.common.v1.market.Energy display_quantity = 6;
+    frequenz.api.common.v1.market.Power display_quantity = 6;
 
     // Optional; Updated execution options such as All or None,
     // Fill or Kill, etc.
