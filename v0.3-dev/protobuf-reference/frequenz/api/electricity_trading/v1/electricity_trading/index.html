@@ -2733,9 +2733,9 @@ backtesting trading strategies, and conducting market analysis.</p>
 </tr>
 <tr>
 <td>quantity</td>
-<td><a href="#frequenz-api-common-v1-market-Energy">frequenz.api.common.v1.market.Energy</a></td>
+<td><a href="#frequenz-api-common-v1-market-Power">frequenz.api.common.v1.market.Power</a></td>
 <td></td>
-<td>The quantity of the contract being traded, specified in MWh.</td>
+<td>The quantity of the contract being traded, specified in MW.</td>
 </tr>
 <tr>
 <td>stop_price</td>
@@ -2751,7 +2751,7 @@ backtesting trading strategies, and conducting market analysis.</p>
 </tr>
 <tr>
 <td>display_quantity</td>
-<td><a href="#frequenz-api-common-v1-market-Energy">frequenz.api.common.v1.market.Energy</a></td>
+<td><a href="#frequenz-api-common-v1-market-Power">frequenz.api.common.v1.market.Power</a></td>
 <td></td>
 <td>Optional; Applicable for ICEBERG orders. This is the quantity of the order to be displayed in the order book.</td>
 </tr>
@@ -2777,7 +2777,7 @@ backtesting trading strategies, and conducting market analysis.</p>
 </table>
 <p>The field can store e.g. JSON objects containing details involved in the order. This feature can simplify application development by eliminating the need for complicated state management to remember the specifics of each order.</p>
 <p>By embedding this &#34;state&#34; within the order itself, you can include specifics like which microgrids consume or provide how much power. This makes it easier to manage complex orders and can simplify the logic required in applications.</p>
-<p>Example JSON payload: { &#34;microgrids&#34;: [ { &#34;microgrid_id&#34;: &#34;1&#34;, &#34;mwh&#34;: 1.0 }, { &#34;microgrid_id&#34;: &#34;2&#34;, &#34;mwh&#34;: 0.5 } ] }</p>
+<p>Example JSON payload: { &#34;microgrids&#34;: [ { &#34;microgrid_id&#34;: &#34;1&#34;, &#34;mw&#34;: 1.0 }, { &#34;microgrid_id&#34;: &#34;2&#34;, &#34;mw&#34;: 0.5 } ] }</p>
 <p>In this example, if the order is exectuted, these microgrids might consume the electricity mentioned in the example JSON payload. |
 | tag | <a href="#string">string</a> | optional | Optional user-defined tag to group related orders. |</p>
 <p><a name="frequenz-api-electricity_trading-electricity_trading-v1-OrderDetail"></a></p>
@@ -2814,13 +2814,13 @@ UTC timestamps.</p>
 </tr>
 <tr>
 <td>open_quantity</td>
-<td><a href="#frequenz-api-common-v1-market-Energy">frequenz.api.common.v1.market.Energy</a></td>
+<td><a href="#frequenz-api-common-v1-market-Power">frequenz.api.common.v1.market.Power</a></td>
 <td></td>
 <td>Remaining open quantity for this order.</td>
 </tr>
 <tr>
 <td>filled_quantity</td>
-<td><a href="#frequenz-api-common-v1-market-Energy">frequenz.api.common.v1.market.Energy</a></td>
+<td><a href="#frequenz-api-common-v1-market-Power">frequenz.api.common.v1.market.Power</a></td>
 <td></td>
 <td>Filled quantity for this order.</td>
 </tr>
@@ -2939,7 +2939,7 @@ attributes and final state.</p>
 </tr>
 <tr>
 <td>quantity</td>
-<td><a href="#frequenz-api-common-v1-market-Energy">frequenz.api.common.v1.market.Energy</a></td>
+<td><a href="#frequenz-api-common-v1-market-Power">frequenz.api.common.v1.market.Power</a></td>
 <td></td>
 <td>The executed quantity of the contract traded.</td>
 </tr>
@@ -3213,7 +3213,7 @@ Real-time information on public trades is pushed through this response.</p>
 </tr>
 <tr>
 <td>quantity</td>
-<td><a href="#frequenz-api-common-v1-market-Energy">frequenz.api.common.v1.market.Energy</a></td>
+<td><a href="#frequenz-api-common-v1-market-Power">frequenz.api.common.v1.market.Power</a></td>
 <td></td>
 <td>The executed quantity of the trade.</td>
 </tr>
@@ -3287,9 +3287,9 @@ take place.</p>
 </tr>
 <tr>
 <td>quantity</td>
-<td><a href="#frequenz-api-common-v1-market-Energy">frequenz.api.common.v1.market.Energy</a></td>
+<td><a href="#frequenz-api-common-v1-market-Power">frequenz.api.common.v1.market.Power</a></td>
 <td></td>
-<td>Optional; The updated quantity of the contract being traded, specified in MWh.</td>
+<td>Optional; The updated quantity of the contract being traded, specified in MW.</td>
 </tr>
 <tr>
 <td>stop_price</td>
@@ -3305,7 +3305,7 @@ take place.</p>
 </tr>
 <tr>
 <td>display_quantity</td>
-<td><a href="#frequenz-api-common-v1-market-Energy">frequenz.api.common.v1.market.Energy</a></td>
+<td><a href="#frequenz-api-common-v1-market-Power">frequenz.api.common.v1.market.Power</a></td>
 <td></td>
 <td>Optional; Applicable for ICEBERG orders. This is the updated quantity of the order to be displayed in the order book.</td>
 </tr>
