@@ -8068,7 +8068,7 @@ expected to be fulfilled.</p>
   </span>
 
 <a href="#frequenz.api.electricity_trading.v1.electricity_trading_pb2.Order.display_quantity" class="headerlink" title="Permanent link">¤</a></h6>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">display_quantity</span><span class="p">:</span> <span class="n"><span title="frequenz.api.common.v1.market.energy_pb2.Energy">Energy</span></span>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">display_quantity</span><span class="p">:</span> <span class="n"><span title="frequenz.api.common.v1.market.power_pb2.Power">Power</span></span>
 </span></code></pre></div>
 
     <div class="doc doc-contents ">
@@ -8135,11 +8135,11 @@ required in applications.</p>
   "microgrids": [
     {
       "microgrid_id": "1",
-      "mwh": 1.0
+      "mw": 1.0
     },
     {
       "microgrid_id": "2",
-      "mwh": 0.5
+      "mw": 0.5
     }
   ]
 }</p>
@@ -8210,12 +8210,12 @@ price for a BUY order or the minimum price for a SELL order.</p>
   </span>
 
 <a href="#frequenz.api.electricity_trading.v1.electricity_trading_pb2.Order.quantity" class="headerlink" title="Permanent link">¤</a></h6>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">quantity</span><span class="p">:</span> <span class="n"><span title="frequenz.api.common.v1.market.energy_pb2.Energy">Energy</span></span>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">quantity</span><span class="p">:</span> <span class="n"><span title="frequenz.api.common.v1.market.power_pb2.Power">Power</span></span>
 </span></code></pre></div>
 
     <div class="doc doc-contents ">
 
-      <p>The quantity of the contract being traded, specified in MWh.</p>
+      <p>The quantity of the contract being traded, specified in MW.</p>
     </div>
 
 </div>
@@ -8415,7 +8415,7 @@ UTC timestamps.</p>
   </span>
 
 <a href="#frequenz.api.electricity_trading.v1.electricity_trading_pb2.OrderDetail.filled_quantity" class="headerlink" title="Permanent link">¤</a></h6>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">filled_quantity</span><span class="p">:</span> <span class="n"><span title="frequenz.api.common.v1.market.energy_pb2.Energy">Energy</span></span>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">filled_quantity</span><span class="p">:</span> <span class="n"><span title="frequenz.api.common.v1.market.power_pb2.Power">Power</span></span>
 </span></code></pre></div>
 
     <div class="doc doc-contents ">
@@ -8461,7 +8461,7 @@ UTC timestamps.</p>
   </span>
 
 <a href="#frequenz.api.electricity_trading.v1.electricity_trading_pb2.OrderDetail.open_quantity" class="headerlink" title="Permanent link">¤</a></h6>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">open_quantity</span><span class="p">:</span> <span class="n"><span title="frequenz.api.common.v1.market.energy_pb2.Energy">Energy</span></span>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">open_quantity</span><span class="p">:</span> <span class="n"><span title="frequenz.api.common.v1.market.power_pb2.Power">Power</span></span>
 </span></code></pre></div>
 
     <div class="doc doc-contents ">
@@ -9136,14 +9136,14 @@ the end of the trading session.</p>
 <span class="normal"><a href="#__codelineno-0-65">65</a></span>
 <span class="normal"><a href="#__codelineno-0-66">66</a></span>
 <span class="normal"><a href="#__codelineno-0-67">67</a></span>
-<span class="normal"><a href="#__codelineno-0-68">68</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-61"><a id="__codelineno-0-61" name="__codelineno-0-61"></a><span class="n">_globals</span><span class="p">[</span><span class="s1">&#39;_ORDERDETAIL_STATEDETAIL_MARKETACTOR&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_serialized_start</span><span class="o">=</span><span class="mi">2611</span>
-</span><span id="__span-0-62"><a id="__codelineno-0-62" name="__codelineno-0-62"></a><span class="n">_globals</span><span class="p">[</span><span class="s1">&#39;_ORDERDETAIL_STATEDETAIL_MARKETACTOR&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_serialized_end</span><span class="o">=</span><span class="mi">2736</span>
-</span><span id="__span-0-63"><a id="__codelineno-0-63" name="__codelineno-0-63"></a><span class="n">_globals</span><span class="p">[</span><span class="s1">&#39;_TRADE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_serialized_start</span><span class="o">=</span><span class="mi">2739</span>
-</span><span id="__span-0-64"><a id="__codelineno-0-64" name="__codelineno-0-64"></a><span class="n">_globals</span><span class="p">[</span><span class="s1">&#39;_TRADE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_serialized_end</span><span class="o">=</span><span class="mi">3241</span>
-</span><span id="__span-0-65"><a id="__codelineno-0-65" name="__codelineno-0-65"></a><span class="n">_globals</span><span class="p">[</span><span class="s1">&#39;_PUBLICTRADE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_serialized_start</span><span class="o">=</span><span class="mi">3244</span>
-</span><span id="__span-0-66"><a id="__codelineno-0-66" name="__codelineno-0-66"></a><span class="n">_globals</span><span class="p">[</span><span class="s1">&#39;_PUBLICTRADE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_serialized_end</span><span class="o">=</span><span class="mi">3726</span>
-</span><span id="__span-0-67"><a id="__codelineno-0-67" name="__codelineno-0-67"></a><span class="n">_globals</span><span class="p">[</span><span class="s1">&#39;_GRIDPOOLORDERFILTER&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_serialized_start</span><span class="o">=</span><span class="mi">3729</span>
-</span><span id="__span-0-68"><a id="__codelineno-0-68" name="__codelineno-0-68"></a><span class="n">_globals</span><span class="p">[</span><span class="s1">&#39;_GRIDPOOLORDERFILTER&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_serialized_end</span><span class="o">=</span><span class="mi">4094</span>
+<span class="normal"><a href="#__codelineno-0-68">68</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-61"><a id="__codelineno-0-61" name="__codelineno-0-61"></a><span class="n">_globals</span><span class="p">[</span><span class="s1">&#39;_ORDERDETAIL_STATEDETAIL_MARKETACTOR&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_serialized_start</span><span class="o">=</span><span class="mi">2606</span>
+</span><span id="__span-0-62"><a id="__codelineno-0-62" name="__codelineno-0-62"></a><span class="n">_globals</span><span class="p">[</span><span class="s1">&#39;_ORDERDETAIL_STATEDETAIL_MARKETACTOR&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_serialized_end</span><span class="o">=</span><span class="mi">2731</span>
+</span><span id="__span-0-63"><a id="__codelineno-0-63" name="__codelineno-0-63"></a><span class="n">_globals</span><span class="p">[</span><span class="s1">&#39;_TRADE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_serialized_start</span><span class="o">=</span><span class="mi">2734</span>
+</span><span id="__span-0-64"><a id="__codelineno-0-64" name="__codelineno-0-64"></a><span class="n">_globals</span><span class="p">[</span><span class="s1">&#39;_TRADE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_serialized_end</span><span class="o">=</span><span class="mi">3235</span>
+</span><span id="__span-0-65"><a id="__codelineno-0-65" name="__codelineno-0-65"></a><span class="n">_globals</span><span class="p">[</span><span class="s1">&#39;_PUBLICTRADE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_serialized_start</span><span class="o">=</span><span class="mi">3238</span>
+</span><span id="__span-0-66"><a id="__codelineno-0-66" name="__codelineno-0-66"></a><span class="n">_globals</span><span class="p">[</span><span class="s1">&#39;_PUBLICTRADE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_serialized_end</span><span class="o">=</span><span class="mi">3719</span>
+</span><span id="__span-0-67"><a id="__codelineno-0-67" name="__codelineno-0-67"></a><span class="n">_globals</span><span class="p">[</span><span class="s1">&#39;_GRIDPOOLORDERFILTER&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_serialized_start</span><span class="o">=</span><span class="mi">3722</span>
+</span><span id="__span-0-68"><a id="__codelineno-0-68" name="__codelineno-0-68"></a><span class="n">_globals</span><span class="p">[</span><span class="s1">&#39;_GRIDPOOLORDERFILTER&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_serialized_end</span><span class="o">=</span><span class="mi">4087</span>
 </span></code></pre></div></td></tr></table></div>
               </details>
 
@@ -9419,7 +9419,7 @@ attributes and final state.</p>
   </span>
 
 <a href="#frequenz.api.electricity_trading.v1.electricity_trading_pb2.PublicTrade.quantity" class="headerlink" title="Permanent link">¤</a></h6>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">quantity</span><span class="p">:</span> <span class="n"><span title="frequenz.api.common.v1.market.energy_pb2.Energy">Energy</span></span>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">quantity</span><span class="p">:</span> <span class="n"><span title="frequenz.api.common.v1.market.power_pb2.Power">Power</span></span>
 </span></code></pre></div>
 
     <div class="doc doc-contents ">
@@ -10249,7 +10249,7 @@ real-time.</p>
   </span>
 
 <a href="#frequenz.api.electricity_trading.v1.electricity_trading_pb2.Trade.quantity" class="headerlink" title="Permanent link">¤</a></h6>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">quantity</span><span class="p">:</span> <span class="n"><span title="frequenz.api.common.v1.market.energy_pb2.Energy">Energy</span></span>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">quantity</span><span class="p">:</span> <span class="n"><span title="frequenz.api.common.v1.market.power_pb2.Power">Power</span></span>
 </span></code></pre></div>
 
     <div class="doc doc-contents ">
@@ -10520,7 +10520,7 @@ take place.</p>
   </span>
 
 <a href="#frequenz.api.electricity_trading.v1.electricity_trading_pb2.UpdateGridpoolOrderRequest.UpdateOrder.display_quantity" class="headerlink" title="Permanent link">¤</a></h8>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">display_quantity</span><span class="p">:</span> <span class="n"><span title="frequenz.api.common.v1.market.energy_pb2.Energy">Energy</span></span>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">display_quantity</span><span class="p">:</span> <span class="n"><span title="frequenz.api.common.v1.market.power_pb2.Power">Power</span></span>
 </span></code></pre></div>
 
     <div class="doc doc-contents ">
@@ -10641,13 +10641,13 @@ order.</p>
   </span>
 
 <a href="#frequenz.api.electricity_trading.v1.electricity_trading_pb2.UpdateGridpoolOrderRequest.UpdateOrder.quantity" class="headerlink" title="Permanent link">¤</a></h8>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">quantity</span><span class="p">:</span> <span class="n"><span title="frequenz.api.common.v1.market.energy_pb2.Energy">Energy</span></span>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">quantity</span><span class="p">:</span> <span class="n"><span title="frequenz.api.common.v1.market.power_pb2.Power">Power</span></span>
 </span></code></pre></div>
 
     <div class="doc doc-contents ">
 
       <p>Optional; The updated quantity of the contract being traded,
-specified in MWh.</p>
+specified in MW.</p>
     </div>
 
 </div>
