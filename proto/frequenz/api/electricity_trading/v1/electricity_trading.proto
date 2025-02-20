@@ -71,6 +71,7 @@ service ElectricityTradingService {
   //   If omitted, it remains open and continues streaming new trades.
   rpc ReceivePublicTradesStream(ReceivePublicTradesStreamRequest)
       returns (stream ReceivePublicTradesStreamResponse);
+
 }
 
 // OrderExecutionOption defines specific restriction behavior for the execution
