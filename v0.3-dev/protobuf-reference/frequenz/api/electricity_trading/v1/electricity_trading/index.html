@@ -874,24 +874,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#listpublictradesrequest" class="md-nav__link">
-    <span class="md-ellipsis">
-      ListPublicTradesRequest
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#listpublictradesresponse" class="md-nav__link">
-    <span class="md-ellipsis">
-      ListPublicTradesResponse
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#order" class="md-nav__link">
     <span class="md-ellipsis">
       Order
@@ -1862,24 +1844,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#listpublictradesrequest" class="md-nav__link">
-    <span class="md-ellipsis">
-      ListPublicTradesRequest
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#listpublictradesresponse" class="md-nav__link">
-    <span class="md-ellipsis">
-      ListPublicTradesResponse
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#order" class="md-nav__link">
     <span class="md-ellipsis">
       Order
@@ -2139,8 +2103,6 @@
 <li><a href="#frequenz-api-electricity_trading-electricity_trading-v1-ListGridpoolOrdersResponse">ListGridpoolOrdersResponse</a></li>
 <li><a href="#frequenz-api-electricity_trading-electricity_trading-v1-ListGridpoolTradesRequest">ListGridpoolTradesRequest</a></li>
 <li><a href="#frequenz-api-electricity_trading-electricity_trading-v1-ListGridpoolTradesResponse">ListGridpoolTradesResponse</a></li>
-<li><a href="#frequenz-api-electricity_trading-electricity_trading-v1-ListPublicTradesRequest">ListPublicTradesRequest</a></li>
-<li><a href="#frequenz-api-electricity_trading-electricity_trading-v1-ListPublicTradesResponse">ListPublicTradesResponse</a></li>
 <li><a href="#frequenz-api-electricity_trading-electricity_trading-v1-Order">Order</a></li>
 <li><a href="#frequenz-api-electricity_trading-electricity_trading-v1-OrderDetail">OrderDetail</a></li>
 <li><a href="#frequenz-api-electricity_trading-electricity_trading-v1-OrderDetail-StateDetail">OrderDetail.StateDetail</a></li>
@@ -2629,65 +2591,6 @@ market.</p>
 </tr>
 </tbody>
 </table>
-<p><a name="frequenz-api-electricity_trading-electricity_trading-v1-ListPublicTradesRequest"></a></p>
-<h3 id="listpublictradesrequest">ListPublicTradesRequest<a class="headerlink" href="#listpublictradesrequest" title="Permanent link">¤</a></h3>
-<p>Request to list all historic public trades with optional filters.
-This method allows for querying historical data, useful for various analytics
-tasks.</p>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Type</th>
-<th>Label</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>filter</td>
-<td><a href="#frequenz-api-electricity_trading-electricity_trading-v1-PublicTradeFilter">PublicTradeFilter</a></td>
-<td></td>
-<td>Optional filter to narrow down the list of trades.</td>
-</tr>
-<tr>
-<td>pagination_params</td>
-<td><a href="#frequenz-api-common-v1-pagination-PaginationParams">frequenz.api.common.v1.pagination.PaginationParams</a></td>
-<td></td>
-<td>Pagination parameters.</td>
-</tr>
-</tbody>
-</table>
-<p><a name="frequenz-api-electricity_trading-electricity_trading-v1-ListPublicTradesResponse"></a></p>
-<h3 id="listpublictradesresponse">ListPublicTradesResponse<a class="headerlink" href="#listpublictradesresponse" title="Permanent link">¤</a></h3>
-<p>ListPublicTradesResponse is a message that contains a list of historic public
-trades.
-This dataset is vital for tasks such as training machine learning models,
-backtesting trading strategies, and conducting market analysis.</p>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Type</th>
-<th>Label</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>public_trades</td>
-<td><a href="#frequenz-api-electricity_trading-electricity_trading-v1-PublicTrade">PublicTrade</a></td>
-<td>repeated</td>
-<td>List of all public trades that met the specified filtering criteria.</td>
-</tr>
-<tr>
-<td>pagination_info</td>
-<td><a href="#frequenz-api-common-v1-pagination-PaginationInfo">frequenz.api.common.v1.pagination.PaginationInfo</a></td>
-<td></td>
-<td>Metadata for pagination, including token for next page to retrieve.</td>
-</tr>
-</tbody>
-</table>
 <p><a name="frequenz-api-electricity_trading-electricity_trading-v1-Order"></a></p>
 <h3 id="order">Order<a class="headerlink" href="#order" title="Permanent link">¤</a></h3>
 <p>Represents an order in the electricity market.</p>
@@ -3125,6 +3028,18 @@ making it useful dynamic analytics and real-time decision-making.</p>
 <td><a href="#frequenz-api-electricity_trading-electricity_trading-v1-PublicTradeFilter">PublicTradeFilter</a></td>
 <td></td>
 <td>Optional filter to specify which trades should be included in the stream.</td>
+</tr>
+<tr>
+<td>start_time</td>
+<td><a href="#google-protobuf-Timestamp">google.protobuf.Timestamp</a></td>
+<td></td>
+<td>Optional; if set, retrieves trades executed at or after this timestamp. If omitted, streams only new trades from the time of connection.</td>
+</tr>
+<tr>
+<td>end_time</td>
+<td><a href="#google-protobuf-Timestamp">google.protobuf.Timestamp</a></td>
+<td></td>
+<td>Optional; if set, the stream stops after sending trades up to this timestamp. If omitted, the stream continues to stream new trades as they occur.</td>
 </tr>
 </tbody>
 </table>
@@ -3783,19 +3698,16 @@ the end of the trading session.</p>
 <td>Stream trades for a given Gridpool.</td>
 </tr>
 <tr>
-<td>ListPublicTrades</td>
-<td><a href="#frequenz-api-electricity_trading-electricity_trading-v1-ListPublicTradesRequest">ListPublicTradesRequest</a></td>
-<td><a href="#frequenz-api-electricity_trading-electricity_trading-v1-ListPublicTradesResponse">ListPublicTradesResponse</a></td>
-<td>Lists all historic public trades.</td>
-</tr>
-<tr>
 <td>ReceivePublicTradesStream</td>
 <td><a href="#frequenz-api-electricity_trading-electricity_trading-v1-ReceivePublicTradesStreamRequest">ReceivePublicTradesStreamRequest</a></td>
 <td><a href="#frequenz-api-electricity_trading-electricity_trading-v1-ReceivePublicTradesStreamResponse">ReceivePublicTradesStreamResponse</a> stream</td>
-<td>Stream all historic public trades.</td>
+<td>This stream provides both historical and real-time public trade data.</td>
 </tr>
 </tbody>
 </table>
+<ul>
+<li>If <code>start_time</code> is set, it retrieves trades from that timestamp onwards. If omitted, it streams only new trades from the time the connection is established. - If <code>end_time</code> is set, the stream stops after sending trades up to this timestamp. If omitted, it remains open and continues streaming new trades. |</li>
+</ul>
 <h2 id="scalar-value-types">Scalar Value Types<a class="headerlink" href="#scalar-value-types" title="Permanent link">¤</a></h2>
 <table>
 <thead>
