@@ -6,7 +6,13 @@
 
 ## Upgrading
 
-<!-- Here goes notes on how to upgrade from previous versions, including deprecations and what they should be replaced with -->
+* Remove the `ListPublicTrades` RPC endpoint.
+* Refactor `ReceivePublicTradesStream` to handle real-time and historical trades.
+    * Use `start_time` to retrieve past trades from a specific timestamp. 
+      If omitted the stream starts from the time the connection was established.
+    * Use `end_time` to stop the stream at a defined point.
+      If omitted it will keep streaming new trades indefinitely.
+
 
 ## New Features
 

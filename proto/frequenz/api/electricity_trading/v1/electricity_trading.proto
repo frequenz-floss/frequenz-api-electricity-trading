@@ -61,11 +61,14 @@ service ElectricityTradingService {
   rpc ReceiveGridpoolTradesStream(ReceiveGridpoolTradesStreamRequest)
       returns (stream ReceiveGridpoolTradesStreamResponse);
 
-  // Lists all historic public trades.
-  rpc ListPublicTrades(ListPublicTradesRequest)
-      returns (ListPublicTradesResponse);
-
-  // Stream all historic public trades.
+  // This stream provides both historical and real-time public trade data.
+  //
+  // - If `start_time` is set, it retrieves trades from that timestamp onwards.
+  //   If omitted, it streams only new trades from the time the connection is 
+  //   established.
+  // - If `end_time` is set, the stream stops after sending trades up to this 
+  //   timestamp.
+  //   If omitted, it remains open and continues streaming new trades.
   rpc ReceivePublicTradesStream(ReceivePublicTradesStreamRequest)
       returns (stream ReceivePublicTradesStreamResponse);
 }
@@ -745,28 +748,6 @@ message ReceiveGridpoolTradesStreamResponse {
   Trade trade = 1;
 }
 
-// Request to list all historic public trades with optional filters.
-// This method allows for querying historical data, useful for various analytics
-// tasks.
-message ListPublicTradesRequest {
-  // Optional filter to narrow down the list of trades.
-  PublicTradeFilter filter = 1;
-
-  // Pagination parameters.
-  frequenz.api.common.v1.pagination.PaginationParams pagination_params = 3;
-}
-
-// ListPublicTradesResponse is a message that contains a list of historic public
-// trades.
-// This dataset is vital for tasks such as training machine learning models,
-// backtesting trading strategies, and conducting market analysis.
-message ListPublicTradesResponse {
-  // List of all public trades that met the specified filtering criteria.
-  repeated PublicTrade public_trades = 1;
-
-  // Metadata for pagination, including token for next page to retrieve.
-  frequenz.api.common.v1.pagination.PaginationInfo pagination_info = 2;
-}
 
 // Subscribe to the stream of public trades.
 // This method provides real-time updates on newly executed public trades,
@@ -774,6 +755,15 @@ message ListPublicTradesResponse {
 message ReceivePublicTradesStreamRequest {
   // Optional filter to specify which trades should be included in the stream.
   PublicTradeFilter filter = 1;
+
+  // Optional; if set, retrieves trades executed at or after this timestamp.
+  // If omitted, streams only new trades from the time of connection.
+  google.protobuf.Timestamp start_time = 2;
+
+  // Optional; if set, the stream stops after sending trades up to this 
+  // timestamp.
+  // If omitted, the stream continues to stream new trades as they occur.
+  google.protobuf.Timestamp end_time = 3;
 }
 
 // Response to a subscription request for a stream of public trades.
