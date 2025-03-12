@@ -221,8 +221,8 @@ message Order {
   // of the delivery area may vary by jurisdiction.
   frequenz.api.common.v1.grid.DeliveryArea delivery_area = 2;
 
-  // The delivery period for the contract, specified as a start and end
-  // timestamp in UTC. It represents the period during which the contract is
+  // The delivery period for the contract, specified as a start timestamp in UTC
+  // and a duration. It represents the period during which the contract is
   // expected to be fulfilled.
   frequenz.api.common.v1.grid.DeliveryPeriod delivery_period = 3;
 
