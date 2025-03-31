@@ -6,7 +6,7 @@
 
 ## Upgrading
 
-<!-- Here goes notes on how to upgrade from previous versions, including deprecations and what they should be replaced with -->
+* Update repo-config from v0.11.0 to v0.13.0
 
 ## New Features
 
