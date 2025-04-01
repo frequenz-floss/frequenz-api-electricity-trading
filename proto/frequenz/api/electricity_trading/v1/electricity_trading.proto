@@ -64,13 +64,17 @@ service ElectricityTradingService {
   // This stream provides both historical and real-time public trade data.
   //
   // - If `start_time` is set, it retrieves trades from that timestamp onwards.
-  //   If omitted, it streams only new trades from the time the connection is 
+  //   If omitted, it streams only new trades from the time the connection is
   //   established.
-  // - If `end_time` is set, the stream stops after sending trades up to this 
+  // - If `end_time` is set, the stream stops after sending trades up to this
   //   timestamp.
   //   If omitted, it remains open and continues streaming new trades.
   rpc ReceivePublicTradesStream(ReceivePublicTradesStreamRequest)
       returns (stream ReceivePublicTradesStreamResponse);
+
+  // Stream public order book information.
+  rpc ReceivePublicOrderBookStream(ReceivePublicOrderBookStreamRequest)
+      returns (stream ReceivePublicOrderBookStreamResponse);
 }
 
 // OrderExecutionOption defines specific restriction behavior for the execution
@@ -760,7 +764,7 @@ message ReceivePublicTradesStreamRequest {
   // If omitted, streams only new trades from the time of connection.
   google.protobuf.Timestamp start_time = 2;
 
-  // Optional; if set, the stream stops after sending trades up to this 
+  // Optional; if set, the stream stops after sending trades up to this
   // timestamp.
   // If omitted, the stream continues to stream new trades as they occur.
   google.protobuf.Timestamp end_time = 3;
@@ -772,4 +776,97 @@ message ReceivePublicTradesStreamResponse {
   // The public trade that has been executed and is being broadcasted in
   // real-time.
   PublicTrade public_trade = 1;
+}
+
+// PublicOrderBookRecord represents a snapshot of an order book entry at
+// a specific point in time.
+//
+// Each record captures the state of an individual order when it is first
+// entered and subsequently updated.
+//
+// !!! note
+//     An order may generate multiple records over time, each corresponding to a
+// different update event on the order book.
+message PublicOrderBookRecord {
+  // The order book identifier.
+  uint64 id = 1;
+
+  // Frequenz Delivery area, using the common API type.
+  frequenz.api.common.v1.grid.DeliveryArea delivery_area = 2;
+
+  // Frequenz Delivery period, using the common API type.
+  frequenz.api.common.v1.grid.DeliveryPeriod delivery_period = 3;
+
+  // The type of order, such as LIMIT, STOP_LIMIT, ICEBERG, etc.
+  OrderType type = 4;
+
+  // Indicates if the order was on the Buy or Sell side.
+  MarketSide side = 5;
+
+  // Order price, using the common API definition for price.
+  frequenz.api.common.v1.market.Price price = 6;
+
+  // Order quantity, using the common API definition for power.
+  frequenz.api.common.v1.market.Power quantity = 7;
+
+  // Execution option (e.g., AON).
+  OrderExecutionOption execution_option = 8;
+
+  // Timestamp when the order was created on the order book.
+  google.protobuf.Timestamp create_time = 9;
+
+  // Timestamp when this particular update event occurred.
+  // Each update to an order will have its own update_time reflecting
+  // the moment that specific change occurred.
+  google.protobuf.Timestamp update_time = 10;
+}
+
+// Parameters for filtering order book stream results.
+//
+// !!! note
+//     Multiple filters can be used in combination to narrow down the returned
+//     order book entries. For example, you can apply both delivery period and
+//     delivery area filters simultaneously to list only the order book entries
+//     for a specific time period in a given delivery area.
+message PublicOrderBookFilter {
+  // Optional; if set, only order book entries for this delivery period are
+  // returned.
+  frequenz.api.common.v1.grid.DeliveryPeriod delivery_period = 1;
+
+  // Optional; if set, only order book entries for this delivery area are
+  // returned.
+  frequenz.api.common.v1.grid.DeliveryArea delivery_area = 2;
+}
+
+// Request to subscribe to the public order book stream.
+//
+// This RPC provides real-time updates on public order book entries for use in
+// live trading and backtesting. When a client application initially connects,
+// it may specify a start_time to retrieve historical order book updates.
+// For example, setting start_time to "now - X hours" causes the server to
+// replay all stored order book updates from that time onward. If start_time is
+// omitted, only new order book updates from the moment of connection will be
+// streamed. If an end_time is provided, it must be set to a timestamp in the
+// past. This ensures that the historical data window is complete, and no future
+// (incomplete) data is expected.
+message ReceivePublicOrderBookStreamRequest {
+  // Optional filter to narrow down the public order book entries returned.
+  PublicOrderBookFilter filter = 1;
+
+  // Optional; if set, retrieves order book updates executed at or after this
+  // timestamp. For example, setting this to "now - X hours" allows a client to
+  // receive historical updates covering the last X hours. If omitted, only new
+  // order book updates from the time of connection are streamed.
+  google.protobuf.Timestamp start_time = 2;
+
+  // Optional; if set, stops streaming order book updates after this timestamp.
+  // !!! note
+  //     end_time must be in the past.
+  google.protobuf.Timestamp end_time = 3;
+}
+
+// Response message for the public order book stream, returning a single order
+// book record.
+message ReceivePublicOrderBookStreamResponse {
+  PublicOrderBookRecord public_order_book_record = 1;
 }
