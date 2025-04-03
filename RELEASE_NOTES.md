@@ -10,7 +10,7 @@
 
 ## New Features
 
-* Adds an optional `side` field to PublicOrderBookFilter
+<!-- Here goes the main new features and examples or instructions on how to use them -->
 
 ## Bug Fixes
 
