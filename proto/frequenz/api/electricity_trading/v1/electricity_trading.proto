@@ -836,6 +836,10 @@ message PublicOrderBookFilter {
   // Optional; if set, only order book entries for this delivery area are
   // returned.
   frequenz.api.common.v1.grid.DeliveryArea delivery_area = 2;
+
+  // Optional; if set, only order book entries for this delivery period are
+  // returned.
+  optional MarketSide side = 3;
 }
 
 // Request to subscribe to the public order book stream.
