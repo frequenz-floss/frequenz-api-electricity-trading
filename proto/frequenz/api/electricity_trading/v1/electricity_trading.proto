@@ -586,6 +586,11 @@ message UpdateGridpoolOrderRequest {
 
     // Optional; Updated execution options such as All or None,
     // Fill or Kill, etc.
+    //
+    // !!! note "Update with FieldMask"
+    //     – not in `update_mask: leave unchanged,
+    //     – present in payload: set to new value,
+    //     – absent in payload: clear (unrestricted)
     optional OrderExecutionOption execution_option = 7;
 
     // Optional; This is an updated timestamp defining the time after
