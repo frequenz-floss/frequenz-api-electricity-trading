@@ -3499,26 +3499,12 @@ take place.</p>
 <td>optional</td>
 <td>Optional; Updated execution options such as All or None, Fill or Kill, etc.</td>
 </tr>
-<tr>
-<td>valid_until</td>
-<td><a href="#google-protobuf-Timestamp">google.protobuf.Timestamp</a></td>
-<td></td>
-<td>Optional; This is an updated timestamp defining the time after which the order should be cancelled if not filled. The timestamp is in UTC.</td>
-</tr>
-<tr>
-<td>payload</td>
-<td><a href="#google-protobuf-Struct">google.protobuf.Struct</a></td>
-<td></td>
-<td>Optional; Updated user-defined payload individual to a specific order. This can be any data that the user wants to associate with the order.</td>
-</tr>
-<tr>
-<td>tag</td>
-<td><a href="#string">string</a></td>
-<td>optional</td>
-<td>Optional; Updated user-defined tag to group related orders.</td>
-</tr>
 </tbody>
 </table>
+<p>!!! note &#34;Update with FieldMask&#34; – not in `update_mask: leave unchanged, – present in payload: set to new value, – absent in payload: clear (unrestricted) |
+| valid_until | <a href="#google-protobuf-Timestamp">google.protobuf.Timestamp</a> |  | Optional; This is an updated timestamp defining the time after which the order should be cancelled if not filled. The timestamp is in UTC. |
+| payload | <a href="#google-protobuf-Struct">google.protobuf.Struct</a> |  | Optional; Updated user-defined payload individual to a specific order. This can be any data that the user wants to associate with the order. |
+| tag | <a href="#string">string</a> | optional | Optional; Updated user-defined tag to group related orders. |</p>
 <p><a name="frequenz-api-electricity_trading-electricity_trading-v1-UpdateGridpoolOrderResponse"></a></p>
 <h3 id="updategridpoolorderresponse">UpdateGridpoolOrderResponse<a class="headerlink" href="#updategridpoolorderresponse" title="Permanent link">¤</a></h3>
 <p>Response from updating an existing order for a given Gridpool.</p>
