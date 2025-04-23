@@ -814,7 +814,7 @@ message PublicOrderBookRecord {
   // Order price, using the common API definition for price.
   frequenz.api.common.v1.market.Price price = 6;
 
-  // Order quantity, using the common API definition for power.
+  // Open order quantity, using the common API definition for power.
   frequenz.api.common.v1.market.Power quantity = 7;
 
   // Execution option (e.g., AON).
