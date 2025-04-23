@@ -818,7 +818,7 @@ message PublicOrderBookRecord {
   frequenz.api.common.v1.market.Power quantity = 7;
 
   // Execution option (e.g., AON).
-  OrderExecutionOption execution_option = 8;
+  optional OrderExecutionOption execution_option = 8;
 
   // Timestamp when the order was created on the order book.
   google.protobuf.Timestamp create_time = 9;
