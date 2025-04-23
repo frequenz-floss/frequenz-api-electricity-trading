@@ -464,6 +464,9 @@ message GridpoolOrderFilter {
 
   // Optional filters the listed orders by their associated tag.
   optional string tag = 5;
+
+  // Optional filter for the given order IDs.
+  repeated uint64 order_ids = 6;
 }
 
 // Parameters for filtering Gridpool trades.
@@ -477,7 +480,7 @@ message GridpoolTradeFilter {
   // Optional filter for the trade state.
   repeated TradeState states = 1;
 
-  // Optional filter for the given order id´s.
+  // Optional filter for the given trade id´s.
   repeated uint64 trade_ids = 2;
 
   // Optional filter for the trades order side.
