@@ -13,6 +13,7 @@
 - Set `execution_option` field in `PublicOrderRecord` to optional
 - Enhance documantation for `UpdateOrder.OrderExecutionOption` field
 - Add repeated `order_id` filter to `GridpoolOrderFilter`
+- Repeated Order book entries
 
 ## Bug Fixes
 
