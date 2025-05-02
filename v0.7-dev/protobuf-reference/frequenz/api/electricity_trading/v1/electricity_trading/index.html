@@ -3257,8 +3257,8 @@ past. This ensures that the historical data window is complete, and no future
 </table>
 <p><a name="frequenz-api-electricity_trading-electricity_trading-v1-ReceivePublicOrderBookStreamResponse"></a></p>
 <h3 id="receivepublicorderbookstreamresponse">ReceivePublicOrderBookStreamResponse<a class="headerlink" href="#receivepublicorderbookstreamresponse" title="Permanent link">¤</a></h3>
-<p>Response message for the public order book stream, returning a single order
-book record.</p>
+<p>Response message for the public order book stream, returning multiple order
+book records.</p>
 <table>
 <thead>
 <tr>
@@ -3270,9 +3270,9 @@ book record.</p>
 </thead>
 <tbody>
 <tr>
-<td>public_order_book_record</td>
+<td>public_order_book_records</td>
 <td><a href="#frequenz-api-electricity_trading-electricity_trading-v1-PublicOrderBookRecord">PublicOrderBookRecord</a></td>
-<td></td>
+<td>repeated</td>
 <td></td>
 </tr>
 </tbody>
