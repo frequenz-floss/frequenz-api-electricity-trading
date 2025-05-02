@@ -877,8 +877,8 @@ message ReceivePublicOrderBookStreamRequest {
   google.protobuf.Timestamp end_time = 3;
 }
 
-// Response message for the public order book stream, returning a single order
-// book record.
+// Response message for the public order book stream, returning multiple order
+// book records.
 message ReceivePublicOrderBookStreamResponse {
-  PublicOrderBookRecord public_order_book_record = 1;
+  repeated PublicOrderBookRecord public_order_book_records = 1;
 }
