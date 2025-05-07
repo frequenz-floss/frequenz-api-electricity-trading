@@ -87,6 +87,9 @@ enum OrderExecutionOption {
   // UNSPECIFIED: The order execution option has not been set.
   ORDER_EXECUTION_OPTION_UNSPECIFIED = 0;
 
+  // Not restricted: The order is not restricted.
+  ORDER_EXECUTION_OPTION_NOT_RESTRICTED = 1;
+
   // All or None: Order must be executed in its entirety, or not executed at
   // all.
   ORDER_EXECUTION_OPTION_AON = 2;
@@ -818,7 +821,7 @@ message PublicOrderBookRecord {
   frequenz.api.common.v1.market.Power quantity = 7;
 
   // Execution option (e.g., AON).
-  optional OrderExecutionOption execution_option = 8;
+  OrderExecutionOption execution_option = 8;
 
   // Timestamp when the order was created on the order book.
   google.protobuf.Timestamp create_time = 9;
