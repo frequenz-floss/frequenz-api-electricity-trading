@@ -818,6 +818,9 @@ message PublicOrderBookRecord {
   frequenz.api.common.v1.market.Power quantity = 7;
 
   // Execution option (e.g., AON).
+  // !!! note
+  //    This field is optional and thus setting it to None can only be
+  //    distinguished from the default enum value by using the HasField method.
   optional OrderExecutionOption execution_option = 8;
 
   // Timestamp when the order was created on the order book.
