@@ -10,7 +10,7 @@
 
 ## New Features
 
-<!-- Here goes the main new features and examples or instructions on how to use them -->
+- Made `OrderType` optional in `PublicOrderBookRecord` to handle cases where the order type is unknown.
 
 ## Bug Fixes
 
