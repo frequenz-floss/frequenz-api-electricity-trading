@@ -3003,47 +3003,18 @@ entered and subsequently updated.</p>
 <tr>
 <td>type</td>
 <td><a href="#frequenz-api-electricity_trading-electricity_trading-v1-OrderType">OrderType</a></td>
-<td></td>
-<td>The type of order, such as LIMIT, STOP_LIMIT, ICEBERG, etc.</td>
-</tr>
-<tr>
-<td>side</td>
-<td><a href="#frequenz-api-electricity_trading-electricity_trading-v1-MarketSide">MarketSide</a></td>
-<td></td>
-<td>Indicates if the order was on the Buy or Sell side.</td>
-</tr>
-<tr>
-<td>price</td>
-<td><a href="#frequenz-api-common-v1-market-Price">frequenz.api.common.v1.market.Price</a></td>
-<td></td>
-<td>Order price, using the common API definition for price.</td>
-</tr>
-<tr>
-<td>quantity</td>
-<td><a href="#frequenz-api-common-v1-market-Power">frequenz.api.common.v1.market.Power</a></td>
-<td></td>
-<td>Open order quantity, using the common API definition for power.</td>
-</tr>
-<tr>
-<td>execution_option</td>
-<td><a href="#frequenz-api-electricity_trading-electricity_trading-v1-OrderExecutionOption">OrderExecutionOption</a></td>
 <td>optional</td>
-<td>Execution option (e.g., AON).</td>
-</tr>
-<tr>
-<td>create_time</td>
-<td><a href="#google-protobuf-Timestamp">google.protobuf.Timestamp</a></td>
-<td></td>
-<td>Timestamp when the order was created on the order book.</td>
-</tr>
-<tr>
-<td>update_time</td>
-<td><a href="#google-protobuf-Timestamp">google.protobuf.Timestamp</a></td>
-<td></td>
-<td>Timestamp when this particular update event occurred. Each update to an order will have its own update_time reflecting the moment that specific change occurred.</td>
+<td>Optional: The type of order (e.g., LIMIT, STOP_LIMIT, ICEBERG).</td>
 </tr>
 </tbody>
 </table>
+<p>If not set, the order type is unknown (for example, if the source market does not expose the order type). |
+| side | <a href="#frequenz-api-electricity_trading-electricity_trading-v1-MarketSide">MarketSide</a> |  | Indicates if the order was on the Buy or Sell side. |
+| price | <a href="#frequenz-api-common-v1-market-Price">frequenz.api.common.v1.market.Price</a> |  | Order price, using the common API definition for price. |
+| quantity | <a href="#frequenz-api-common-v1-market-Power">frequenz.api.common.v1.market.Power</a> |  | Open order quantity, using the common API definition for power. |
+| execution_option | <a href="#frequenz-api-electricity_trading-electricity_trading-v1-OrderExecutionOption">OrderExecutionOption</a> | optional | Execution option (e.g., AON). |
+| create_time | <a href="#google-protobuf-Timestamp">google.protobuf.Timestamp</a> |  | Timestamp when the order was created on the order book. |
+| update_time | <a href="#google-protobuf-Timestamp">google.protobuf.Timestamp</a> |  | Timestamp when this particular update event occurred. Each update to an order will have its own update_time reflecting the moment that specific change occurred. |</p>
 <p><a name="frequenz-api-electricity_trading-electricity_trading-v1-PublicTrade"></a></p>
 <h3 id="publictrade">PublicTrade<a class="headerlink" href="#publictrade" title="Permanent link">¤</a></h3>
 <p>Represents a public trade in the market.</p>
