@@ -805,8 +805,11 @@ message PublicOrderBookRecord {
   // Frequenz Delivery period, using the common API type.
   frequenz.api.common.v1.grid.DeliveryPeriod delivery_period = 3;
 
-  // The type of order, such as LIMIT, STOP_LIMIT, ICEBERG, etc.
-  OrderType type = 4;
+  // Optional: The type of order (e.g., LIMIT, STOP_LIMIT, ICEBERG).
+  //
+  // If not set, the order type is unknown (for example, if the source market
+  // does not expose the order type).
+  optional OrderType type = 4;
 
   // Indicates if the order was on the Buy or Sell side.
   MarketSide side = 5;
