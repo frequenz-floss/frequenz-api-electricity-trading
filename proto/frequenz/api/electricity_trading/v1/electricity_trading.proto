@@ -528,13 +528,31 @@ message GridpoolOrderFilter {
   repeated uint64 order_ids = 6;
 }
 
-// Parameters for filtering Gridpool trades.
+// Filters for selecting Gridpool trades.
 //
-// !!! note
-//     Multiple filters can be used in combination to narrow down the returned
-//     results. For example, you can apply both state and side filters
-//     simultaneously to list only the trades on the buy side of the
-//     market.
+// A trade must match all specified criteria to be included in the result.
+//
+// !!! note "Matching Behavior"
+//     - `delivery_time_filter` is optional.
+//     - Filtering over disjoint time intervals requires sending multiple
+//       requests.
+//
+// !!! example "Filtering with time interval and trade state"
+//     ```json
+//     {
+//       "states": ["TRADE_STATE_ACTIVE"],
+//       "side": "MARKET_SIDE_SELL",
+//       "delivery_area": "DELIVERY_AREA_DE_50HZ",
+//       "delivery_time_filter": {
+//         "time_interval": {
+//           "start_time": "2025-06-01T00:00:00Z",
+//           "end_time": "2025-06-02T00:00:00Z"
+//         },
+//         "duration_filters": ["DELIVERY_DURATION_60"]
+//       }
+//     }
+//     ```
+//
 message GridpoolTradeFilter {
   // Optional filter for the trade state.
   repeated TradeState states = 1;
@@ -545,8 +563,8 @@ message GridpoolTradeFilter {
   // Optional filter for the trades order side.
   optional MarketSide side = 3;
 
-  // Optional filter for delivery period.
-  frequenz.api.common.v1alpha7.grid.DeliveryPeriod delivery_period = 4;
+  // Optional; Filter by delivery period.
+  optional DeliveryTimeFilter delivery_time_filter = 4;
 
   // Optional filter for delivery area.
   frequenz.api.common.v1alpha7.grid.DeliveryArea delivery_area = 5;
