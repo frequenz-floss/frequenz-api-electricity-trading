@@ -22,6 +22,7 @@ import "frequenz/api/common/v1alpha7/market/power.proto";
 import "frequenz/api/common/v1alpha7/market/price.proto";
 import "frequenz/api/common/v1alpha7/pagination/pagination_info.proto";
 import "frequenz/api/common/v1alpha7/pagination/pagination_params.proto";
+import "frequenz/api/common/v1alpha7/type/interval.proto";
 
 // Service providing operations related to order management.
 service ElectricityTradingService {
@@ -440,6 +441,64 @@ message PublicTrade {
 
   // Final state of the trade.
   TradeState state = 8;
+}
+
+// Filters delivery periods by start time and duration.
+//
+// A delivery period is defined by a start timestamp and a fixed delivery
+// duration (e.g., 15, 30, or 60 minutes). This filter lets you query for
+// delivery periods that start within an optional time range and optionally
+// match one or more specific durations.
+//
+// The time range is inclusive at the start and exclusive at the end, following
+// the ISO 8601 interval format and conventions in tools like Pandas and Python.
+//
+// !!! tip "Terminology"
+//     - **DeliveryDuration**: A fixed interval (e.g., 15, 30, or 60 minutes).
+//     - **DeliveryPeriod**: A combination of a start time and a
+//       DeliveryDuration.
+//
+// !!! note "Filter Logic"
+//     - `time_interval` is optional; if omitted, all time ranges are matched.
+//     - `duration_filters` is optional; If omitted or empty, all durations will
+//       be included.
+//     - Time range: `start_time` ≤ period_start < `end_time`
+//
+// !!! info "Flexible Duration Filtering"
+//     When `duration_filters` is omitted or empty, the filter will match
+//     delivery periods of all available durations. To restrict results to
+//     specific contract durations, provide one or more `DeliveryDuration`
+//     values.
+//
+// !!! example "Example: All periods on or after a timestamp"
+//     ```json
+//     {
+//       "time_interval": {
+//         "start_time": "2025-06-01T00:00:00Z"
+//       }
+//     }
+//     ```
+//
+// !!! example "Example: Only hourly periods in a range"
+//     ```json
+//     {
+//       "time_interval": {
+//         "start_time": "2025-06-01T00:00:00Z",
+//         "end_time": "2025-06-02T00:00:00Z"
+//       },
+//       "duration_filters": ["DELIVERY_DURATION_60"]
+//     }
+//     ```
+message DeliveryTimeFilter {
+  // Optional; Time window for matching delivery period start times.
+  frequenz.api.common.v1alpha7.type.Interval time_interval = 1;
+
+  // Optional; List of allowed delivery durations.
+  //
+  // If omitted or empty, delivery periods of all supported durations will be
+  // matched.
+  repeated frequenz.api.common.v1alpha7.grid.DeliveryDuration
+      duration_filters = 2;
 }
 
 // Parameters for filtering Gridpool orders.
