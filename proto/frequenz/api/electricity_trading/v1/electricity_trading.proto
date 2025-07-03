@@ -501,13 +501,15 @@ message DeliveryTimeFilter {
       duration_filters = 2;
 }
 
-// Parameters for filtering Gridpool orders.
+// Filters for selecting Gridpool orders.
 //
-// !!! note
-//     Multiple filters can be used in combination to narrow down the returned
-//     results. For example, you can apply both state and side filters
-//     simultaneously to list only the open orders on the buy side of the
-//     market.
+// An order must match all specified criteria to be included in the result.
+//
+// !!! note "Matching Behavior"
+//     - `delivery_time_filter` is optional.
+//     - Filtering over disjoint time intervals requires sending multiple
+//       requests.
+//
 message GridpoolOrderFilter {
   // Optional filter for order state.
   repeated OrderState states = 1;
@@ -515,8 +517,8 @@ message GridpoolOrderFilter {
   // Optional filter for order side.
   optional MarketSide side = 2;
 
-  // Optional filter for delivery period.
-  frequenz.api.common.v1alpha7.grid.DeliveryPeriod delivery_period = 3;
+  // Optional; Filter by delivery period.
+  optional DeliveryTimeFilter delivery_time_filter = 3;
 
   // Optional filter for delivery area.
   frequenz.api.common.v1alpha7.grid.DeliveryArea delivery_area = 4;
