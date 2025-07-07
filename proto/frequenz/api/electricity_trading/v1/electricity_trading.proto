@@ -16,12 +16,12 @@ import "google/protobuf/field_mask.proto";
 import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
 
-import "frequenz/api/common/v1/grid/delivery_area.proto";
-import "frequenz/api/common/v1/grid/delivery_duration.proto";
-import "frequenz/api/common/v1/market/power.proto";
-import "frequenz/api/common/v1/market/price.proto";
-import "frequenz/api/common/v1/pagination/pagination_info.proto";
-import "frequenz/api/common/v1/pagination/pagination_params.proto";
+import "frequenz/api/common/v1alpha7/grid/delivery_area.proto";
+import "frequenz/api/common/v1alpha7/grid/delivery_duration.proto";
+import "frequenz/api/common/v1alpha7/market/power.proto";
+import "frequenz/api/common/v1alpha7/market/price.proto";
+import "frequenz/api/common/v1alpha7/pagination/pagination_info.proto";
+import "frequenz/api/common/v1alpha7/pagination/pagination_params.proto";
 
 // Service providing operations related to order management.
 service ElectricityTradingService {
@@ -223,12 +223,12 @@ enum TradeState {
 message Order {
   // The delivery area where the contract is to be delivered. The representation
   // of the delivery area may vary by jurisdiction.
-  frequenz.api.common.v1.grid.DeliveryArea delivery_area = 2;
+  frequenz.api.common.v1alpha7.grid.DeliveryArea delivery_area = 2;
 
   // The delivery period for the contract, specified as a start timestamp in UTC
   // and a duration. It represents the period during which the contract is
   // expected to be fulfilled.
-  frequenz.api.common.v1.grid.DeliveryPeriod delivery_period = 3;
+  frequenz.api.common.v1alpha7.grid.DeliveryPeriod delivery_period = 3;
 
   // The type of order, such as LIMIT, STOP_LIMIT, ICEBERG etc.
   // This determines how the order is to be executed in the market.
@@ -239,22 +239,22 @@ message Order {
 
   // The limit price at which the contract is to be traded. This is the maximum
   // price for a BUY order or the minimum price for a SELL order.
-  frequenz.api.common.v1.market.Price price = 6;
+  frequenz.api.common.v1alpha7.market.Price price = 6;
 
   // The quantity of the contract being traded, specified in MW.
-  frequenz.api.common.v1.market.Power quantity = 7;
+  frequenz.api.common.v1alpha7.market.Power quantity = 7;
 
   // Optional; Applicable for STOP_LIMIT orders. This is the stop price
   // that triggers the limit order.
-  frequenz.api.common.v1.market.Price stop_price = 8;
+  frequenz.api.common.v1alpha7.market.Price stop_price = 8;
 
   // Optional; Applicable for ICEBERG orders.
   // This is the price difference between the peak price and the limit price.
-  frequenz.api.common.v1.market.Price peak_price_delta = 9;
+  frequenz.api.common.v1alpha7.market.Price peak_price_delta = 9;
 
   // Optional; Applicable for ICEBERG orders. This is the quantity
   // of the order to be displayed in the order book.
-  frequenz.api.common.v1.market.Power display_quantity = 10;
+  frequenz.api.common.v1alpha7.market.Power display_quantity = 10;
 
   // Optional execution options such as All or None, Fill or Kill, etc.
   optional OrderExecutionOption execution_option = 11;
@@ -351,10 +351,10 @@ message OrderDetail {
   StateDetail state_detail = 3;
 
   // Remaining open quantity for this order.
-  frequenz.api.common.v1.market.Power open_quantity = 4;
+  frequenz.api.common.v1alpha7.market.Power open_quantity = 4;
 
   // Filled quantity for this order.
-  frequenz.api.common.v1.market.Power filled_quantity = 5;
+  frequenz.api.common.v1alpha7.market.Power filled_quantity = 5;
 
   // UTC Timestamp when the order was created.
   google.protobuf.Timestamp create_time = 6;
@@ -380,19 +380,19 @@ message Trade {
   MarketSide side = 3;
 
   // Delivery area of the trade.
-  frequenz.api.common.v1.grid.DeliveryArea delivery_area = 4;
+  frequenz.api.common.v1alpha7.grid.DeliveryArea delivery_area = 4;
 
   // The delivery period for the contract.
-  frequenz.api.common.v1.grid.DeliveryPeriod delivery_period = 5;
+  frequenz.api.common.v1alpha7.grid.DeliveryPeriod delivery_period = 5;
 
   // UTC Timestamp of the trades execution time.
   google.protobuf.Timestamp execution_time = 6;
 
   // The price at which the trade was executed.
-  frequenz.api.common.v1.market.Price price = 7;
+  frequenz.api.common.v1alpha7.market.Price price = 7;
 
   // The executed quantity of the trade.
-  frequenz.api.common.v1.market.Power quantity = 8;
+  frequenz.api.common.v1alpha7.market.Power quantity = 8;
 
   // Current state of the trade.
   TradeState state = 9;
@@ -421,22 +421,22 @@ message PublicTrade {
   uint64 id = 1;
 
   // Delivery area code of the buy side.
-  frequenz.api.common.v1.grid.DeliveryArea buy_delivery_area = 2;
+  frequenz.api.common.v1alpha7.grid.DeliveryArea buy_delivery_area = 2;
 
   // Delivery area code of the sell side.
-  frequenz.api.common.v1.grid.DeliveryArea sell_delivery_area = 3;
+  frequenz.api.common.v1alpha7.grid.DeliveryArea sell_delivery_area = 3;
 
   // The delivery period for the contract.
-  frequenz.api.common.v1.grid.DeliveryPeriod delivery_period = 4;
+  frequenz.api.common.v1alpha7.grid.DeliveryPeriod delivery_period = 4;
 
   // UTC Timestamp of the trades execution time.
   google.protobuf.Timestamp execution_time = 5;
 
   // The price at which the trade was executed.
-  frequenz.api.common.v1.market.Price price = 6;
+  frequenz.api.common.v1alpha7.market.Price price = 6;
 
   // The executed quantity of the contract traded.
-  frequenz.api.common.v1.market.Power quantity = 7;
+  frequenz.api.common.v1alpha7.market.Power quantity = 7;
 
   // Final state of the trade.
   TradeState state = 8;
@@ -457,10 +457,10 @@ message GridpoolOrderFilter {
   optional MarketSide side = 2;
 
   // Optional filter for delivery period.
-  frequenz.api.common.v1.grid.DeliveryPeriod delivery_period = 3;
+  frequenz.api.common.v1alpha7.grid.DeliveryPeriod delivery_period = 3;
 
   // Optional filter for delivery area.
-  frequenz.api.common.v1.grid.DeliveryArea delivery_area = 4;
+  frequenz.api.common.v1alpha7.grid.DeliveryArea delivery_area = 4;
 
   // Optional filters the listed orders by their associated tag.
   optional string tag = 5;
@@ -487,10 +487,10 @@ message GridpoolTradeFilter {
   optional MarketSide side = 3;
 
   // Optional filter for delivery period.
-  frequenz.api.common.v1.grid.DeliveryPeriod delivery_period = 4;
+  frequenz.api.common.v1alpha7.grid.DeliveryPeriod delivery_period = 4;
 
   // Optional filter for delivery area.
-  frequenz.api.common.v1.grid.DeliveryArea delivery_area = 5;
+  frequenz.api.common.v1alpha7.grid.DeliveryArea delivery_area = 5;
 }
 
 // Parameters for filtering historic public trades.
@@ -509,13 +509,13 @@ message PublicTradeFilter {
   repeated TradeState states = 1;
 
   // Optional; If set, only trades with this delivery period are returned.
-  frequenz.api.common.v1.grid.DeliveryPeriod delivery_period = 2;
+  frequenz.api.common.v1alpha7.grid.DeliveryPeriod delivery_period = 2;
 
   // Optional; If set, only trades in this buy delivery area are returned.
-  frequenz.api.common.v1.grid.DeliveryArea buy_delivery_area = 3;
+  frequenz.api.common.v1alpha7.grid.DeliveryArea buy_delivery_area = 3;
 
   // Optional; If set, only trades in this sell delivery area are returned.
-  frequenz.api.common.v1.grid.DeliveryArea sell_delivery_area = 4;
+  frequenz.api.common.v1alpha7.grid.DeliveryArea sell_delivery_area = 4;
 }
 
 // Represents a request to create a new order for a specific Gridpool.
@@ -566,23 +566,23 @@ message UpdateGridpoolOrderRequest {
     // Optional; The updated limit price at which the contract is to be traded.
     // This is the maximum price for a BUY order or the minimum price for a SELL
     // order.
-    frequenz.api.common.v1.market.Price price = 2;
+    frequenz.api.common.v1alpha7.market.Price price = 2;
 
     // Optional; The updated quantity of the contract being traded,
     // specified in MW.
-    frequenz.api.common.v1.market.Power quantity = 3;
+    frequenz.api.common.v1alpha7.market.Power quantity = 3;
 
     // Optional; Applicable for STOP_LIMIT orders. This is the updated
     // stop price that triggers the limit order.
-    frequenz.api.common.v1.market.Price stop_price = 4;
+    frequenz.api.common.v1alpha7.market.Price stop_price = 4;
 
     // Optional; Applicable for ICEBERG orders. This is the updated price
     // difference between the peak price and the limit price.
-    frequenz.api.common.v1.market.Price peak_price_delta = 5;
+    frequenz.api.common.v1alpha7.market.Price peak_price_delta = 5;
 
     // Optional; Applicable for ICEBERG orders. This is the updated quantity
     // of the order to be displayed in the order book.
-    frequenz.api.common.v1.market.Power display_quantity = 6;
+    frequenz.api.common.v1alpha7.market.Power display_quantity = 6;
 
     // Optional; Updated execution options such as All or None,
     // Fill or Kill, etc.
@@ -685,7 +685,8 @@ message ListGridpoolOrdersRequest {
   GridpoolOrderFilter filter = 2;
 
   // Pagination parameters.
-  frequenz.api.common.v1.pagination.PaginationParams pagination_params = 3;
+  frequenz.api.common.v1alpha7.pagination.PaginationParams
+      pagination_params = 3;
 }
 
 // Response from listing orders for a given Gridpool.
@@ -694,7 +695,7 @@ message ListGridpoolOrdersResponse {
   repeated OrderDetail order_details = 1;
 
   // Metadata for pagination, including token for next page to retrieve.
-  frequenz.api.common.v1.pagination.PaginationInfo pagination_info = 2;
+  frequenz.api.common.v1alpha7.pagination.PaginationInfo pagination_info = 2;
 }
 
 // Subscribe to Gridpool order stream.
@@ -729,7 +730,8 @@ message ListGridpoolTradesRequest {
   GridpoolTradeFilter filter = 2;
 
   // Pagination parameters.
-  frequenz.api.common.v1.pagination.PaginationParams pagination_params = 3;
+  frequenz.api.common.v1alpha7.pagination.PaginationParams
+      pagination_params = 3;
 }
 
 // Response from listing trades for a given Gridpool.
@@ -738,7 +740,7 @@ message ListGridpoolTradesResponse {
   repeated Trade trades = 1;
 
   // Metadata for pagination, including token for next page to retrieve.
-  frequenz.api.common.v1.pagination.PaginationInfo pagination_info = 2;
+  frequenz.api.common.v1alpha7.pagination.PaginationInfo pagination_info = 2;
 }
 
 // Subscribe to the stream of gridpool trades.
@@ -800,10 +802,10 @@ message PublicOrderBookRecord {
   uint64 id = 1;
 
   // Frequenz Delivery area, using the common API type.
-  frequenz.api.common.v1.grid.DeliveryArea delivery_area = 2;
+  frequenz.api.common.v1alpha7.grid.DeliveryArea delivery_area = 2;
 
   // Frequenz Delivery period, using the common API type.
-  frequenz.api.common.v1.grid.DeliveryPeriod delivery_period = 3;
+  frequenz.api.common.v1alpha7.grid.DeliveryPeriod delivery_period = 3;
 
   // Optional: The type of order (e.g., LIMIT, STOP_LIMIT, ICEBERG).
   //
@@ -815,10 +817,10 @@ message PublicOrderBookRecord {
   MarketSide side = 5;
 
   // Order price, using the common API definition for price.
-  frequenz.api.common.v1.market.Price price = 6;
+  frequenz.api.common.v1alpha7.market.Price price = 6;
 
   // Open order quantity, using the common API definition for power.
-  frequenz.api.common.v1.market.Power quantity = 7;
+  frequenz.api.common.v1alpha7.market.Power quantity = 7;
 
   // Execution option (e.g., AON).
   optional OrderExecutionOption execution_option = 8;
@@ -842,11 +844,11 @@ message PublicOrderBookRecord {
 message PublicOrderBookFilter {
   // Optional; if set, only order book entries for this delivery period are
   // returned.
-  frequenz.api.common.v1.grid.DeliveryPeriod delivery_period = 1;
+  frequenz.api.common.v1alpha7.grid.DeliveryPeriod delivery_period = 1;
 
   // Optional; if set, only order book entries for this delivery area are
   // returned.
-  frequenz.api.common.v1.grid.DeliveryArea delivery_area = 2;
+  frequenz.api.common.v1alpha7.grid.DeliveryArea delivery_area = 2;
 
   // Optional; if set, only order book entries for this delivery period are
   // returned.
