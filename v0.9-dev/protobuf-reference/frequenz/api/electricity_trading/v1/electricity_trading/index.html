@@ -842,6 +842,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#deliverytimefilter" class="md-nav__link">
+    <span class="md-ellipsis">
+      DeliveryTimeFilter
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#getgridpoolorderrequest" class="md-nav__link">
     <span class="md-ellipsis">
       GetGridpoolOrderRequest
@@ -1872,6 +1881,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#deliverytimefilter" class="md-nav__link">
+    <span class="md-ellipsis">
+      DeliveryTimeFilter
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#getgridpoolorderrequest" class="md-nav__link">
     <span class="md-ellipsis">
       GetGridpoolOrderRequest
@@ -2232,6 +2250,7 @@
 <li><a href="#frequenz-api-electricity_trading-electricity_trading-v1-CancelGridpoolOrderResponse">CancelGridpoolOrderResponse</a></li>
 <li><a href="#frequenz-api-electricity_trading-electricity_trading-v1-CreateGridpoolOrderRequest">CreateGridpoolOrderRequest</a></li>
 <li><a href="#frequenz-api-electricity_trading-electricity_trading-v1-CreateGridpoolOrderResponse">CreateGridpoolOrderResponse</a></li>
+<li><a href="#frequenz-api-electricity_trading-electricity_trading-v1-DeliveryTimeFilter">DeliveryTimeFilter</a></li>
 <li><a href="#frequenz-api-electricity_trading-electricity_trading-v1-GetGridpoolOrderRequest">GetGridpoolOrderRequest</a></li>
 <li><a href="#frequenz-api-electricity_trading-electricity_trading-v1-GetGridpoolOrderResponse">GetGridpoolOrderResponse</a></li>
 <li><a href="#frequenz-api-electricity_trading-electricity_trading-v1-GridpoolOrderFilter">GridpoolOrderFilter</a></li>
@@ -2454,6 +2473,70 @@ the designated Gridpool.</p>
 </tr>
 </tbody>
 </table>
+<p><a name="frequenz-api-electricity_trading-electricity_trading-v1-DeliveryTimeFilter"></a></p>
+<h3 id="deliverytimefilter">DeliveryTimeFilter<a class="headerlink" href="#deliverytimefilter" title="Permanent link">¤</a></h3>
+<p>Filters delivery periods by start time and duration.</p>
+<p>A delivery period is defined by a start timestamp and a fixed delivery
+duration (e.g., 15, 30, or 60 minutes). This filter lets you query for
+delivery periods that start within an optional time range and optionally
+match one or more specific durations.</p>
+<p>The time range is inclusive at the start and exclusive at the end, following
+the ISO 8601 interval format and conventions in tools like Pandas and Python.</p>
+<p>!!! tip &#34;Terminology&#34;
+    - <strong>DeliveryDuration</strong>: A fixed interval (e.g., 15, 30, or 60 minutes).
+    - <strong>DeliveryPeriod</strong>: A combination of a start time and a
+      DeliveryDuration.</p>
+<p>!!! note &#34;Filter Logic&#34;
+    - <code>time_interval</code> is optional; if omitted, all time ranges are matched.
+    - <code>duration_filters</code> is optional; If omitted or empty, all durations will
+      be included.
+    - Time range: <code>start_time</code> ≤ period_start &lt; <code>end_time</code></p>
+<p>!!! info &#34;Flexible Duration Filtering&#34;
+    When <code>duration_filters</code> is omitted or empty, the filter will match
+    delivery periods of all available durations. To restrict results to
+    specific contract durations, provide one or more <code>DeliveryDuration</code>
+    values.</p>
+<p>!!! example &#34;Example: All periods on or after a timestamp&#34;
+    <div class="language-json highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="err">&amp;#</span><span class="mi">34</span><span class="err">;</span><span class="kc">t</span><span class="err">ime_i</span><span class="kc">nter</span><span class="err">val&amp;#</span><span class="mi">34</span><span class="err">;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="err">&amp;#</span><span class="mi">34</span><span class="err">;s</span><span class="kc">tart</span><span class="err">_</span><span class="kc">t</span><span class="err">ime&amp;#</span><span class="mi">34</span><span class="err">;</span><span class="p">:</span><span class="w"> </span><span class="err">&amp;#</span><span class="mi">34</span><span class="err">;</span><span class="mi">2025-06-01</span><span class="err">T</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="err">Z&amp;#</span><span class="mi">34</span><span class="err">;</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="p">}</span>
+</span></code></pre></div></p>
+<p>!!! example &#34;Example: Only hourly periods in a range&#34;
+    <div class="language-json highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="err">&amp;#</span><span class="mi">34</span><span class="err">;</span><span class="kc">t</span><span class="err">ime_i</span><span class="kc">nter</span><span class="err">val&amp;#</span><span class="mi">34</span><span class="err">;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="err">&amp;#</span><span class="mi">34</span><span class="err">;s</span><span class="kc">tart</span><span class="err">_</span><span class="kc">t</span><span class="err">ime&amp;#</span><span class="mi">34</span><span class="err">;</span><span class="p">:</span><span class="w"> </span><span class="err">&amp;#</span><span class="mi">34</span><span class="err">;</span><span class="mi">2025-06-01</span><span class="err">T</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="err">Z&amp;#</span><span class="mi">34</span><span class="err">;</span><span class="p">,</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="err">&amp;#</span><span class="mi">34</span><span class="err">;e</span><span class="kc">n</span><span class="err">d_</span><span class="kc">t</span><span class="err">ime&amp;#</span><span class="mi">34</span><span class="err">;</span><span class="p">:</span><span class="w"> </span><span class="err">&amp;#</span><span class="mi">34</span><span class="err">;</span><span class="mi">2025-06-02</span><span class="err">T</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="err">Z&amp;#</span><span class="mi">34</span><span class="err">;</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="p">},</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="err">&amp;#</span><span class="mi">34</span><span class="err">;dura</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="err">_</span><span class="kc">f</span><span class="err">il</span><span class="kc">ters</span><span class="err">&amp;#</span><span class="mi">34</span><span class="err">;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">&amp;#</span><span class="mi">34</span><span class="err">;DELIVERY_DURATION_</span><span class="mi">60</span><span class="err">&amp;#</span><span class="mi">34</span><span class="err">;</span><span class="p">]</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="p">}</span>
+</span></code></pre></div></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Label</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>time_interval</td>
+<td><a href="#frequenz-api-common-v1alpha7-type-Interval">frequenz.api.common.v1alpha7.type.Interval</a></td>
+<td></td>
+<td>Optional; Time window for matching delivery period start times.</td>
+</tr>
+<tr>
+<td>duration_filters</td>
+<td><a href="#frequenz-api-common-v1alpha7-grid-DeliveryDuration">frequenz.api.common.v1alpha7.grid.DeliveryDuration</a></td>
+<td>repeated</td>
+<td>Optional; List of allowed delivery durations.</td>
+</tr>
+</tbody>
+</table>
+<p>If omitted or empty, delivery periods of all supported durations will be matched. |</p>
 <p><a name="frequenz-api-electricity_trading-electricity_trading-v1-GetGridpoolOrderRequest"></a></p>
 <h3 id="getgridpoolorderrequest">GetGridpoolOrderRequest<a class="headerlink" href="#getgridpoolorderrequest" title="Permanent link">¤</a></h3>
 <p>Request to retrieve a single order for a given Gridpool.</p>
@@ -2510,14 +2593,12 @@ the designated Gridpool.</p>
 </table>
 <p><a name="frequenz-api-electricity_trading-electricity_trading-v1-GridpoolOrderFilter"></a></p>
 <h3 id="gridpoolorderfilter">GridpoolOrderFilter<a class="headerlink" href="#gridpoolorderfilter" title="Permanent link">¤</a></h3>
-<p>Parameters for filtering Gridpool orders.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Multiple filters can be used in combination to narrow down the returned
-results. For example, you can apply both state and side filters
-simultaneously to list only the open orders on the buy side of the
-market.</p>
-</div>
+<p>Filters for selecting Gridpool orders.</p>
+<p>An order must match all specified criteria to be included in the result.</p>
+<p>!!! note &#34;Matching Behavior&#34;
+    - <code>delivery_time_filter</code> is optional.
+    - Filtering over disjoint time intervals requires sending multiple
+      requests.</p>
 <table>
 <thead>
 <tr>
@@ -2541,14 +2622,14 @@ market.</p>
 <td>Optional filter for order side.</td>
 </tr>
 <tr>
-<td>delivery_period</td>
-<td><a href="#frequenz-api-common-v1-grid-DeliveryPeriod">frequenz.api.common.v1.grid.DeliveryPeriod</a></td>
-<td></td>
-<td>Optional filter for delivery period.</td>
+<td>delivery_time_filter</td>
+<td><a href="#frequenz-api-electricity_trading-electricity_trading-v1-DeliveryTimeFilter">DeliveryTimeFilter</a></td>
+<td>optional</td>
+<td>Optional; Filter by delivery period.</td>
 </tr>
 <tr>
 <td>delivery_area</td>
-<td><a href="#frequenz-api-common-v1-grid-DeliveryArea">frequenz.api.common.v1.grid.DeliveryArea</a></td>
+<td><a href="#frequenz-api-common-v1alpha7-grid-DeliveryArea">frequenz.api.common.v1alpha7.grid.DeliveryArea</a></td>
 <td></td>
 <td>Optional filter for delivery area.</td>
 </tr>
@@ -2568,14 +2649,26 @@ market.</p>
 </table>
 <p><a name="frequenz-api-electricity_trading-electricity_trading-v1-GridpoolTradeFilter"></a></p>
 <h3 id="gridpooltradefilter">GridpoolTradeFilter<a class="headerlink" href="#gridpooltradefilter" title="Permanent link">¤</a></h3>
-<p>Parameters for filtering Gridpool trades.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Multiple filters can be used in combination to narrow down the returned
-results. For example, you can apply both state and side filters
-simultaneously to list only the trades on the buy side of the
-market.</p>
-</div>
+<p>Filters for selecting Gridpool trades.</p>
+<p>A trade must match all specified criteria to be included in the result.</p>
+<p>!!! note &#34;Matching Behavior&#34;
+    - <code>delivery_time_filter</code> is optional.
+    - Filtering over disjoint time intervals requires sending multiple
+      requests.</p>
+<p>!!! example &#34;Filtering with time interval and trade state&#34;
+    <div class="language-json highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="err">&amp;#</span><span class="mi">34</span><span class="err">;s</span><span class="kc">tates</span><span class="err">&amp;#</span><span class="mi">34</span><span class="err">;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">&amp;#</span><span class="mi">34</span><span class="err">;TRADE_STATE_ACTIVE&amp;#</span><span class="mi">34</span><span class="err">;</span><span class="p">],</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="err">&amp;#</span><span class="mi">34</span><span class="err">;side&amp;#</span><span class="mi">34</span><span class="err">;</span><span class="p">:</span><span class="w"> </span><span class="err">&amp;#</span><span class="mi">34</span><span class="err">;MARKET_SIDE_SELL&amp;#</span><span class="mi">34</span><span class="err">;</span><span class="p">,</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="err">&amp;#</span><span class="mi">34</span><span class="err">;delivery_area&amp;#</span><span class="mi">34</span><span class="err">;</span><span class="p">:</span><span class="w"> </span><span class="err">&amp;#</span><span class="mi">34</span><span class="err">;DELIVERY_AREA_DE_</span><span class="mi">50</span><span class="err">HZ&amp;#</span><span class="mi">34</span><span class="err">;</span><span class="p">,</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span><span class="err">&amp;#</span><span class="mi">34</span><span class="err">;delivery_</span><span class="kc">t</span><span class="err">ime_</span><span class="kc">f</span><span class="err">il</span><span class="kc">ter</span><span class="err">&amp;#</span><span class="mi">34</span><span class="err">;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="err">&amp;#</span><span class="mi">34</span><span class="err">;</span><span class="kc">t</span><span class="err">ime_i</span><span class="kc">nter</span><span class="err">val&amp;#</span><span class="mi">34</span><span class="err">;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">      </span><span class="err">&amp;#</span><span class="mi">34</span><span class="err">;s</span><span class="kc">tart</span><span class="err">_</span><span class="kc">t</span><span class="err">ime&amp;#</span><span class="mi">34</span><span class="err">;</span><span class="p">:</span><span class="w"> </span><span class="err">&amp;#</span><span class="mi">34</span><span class="err">;</span><span class="mi">2025-06-01</span><span class="err">T</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="err">Z&amp;#</span><span class="mi">34</span><span class="err">;</span><span class="p">,</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">      </span><span class="err">&amp;#</span><span class="mi">34</span><span class="err">;e</span><span class="kc">n</span><span class="err">d_</span><span class="kc">t</span><span class="err">ime&amp;#</span><span class="mi">34</span><span class="err">;</span><span class="p">:</span><span class="w"> </span><span class="err">&amp;#</span><span class="mi">34</span><span class="err">;</span><span class="mi">2025-06-02</span><span class="err">T</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="err">Z&amp;#</span><span class="mi">34</span><span class="err">;</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="p">},</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">    </span><span class="err">&amp;#</span><span class="mi">34</span><span class="err">;dura</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="err">_</span><span class="kc">f</span><span class="err">il</span><span class="kc">ters</span><span class="err">&amp;#</span><span class="mi">34</span><span class="err">;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">&amp;#</span><span class="mi">34</span><span class="err">;DELIVERY_DURATION_</span><span class="mi">60</span><span class="err">&amp;#</span><span class="mi">34</span><span class="err">;</span><span class="p">]</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="p">}</span>
+</span></code></pre></div></p>
 <table>
 <thead>
 <tr>
@@ -2605,14 +2698,14 @@ market.</p>
 <td>Optional filter for the trades order side.</td>
 </tr>
 <tr>
-<td>delivery_period</td>
-<td><a href="#frequenz-api-common-v1-grid-DeliveryPeriod">frequenz.api.common.v1.grid.DeliveryPeriod</a></td>
-<td></td>
-<td>Optional filter for delivery period.</td>
+<td>delivery_time_filter</td>
+<td><a href="#frequenz-api-electricity_trading-electricity_trading-v1-DeliveryTimeFilter">DeliveryTimeFilter</a></td>
+<td>optional</td>
+<td>Optional; Filter by delivery period.</td>
 </tr>
 <tr>
 <td>delivery_area</td>
-<td><a href="#frequenz-api-common-v1-grid-DeliveryArea">frequenz.api.common.v1.grid.DeliveryArea</a></td>
+<td><a href="#frequenz-api-common-v1alpha7-grid-DeliveryArea">frequenz.api.common.v1alpha7.grid.DeliveryArea</a></td>
 <td></td>
 <td>Optional filter for delivery area.</td>
 </tr>
@@ -2645,7 +2738,7 @@ market.</p>
 </tr>
 <tr>
 <td>pagination_params</td>
-<td><a href="#frequenz-api-common-v1-pagination-PaginationParams">frequenz.api.common.v1.pagination.PaginationParams</a></td>
+<td><a href="#frequenz-api-common-v1alpha7-pagination-PaginationParams">frequenz.api.common.v1alpha7.pagination.PaginationParams</a></td>
 <td></td>
 <td>Pagination parameters.</td>
 </tr>
@@ -2672,7 +2765,7 @@ market.</p>
 </tr>
 <tr>
 <td>pagination_info</td>
-<td><a href="#frequenz-api-common-v1-pagination-PaginationInfo">frequenz.api.common.v1.pagination.PaginationInfo</a></td>
+<td><a href="#frequenz-api-common-v1alpha7-pagination-PaginationInfo">frequenz.api.common.v1alpha7.pagination.PaginationInfo</a></td>
 <td></td>
 <td>Metadata for pagination, including token for next page to retrieve.</td>
 </tr>
@@ -2705,7 +2798,7 @@ market.</p>
 </tr>
 <tr>
 <td>pagination_params</td>
-<td><a href="#frequenz-api-common-v1-pagination-PaginationParams">frequenz.api.common.v1.pagination.PaginationParams</a></td>
+<td><a href="#frequenz-api-common-v1alpha7-pagination-PaginationParams">frequenz.api.common.v1alpha7.pagination.PaginationParams</a></td>
 <td></td>
 <td>Pagination parameters.</td>
 </tr>
@@ -2732,7 +2825,7 @@ market.</p>
 </tr>
 <tr>
 <td>pagination_info</td>
-<td><a href="#frequenz-api-common-v1-pagination-PaginationInfo">frequenz.api.common.v1.pagination.PaginationInfo</a></td>
+<td><a href="#frequenz-api-common-v1alpha7-pagination-PaginationInfo">frequenz.api.common.v1alpha7.pagination.PaginationInfo</a></td>
 <td></td>
 <td>Metadata for pagination, including token for next page to retrieve.</td>
 </tr>
@@ -2753,13 +2846,13 @@ market.</p>
 <tbody>
 <tr>
 <td>delivery_area</td>
-<td><a href="#frequenz-api-common-v1-grid-DeliveryArea">frequenz.api.common.v1.grid.DeliveryArea</a></td>
+<td><a href="#frequenz-api-common-v1alpha7-grid-DeliveryArea">frequenz.api.common.v1alpha7.grid.DeliveryArea</a></td>
 <td></td>
 <td>The delivery area where the contract is to be delivered. The representation of the delivery area may vary by jurisdiction.</td>
 </tr>
 <tr>
 <td>delivery_period</td>
-<td><a href="#frequenz-api-common-v1-grid-DeliveryPeriod">frequenz.api.common.v1.grid.DeliveryPeriod</a></td>
+<td><a href="#frequenz-api-common-v1alpha7-grid-DeliveryPeriod">frequenz.api.common.v1alpha7.grid.DeliveryPeriod</a></td>
 <td></td>
 <td>The delivery period for the contract, specified as a start timestamp in UTC and a duration. It represents the period during which the contract is expected to be fulfilled.</td>
 </tr>
@@ -2777,31 +2870,31 @@ market.</p>
 </tr>
 <tr>
 <td>price</td>
-<td><a href="#frequenz-api-common-v1-market-Price">frequenz.api.common.v1.market.Price</a></td>
+<td><a href="#frequenz-api-common-v1alpha7-market-Price">frequenz.api.common.v1alpha7.market.Price</a></td>
 <td></td>
 <td>The limit price at which the contract is to be traded. This is the maximum price for a BUY order or the minimum price for a SELL order.</td>
 </tr>
 <tr>
 <td>quantity</td>
-<td><a href="#frequenz-api-common-v1-market-Power">frequenz.api.common.v1.market.Power</a></td>
+<td><a href="#frequenz-api-common-v1alpha7-market-Power">frequenz.api.common.v1alpha7.market.Power</a></td>
 <td></td>
 <td>The quantity of the contract being traded, specified in MW.</td>
 </tr>
 <tr>
 <td>stop_price</td>
-<td><a href="#frequenz-api-common-v1-market-Price">frequenz.api.common.v1.market.Price</a></td>
+<td><a href="#frequenz-api-common-v1alpha7-market-Price">frequenz.api.common.v1alpha7.market.Price</a></td>
 <td></td>
 <td>Optional; Applicable for STOP_LIMIT orders. This is the stop price that triggers the limit order.</td>
 </tr>
 <tr>
 <td>peak_price_delta</td>
-<td><a href="#frequenz-api-common-v1-market-Price">frequenz.api.common.v1.market.Price</a></td>
+<td><a href="#frequenz-api-common-v1alpha7-market-Price">frequenz.api.common.v1alpha7.market.Price</a></td>
 <td></td>
 <td>Optional; Applicable for ICEBERG orders. This is the price difference between the peak price and the limit price.</td>
 </tr>
 <tr>
 <td>display_quantity</td>
-<td><a href="#frequenz-api-common-v1-market-Power">frequenz.api.common.v1.market.Power</a></td>
+<td><a href="#frequenz-api-common-v1alpha7-market-Power">frequenz.api.common.v1alpha7.market.Power</a></td>
 <td></td>
 <td>Optional; Applicable for ICEBERG orders. This is the quantity of the order to be displayed in the order book.</td>
 </tr>
@@ -2864,13 +2957,13 @@ UTC timestamps.</p>
 </tr>
 <tr>
 <td>open_quantity</td>
-<td><a href="#frequenz-api-common-v1-market-Power">frequenz.api.common.v1.market.Power</a></td>
+<td><a href="#frequenz-api-common-v1alpha7-market-Power">frequenz.api.common.v1alpha7.market.Power</a></td>
 <td></td>
 <td>Remaining open quantity for this order.</td>
 </tr>
 <tr>
 <td>filled_quantity</td>
-<td><a href="#frequenz-api-common-v1-market-Power">frequenz.api.common.v1.market.Power</a></td>
+<td><a href="#frequenz-api-common-v1alpha7-market-Power">frequenz.api.common.v1alpha7.market.Power</a></td>
 <td></td>
 <td>Filled quantity for this order.</td>
 </tr>
@@ -2943,13 +3036,13 @@ for a specific time period in a given delivery area.</p>
 <tbody>
 <tr>
 <td>delivery_period</td>
-<td><a href="#frequenz-api-common-v1-grid-DeliveryPeriod">frequenz.api.common.v1.grid.DeliveryPeriod</a></td>
+<td><a href="#frequenz-api-common-v1alpha7-grid-DeliveryPeriod">frequenz.api.common.v1alpha7.grid.DeliveryPeriod</a></td>
 <td></td>
 <td>Optional; if set, only order book entries for this delivery period are returned.</td>
 </tr>
 <tr>
 <td>delivery_area</td>
-<td><a href="#frequenz-api-common-v1-grid-DeliveryArea">frequenz.api.common.v1.grid.DeliveryArea</a></td>
+<td><a href="#frequenz-api-common-v1alpha7-grid-DeliveryArea">frequenz.api.common.v1alpha7.grid.DeliveryArea</a></td>
 <td></td>
 <td>Optional; if set, only order book entries for this delivery area are returned.</td>
 </tr>
@@ -2990,13 +3083,13 @@ entered and subsequently updated.</p>
 </tr>
 <tr>
 <td>delivery_area</td>
-<td><a href="#frequenz-api-common-v1-grid-DeliveryArea">frequenz.api.common.v1.grid.DeliveryArea</a></td>
+<td><a href="#frequenz-api-common-v1alpha7-grid-DeliveryArea">frequenz.api.common.v1alpha7.grid.DeliveryArea</a></td>
 <td></td>
 <td>Frequenz Delivery area, using the common API type.</td>
 </tr>
 <tr>
 <td>delivery_period</td>
-<td><a href="#frequenz-api-common-v1-grid-DeliveryPeriod">frequenz.api.common.v1.grid.DeliveryPeriod</a></td>
+<td><a href="#frequenz-api-common-v1alpha7-grid-DeliveryPeriod">frequenz.api.common.v1alpha7.grid.DeliveryPeriod</a></td>
 <td></td>
 <td>Frequenz Delivery period, using the common API type.</td>
 </tr>
@@ -3010,8 +3103,8 @@ entered and subsequently updated.</p>
 </table>
 <p>If not set, the order type is unknown (for example, if the source market does not expose the order type). |
 | side | <a href="#frequenz-api-electricity_trading-electricity_trading-v1-MarketSide">MarketSide</a> |  | Indicates if the order was on the Buy or Sell side. |
-| price | <a href="#frequenz-api-common-v1-market-Price">frequenz.api.common.v1.market.Price</a> |  | Order price, using the common API definition for price. |
-| quantity | <a href="#frequenz-api-common-v1-market-Power">frequenz.api.common.v1.market.Power</a> |  | Open order quantity, using the common API definition for power. |
+| price | <a href="#frequenz-api-common-v1alpha7-market-Price">frequenz.api.common.v1alpha7.market.Price</a> |  | Order price, using the common API definition for price. |
+| quantity | <a href="#frequenz-api-common-v1alpha7-market-Power">frequenz.api.common.v1alpha7.market.Power</a> |  | Open order quantity, using the common API definition for power. |
 | execution_option | <a href="#frequenz-api-electricity_trading-electricity_trading-v1-OrderExecutionOption">OrderExecutionOption</a> | optional | Execution option (e.g., AON). |
 | create_time | <a href="#google-protobuf-Timestamp">google.protobuf.Timestamp</a> |  | Timestamp when the order was created on the order book. |
 | update_time | <a href="#google-protobuf-Timestamp">google.protobuf.Timestamp</a> |  | Timestamp when this particular update event occurred. Each update to an order will have its own update_time reflecting the moment that specific change occurred. |</p>
@@ -3053,19 +3146,19 @@ attributes and final state.</p>
 </tr>
 <tr>
 <td>buy_delivery_area</td>
-<td><a href="#frequenz-api-common-v1-grid-DeliveryArea">frequenz.api.common.v1.grid.DeliveryArea</a></td>
+<td><a href="#frequenz-api-common-v1alpha7-grid-DeliveryArea">frequenz.api.common.v1alpha7.grid.DeliveryArea</a></td>
 <td></td>
 <td>Delivery area code of the buy side.</td>
 </tr>
 <tr>
 <td>sell_delivery_area</td>
-<td><a href="#frequenz-api-common-v1-grid-DeliveryArea">frequenz.api.common.v1.grid.DeliveryArea</a></td>
+<td><a href="#frequenz-api-common-v1alpha7-grid-DeliveryArea">frequenz.api.common.v1alpha7.grid.DeliveryArea</a></td>
 <td></td>
 <td>Delivery area code of the sell side.</td>
 </tr>
 <tr>
 <td>delivery_period</td>
-<td><a href="#frequenz-api-common-v1-grid-DeliveryPeriod">frequenz.api.common.v1.grid.DeliveryPeriod</a></td>
+<td><a href="#frequenz-api-common-v1alpha7-grid-DeliveryPeriod">frequenz.api.common.v1alpha7.grid.DeliveryPeriod</a></td>
 <td></td>
 <td>The delivery period for the contract.</td>
 </tr>
@@ -3077,13 +3170,13 @@ attributes and final state.</p>
 </tr>
 <tr>
 <td>price</td>
-<td><a href="#frequenz-api-common-v1-market-Price">frequenz.api.common.v1.market.Price</a></td>
+<td><a href="#frequenz-api-common-v1alpha7-market-Price">frequenz.api.common.v1alpha7.market.Price</a></td>
 <td></td>
 <td>The price at which the trade was executed.</td>
 </tr>
 <tr>
 <td>quantity</td>
-<td><a href="#frequenz-api-common-v1-market-Power">frequenz.api.common.v1.market.Power</a></td>
+<td><a href="#frequenz-api-common-v1alpha7-market-Power">frequenz.api.common.v1alpha7.market.Power</a></td>
 <td></td>
 <td>The executed quantity of the contract traded.</td>
 </tr>
@@ -3128,19 +3221,19 @@ a specific delivery area.</p>
 </tr>
 <tr>
 <td>delivery_period</td>
-<td><a href="#frequenz-api-common-v1-grid-DeliveryPeriod">frequenz.api.common.v1.grid.DeliveryPeriod</a></td>
+<td><a href="#frequenz-api-common-v1alpha7-grid-DeliveryPeriod">frequenz.api.common.v1alpha7.grid.DeliveryPeriod</a></td>
 <td></td>
 <td>Optional; If set, only trades with this delivery period are returned.</td>
 </tr>
 <tr>
 <td>buy_delivery_area</td>
-<td><a href="#frequenz-api-common-v1-grid-DeliveryArea">frequenz.api.common.v1.grid.DeliveryArea</a></td>
+<td><a href="#frequenz-api-common-v1alpha7-grid-DeliveryArea">frequenz.api.common.v1alpha7.grid.DeliveryArea</a></td>
 <td></td>
 <td>Optional; If set, only trades in this buy delivery area are returned.</td>
 </tr>
 <tr>
 <td>sell_delivery_area</td>
-<td><a href="#frequenz-api-common-v1-grid-DeliveryArea">frequenz.api.common.v1.grid.DeliveryArea</a></td>
+<td><a href="#frequenz-api-common-v1alpha7-grid-DeliveryArea">frequenz.api.common.v1alpha7.grid.DeliveryArea</a></td>
 <td></td>
 <td>Optional; If set, only trades in this sell delivery area are returned.</td>
 </tr>
@@ -3409,13 +3502,13 @@ Real-time information on public trades is pushed through this response.</p>
 </tr>
 <tr>
 <td>delivery_area</td>
-<td><a href="#frequenz-api-common-v1-grid-DeliveryArea">frequenz.api.common.v1.grid.DeliveryArea</a></td>
+<td><a href="#frequenz-api-common-v1alpha7-grid-DeliveryArea">frequenz.api.common.v1alpha7.grid.DeliveryArea</a></td>
 <td></td>
 <td>Delivery area of the trade.</td>
 </tr>
 <tr>
 <td>delivery_period</td>
-<td><a href="#frequenz-api-common-v1-grid-DeliveryPeriod">frequenz.api.common.v1.grid.DeliveryPeriod</a></td>
+<td><a href="#frequenz-api-common-v1alpha7-grid-DeliveryPeriod">frequenz.api.common.v1alpha7.grid.DeliveryPeriod</a></td>
 <td></td>
 <td>The delivery period for the contract.</td>
 </tr>
@@ -3427,13 +3520,13 @@ Real-time information on public trades is pushed through this response.</p>
 </tr>
 <tr>
 <td>price</td>
-<td><a href="#frequenz-api-common-v1-market-Price">frequenz.api.common.v1.market.Price</a></td>
+<td><a href="#frequenz-api-common-v1alpha7-market-Price">frequenz.api.common.v1alpha7.market.Price</a></td>
 <td></td>
 <td>The price at which the trade was executed.</td>
 </tr>
 <tr>
 <td>quantity</td>
-<td><a href="#frequenz-api-common-v1-market-Power">frequenz.api.common.v1.market.Power</a></td>
+<td><a href="#frequenz-api-common-v1alpha7-market-Power">frequenz.api.common.v1alpha7.market.Power</a></td>
 <td></td>
 <td>The executed quantity of the trade.</td>
 </tr>
@@ -3501,31 +3594,31 @@ take place.</p>
 <tbody>
 <tr>
 <td>price</td>
-<td><a href="#frequenz-api-common-v1-market-Price">frequenz.api.common.v1.market.Price</a></td>
+<td><a href="#frequenz-api-common-v1alpha7-market-Price">frequenz.api.common.v1alpha7.market.Price</a></td>
 <td></td>
 <td>Optional; The updated limit price at which the contract is to be traded. This is the maximum price for a BUY order or the minimum price for a SELL order.</td>
 </tr>
 <tr>
 <td>quantity</td>
-<td><a href="#frequenz-api-common-v1-market-Power">frequenz.api.common.v1.market.Power</a></td>
+<td><a href="#frequenz-api-common-v1alpha7-market-Power">frequenz.api.common.v1alpha7.market.Power</a></td>
 <td></td>
 <td>Optional; The updated quantity of the contract being traded, specified in MW.</td>
 </tr>
 <tr>
 <td>stop_price</td>
-<td><a href="#frequenz-api-common-v1-market-Price">frequenz.api.common.v1.market.Price</a></td>
+<td><a href="#frequenz-api-common-v1alpha7-market-Price">frequenz.api.common.v1alpha7.market.Price</a></td>
 <td></td>
 <td>Optional; Applicable for STOP_LIMIT orders. This is the updated stop price that triggers the limit order.</td>
 </tr>
 <tr>
 <td>peak_price_delta</td>
-<td><a href="#frequenz-api-common-v1-market-Price">frequenz.api.common.v1.market.Price</a></td>
+<td><a href="#frequenz-api-common-v1alpha7-market-Price">frequenz.api.common.v1alpha7.market.Price</a></td>
 <td></td>
 <td>Optional; Applicable for ICEBERG orders. This is the updated price difference between the peak price and the limit price.</td>
 </tr>
 <tr>
 <td>display_quantity</td>
-<td><a href="#frequenz-api-common-v1-market-Power">frequenz.api.common.v1.market.Power</a></td>
+<td><a href="#frequenz-api-common-v1alpha7-market-Power">frequenz.api.common.v1alpha7.market.Power</a></td>
 <td></td>
 <td>Optional; Applicable for ICEBERG orders. This is the updated quantity of the order to be displayed in the order book.</td>
 </tr>
