@@ -2,7 +2,7 @@
 
 ## Upgrading
 
-- Updates `frequenz-api-common` to v0.7.0 and switch to `v1alpha7` package.
+- Updates `frequenz-api-common` to v0.8.0 and switch to `v1alpha8` package.
 
 ## New Features
 
