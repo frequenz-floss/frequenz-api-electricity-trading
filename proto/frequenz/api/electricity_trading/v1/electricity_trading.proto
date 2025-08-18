@@ -491,7 +491,7 @@ message PublicTrade {
 //     ```
 message DeliveryTimeFilter {
   // Optional; Time window for matching delivery period start times.
-  frequenz.api.common.v1alpha8.type.Interval time_interval = 1;
+  frequenz.api.common.v1alpha8.types.Interval time_interval = 1;
 
   // Optional; List of allowed delivery durations.
   //
