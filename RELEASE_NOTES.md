@@ -1,9 +1,5 @@
 # Frequenz Electricity Trading API Release Notes
 
-## Upgrading
+## Summary
 
-- Updates `frequenz-api-common` to v0.8.0 and switch to `v1alpha8` package.
-
-## New Features
-
-- Changes filter for delivery periods for gridpool orders and trades to support filtering by time interval and durations.
+This version relaxes the dependency on `frequenz-api-common` to support up to version 1.0.0, as this repository now guarantees backwards compatibility between v0.x releases.
