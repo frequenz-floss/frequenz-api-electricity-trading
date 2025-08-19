@@ -1,9 +1,5 @@
 # Frequenz Electricity Trading API Release Notes
 
-## Upgrading
+## Summary
 
-- The minimum allowed version of `protobuf` and `grpcio` has been updated to 6.31.1 and 1.72.1 respectively, you might also need to bump your dependencies accordingly.
-
-## New Features
-
-- Made `OrderType` optional in `PublicOrderBookRecord` to handle cases where the order type is unknown.
+This version relaxes the dependency on `frequenz-api-common` to support up to version 1.0.0, as this repository now guarantees backwards compatibility between v0.x releases.
