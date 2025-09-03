@@ -34,6 +34,7 @@ updates:
           - "minor"
         exclude-patterns:
           - "async-solipsism"
+          - "frequenz-api-common"
           - "frequenz-repo-config*"
           - "markdown-callouts"
           - "mkdocs-gen-files"
@@ -41,7 +42,6 @@ updates:
           - "mkdocstrings*"
           - "pydoclint"
           - "pytest-asyncio"
-          - "api-common"
       # We group repo-config updates as it uses optional dependencies that are
       # considered different dependencies otherwise, and will create one PR for
       # each if we don't group them.
