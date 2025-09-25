@@ -570,6 +570,9 @@ message GridpoolTradeFilter {
 
   // Optional filter for delivery area.
   frequenz.api.common.v1alpha8.grid.DeliveryArea delivery_area = 5;
+
+  // Optionally filters trades by their associated tag.
+  optional string tag = 6;
 }
 
 // Parameters for filtering historic public trades.
