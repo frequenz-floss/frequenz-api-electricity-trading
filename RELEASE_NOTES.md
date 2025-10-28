@@ -2,8 +2,16 @@
 
 ## Summary
 
-This version relaxes the dependency on `frequenz-api-common` to support up to version 1.0.0, as this repository now guarantees backwards compatibility between v0.x releases.
+<!-- Here goes a general summary of what this release is about -->
+
+## Upgrading
+
+<!-- Here goes notes on how to upgrade from previous versions, including deprecations and what they should be replaced with -->
 
 ## New Features
 
-* Add tag option to GridpoolTradeFilter.
+<!-- Here goes the main new features and examples or instructions on how to use them -->
+
+## Bug Fixes
+
+<!-- Here goes notable bug fixes that are worth a special mention or explanation -->
