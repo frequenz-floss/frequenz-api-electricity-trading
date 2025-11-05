@@ -10,7 +10,7 @@
 
 ## New Features
 
-<!-- Here goes the main new features and examples or instructions on how to use them -->
+* Update all Deliver Area examples in the docs to 15 minutes
 
 ## Bug Fixes
 

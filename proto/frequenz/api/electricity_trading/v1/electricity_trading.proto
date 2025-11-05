@@ -486,7 +486,7 @@ message PublicTrade {
 //         "start_time": "2025-06-01T00:00:00Z",
 //         "end_time": "2025-06-02T00:00:00Z"
 //       },
-//       "duration_filters": ["DELIVERY_DURATION_60"]
+//       "duration_filters": ["DELIVERY_DURATION_15"]
 //     }
 //     ```
 message DeliveryTimeFilter {
@@ -550,7 +550,7 @@ message GridpoolOrderFilter {
 //           "start_time": "2025-06-01T00:00:00Z",
 //           "end_time": "2025-06-02T00:00:00Z"
 //         },
-//         "duration_filters": ["DELIVERY_DURATION_60"]
+//         "duration_filters": ["DELIVERY_DURATION_15"]
 //       }
 //     }
 //     ```
