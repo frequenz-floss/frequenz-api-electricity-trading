@@ -10,7 +10,7 @@
 
 ## New Features
 
-* Update all Deliver Area examples in the docs to 15 minutes
+* Update all Delivery Period examples in the docs to 15 minutes
 
 ## Bug Fixes
 
