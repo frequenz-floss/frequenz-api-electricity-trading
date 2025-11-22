@@ -24,7 +24,102 @@ import "frequenz/api/common/v1alpha8/pagination/pagination_info.proto";
 import "frequenz/api/common/v1alpha8/pagination/pagination_params.proto";
 import "frequenz/api/common/v1alpha8/types/interval.proto";
 
-// Service providing operations related to order management.
+// The Electricity Trading API enables applications to create, modify, cancel, inspect, and stream electricity
+// market orders and trades for Gridpools by providing a consistent foundation for interacting with electricity
+// markets in regions with diverse delivery structures, rules, and pricing mechanisms.
+//
+// To support the forecasting and analytics required for well-informed trading and order placement, the service
+// also exposes public short-term market data such as public trades and public order book updates. Public data
+// enables applications to analyse price formation, understand market dynamics, train forecasting models, and
+// backtest strategies that inform order placement.
+//
+// The API distinguishes between:
+//   • private orders and trades, representing a Gridpool’s own activity, and
+//   • public trades and order book updates, representing market-visible activity.
+//
+// Using this service, applications can:
+//   • create, modify, cancel, and inspect Gridpool orders
+//   • retrieve and stream Gridpool trades
+//   • access and stream public trades and order book updates
+//   • replay historical market data for forecasting, backtesting, and model training
+//
+// The service enables participants to:
+//   • execute short-term energy trades
+//   • maintain balanced positions within balancing groups or market accounts
+//   • build algorithmic or automated trading strategies
+//   • leverage aligned public and private data for forecasting, analytics, and operational optimisation
+//
+// !!! note "Orders vs. Trades"
+//     An order expresses the intent to buy or sell a quantity of energy at a specified price, possibly with
+//     execution constraints. A trade represents the executed match between a buy order and a sell order.
+//
+// !!! note "What Is a Gridpool?"
+//     A Gridpool is a virtual trading portfolio that aggregates the energy volumes of multiple contributors
+//     (Gridpool members) into a unified trading position. It acts within a balancing group, market account,
+//     or scheduling entity and represents the unit for which trades are executed.
+//
+//     Gridpools may contain the following categories of contributors:
+//       • Market locations - metering points representing consumption or generation.
+//       • Microgrids - single-site energy systems containing multiple assets (e.g., batteries, PV, generators,
+//         flexible loads), operated through a local edge controller.
+//       • FlexClusters — distributed pools of flexible assets (e.g., stand-alone batteries, home storage
+//         systems, small PV-battery deployments, EV chargers).
+//       • Transfer schedules - scheduled energy transfers between balancing areas or market participant
+//         accounts.
+//       • Virtual contributions - synthetic, computed, or model-derived volumes that extend the Gridpool
+//         with virtual trading capability.
+//
+//     Gridpools bring physical and virtual contributors together into a single tradable portfolio:
+//
+//     ```text
+//     Balancing Group / Market Account
+//     └── Gridpool  (virtual sub-balancing group)
+//         ├── Physical contributors
+//         │     ├── Market locations (metering points)
+//         │     ├── Microgrids (DER sites like batteries, PV, generators; controlled via edge controller)
+//         │     ├── FlexClusters (distributed flexible assets, individual assets; controlled via cloud)
+//         │     └── Transfer schedules (scheduled imports/exports; planned volumes)
+//         └── Virtual contributors
+//               └── Synthetic or model-derived volumes for forecasting,
+//                   hedging, or virtual trading
+//     ```
+//
+//     Conceptually, a Gridpool functions as a virtual sub-balancing group. It aggregates physical and virtual
+//     contributors into a single position that must be balanced through trading, similar to how a balancing
+//     group operates. However, a Gridpool does not have a standalone settlement identity with a TSO or ISO.
+//     All physical settlement and imbalance accounting occur at the parent balancing-group (market-account)
+//     level.
+//
+//     These contributors define a Gridpool’s physical and financial profile and determine its tradable position.
+//     A Gridpool’s aggregated consumption and production influence how closely it aligns with its scheduled,
+//     forecasted, or contracted positions.
+//
+//     Electricity markets define delivery or pricing locations such as bidding zones, regional markets, ISO/TSO
+//     regions, or nodes. A single Gridpool may contain contributors across multiple such delivery areas. Orders
+//     must be submitted per delivery area. If a Gridpool spans multiple delivery or pricing areas, separate
+//     orders must be submitted—one per area. A single multi-area order is not supported.
+//
+//     In addition to physical contributors, Gridpools may include virtual contributions. These represent
+//     synthetic or model-derived volumes used for forecasting, strategy development, or virtual trading.
+//
+//     Virtual trading occurs within the Gridpool and enables a participant to take market positions without
+//     relying on available physical volume. These positions can be closed again before delivery, allowing
+//     speculative or hedging behaviour without causing physical imbalances.
+//
+//     Virtual contributors do not represent physical metering points or market locations. They act as
+//     placeholders for forecasted or simulated behaviour and can be used to:
+//       • test or calibrate trading strategies,
+//       • hedge or offset expected future positions,
+//       • represent synthetic or aggregated positions within a balancing group.
+//
+//     Any virtual position that is not closed before delivery must ultimately be balanced by trades in the market
+//     to avoid creating a settlement imbalance.
+//
+// !!! important "Authentication"
+//     All requests to FlexMarketService must be signed. The key identifier and signature must be included in
+//     the request metadata (gRPC metadata / HTTP headers). The signature must be computed using the
+//     HMAC-SHA256 algorithm and secret key. All requests to this service must be made over TLS (HTTPS).
+//
 service ElectricityTradingService {
   // Creates a new order for a given Gridpool.
   rpc CreateGridpoolOrder(CreateGridpoolOrderRequest)
