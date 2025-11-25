@@ -79,8 +79,11 @@ import "frequenz/api/common/v1alpha8/types/interval.proto";
 //         systems, small PV-battery deployments, EV chargers).
 //       • Transfer schedules - scheduled energy transfers between balancing
 //         areas or market participant accounts.
-//       • Virtual contributions - synthetic, computed, or model-derived volumes
-//         that extend the Gridpool with virtual trading capability.
+//       • Virtual contributions — synthetic or model-derived volumes used for
+//         virtual trading. These volumes do not correspond to physical assets
+//         or metering points and are independent of the physical flexibility
+//         range of the Gridpool. A Gridpool may trade purely virtually even if
+//         it contains no physical contributors.
 //
 //     Gridpools bring physical and virtual contributors together into a single
 //     tradable portfolio:
@@ -137,9 +140,11 @@ import "frequenz/api/common/v1alpha8/types/interval.proto";
 //       • hedge or offset expected future positions,
 //       • represent synthetic or aggregated positions within a balancing group.
 //
-//     Any virtual position that is not closed before delivery must ultimately
-//     be balanced by trades in the market to avoid creating a settlement
-//     imbalance.
+//     A virtual position is simply an open exposure created by unmatched buy
+//     and sell volumes. It is not an imbalance by itself. It can be closed with
+//     opposite trades as long as the market is open. Once the delivery period
+//     begins, any remaining open exposure becomes a settlement imbalance for
+//     the balancing group and cannot be resolved through trading.
 //
 // !!! note "Typical Lifecycle & Sequence of Operations"
 //     Applications interacting with the Electricity Trading Service typically
