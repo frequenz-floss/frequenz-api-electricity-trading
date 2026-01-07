@@ -607,6 +607,52 @@ message PublicTrade {
   TradeState state = 8;
 }
 
+// PublicOrderBookRecord represents a snapshot of an order book entry at
+// a specific point in time.
+//
+// Each record captures the state of an individual order when it is first
+// entered and subsequently updated.
+//
+// !!! note
+//     An order may generate multiple records over time, each corresponding to a
+// different update event on the order book.
+message PublicOrderBookRecord {
+  // The order book identifier.
+  uint64 id = 1;
+
+  // Frequenz Delivery area, using the common API type.
+  frequenz.api.common.v1alpha8.grid.DeliveryArea delivery_area = 2;
+
+  // Frequenz Delivery period, using the common API type.
+  frequenz.api.common.v1alpha8.grid.DeliveryPeriod delivery_period = 3;
+
+  // Optional: The type of order (e.g., LIMIT, STOP_LIMIT, ICEBERG).
+  //
+  // If not set, the order type is unknown (for example, if the source market
+  // does not expose the order type).
+  optional OrderType type = 4;
+
+  // Indicates if the order was on the Buy or Sell side.
+  MarketSide side = 5;
+
+  // Order price, using the common API definition for price.
+  frequenz.api.common.v1alpha8.market.Price price = 6;
+
+  // Open order quantity, using the common API definition for power.
+  frequenz.api.common.v1alpha8.market.Power quantity = 7;
+
+  // Execution option (e.g., AON).
+  optional OrderExecutionOption execution_option = 8;
+
+  // Timestamp when the order was created on the order book.
+  google.protobuf.Timestamp create_time = 9;
+
+  // Timestamp when this particular update event occurred.
+  // Each update to an order will have its own update_time reflecting
+  // the moment that specific change occurred.
+  google.protobuf.Timestamp update_time = 10;
+}
+
 // Filters delivery periods by start time and duration.
 //
 // A delivery period is defined by a start timestamp and a fixed delivery
@@ -762,6 +808,27 @@ message PublicTradeFilter {
 
   // Optional; If set, only trades in this sell delivery area are returned.
   frequenz.api.common.v1alpha8.grid.DeliveryArea sell_delivery_area = 4;
+}
+
+// Parameters for filtering order book stream results.
+//
+// !!! note
+//     Multiple filters can be used in combination to narrow down the returned
+//     order book entries. For example, you can apply both delivery period and
+//     delivery area filters simultaneously to list only the order book entries
+//     for a specific time period in a given delivery area.
+message PublicOrderBookFilter {
+  // Optional; if set, only order book entries for this delivery period are
+  // returned.
+  frequenz.api.common.v1alpha8.grid.DeliveryPeriod delivery_period = 1;
+
+  // Optional; if set, only order book entries for this delivery area are
+  // returned.
+  frequenz.api.common.v1alpha8.grid.DeliveryArea delivery_area = 2;
+
+  // Optional; if set, only order book entries for this delivery period are
+  // returned.
+  optional MarketSide side = 3;
 }
 
 // Represents a request to create a new order for a specific Gridpool.
@@ -944,19 +1011,68 @@ message ListGridpoolOrdersResponse {
   frequenz.api.common.v1alpha8.pagination.PaginationInfo pagination_info = 2;
 }
 
-// Subscribe to Gridpool order stream.
-// This method provides real-time updates on Gridpool orders, making it useful
-// for dynamic analytics and real-time decision-making.
+// Subscribe to the stream of Gridpool order updates.
+//
+// This RPC streams order updates for the given Gridpool and optionally filters
+// the streamed orders.
+//
+// !!! note "Filter Semantics"
+//     The `delivery_time_filter` matches orders by their `delivery_period
+//     .start_time` using a half-open time interval:
+//
+//     - Time range: `start_time` ≤ period_start < `end_time`
+//     - If `start_time` is omitted, the interval is unbounded at the start.
+//     - If `end_time` is omitted, the interval is unbounded at the end.
+//     - If `delivery_time_filter` is omitted, no delivery-time filtering is
+//        applied.
+//
+// !!! note "Stream Lifetime"
+//     The stream starts immediately.
+//     - If `end_time` is set and is in the future, the server may close the
+//       stream once no further orders can match the filter (typically
+//       shortly after `end_time`).
+//     - If `end_time` is set and is in the past, the server returns no
+//       entries and closes the stream immediately.
+//     - If `end_time` is omitted, the stream remains open and continues
+//       emitting matching order updates until the client closes it.
+//
+// !!! note "Stream Termination & Reconnect"
+//     The server may terminate long-lived streams for operational reasons.
+//     Clients should treat streams as best-effort and be prepared to reconnect,
+//     resuming from the last observed `execution_time` if needed.
+//
+// !!! example "Example: Stream all future orders (no end bound)"
+//     ```json
+//     {
+//       "gridpool_id": 1,
+//       "filter": {
+//         "delivery_time_filter": {
+//           "time_interval": { "start_time": "2026-01-07T00:00:00Z" }
+//         }
+//       }
+//     }
+//     ```
+//
+// !!! example "Example: Stream orders for a delivery window"
+//     ```json
+//     {
+//       "gridpool_id": 1,
+//       "filter": {
+//         "delivery_time_filter": {
+//           "time_interval": {
+//             "start_time": "2026-01-07T00:00:00Z",
+//             "end_time": "2026-01-07T03:00:00Z"
+//           }
+//         }
+//       }
+//     }
+//     ```
+//
 message ReceiveGridpoolOrdersStreamRequest {
   // The gridpool to retrieve the orders for.
   uint64 gridpool_id = 1;
 
-  // Optional public orders filter.
-  //
-  // !!! Important Note Regarding "DeliveryPeriod Filter"
-  //     Ensure that the specified DeliveryPeriod is set for a future timeframe.
-  //     If a past or present period is selected, the stream will automatically
-  //     close and return no entries.
+  // Optional Gridpool orders filter.
   GridpoolOrderFilter filter = 2;
 }
 
@@ -989,9 +1105,51 @@ message ListGridpoolTradesResponse {
   frequenz.api.common.v1alpha8.pagination.PaginationInfo pagination_info = 2;
 }
 
-// Subscribe to the stream of gridpool trades.
-// This method provides real-time updates on newly executed gridpool trades,
-// making it useful dynamic analytics and real-time decision-making.
+// Subscribe to the stream of Gridpool trades.
+//
+// This RPC streams newly observed trades for the given Gridpool and optionally
+// filters them.
+//
+// !!! note "Filter Semantics"
+//     The `delivery_time_filter` matches trades by their `delivery_period
+//     .start_time` using a half-open time interval:
+//
+//     - Time range: `start_time` ≤ period_start < `end_time`
+//     - If `start_time` is omitted, the interval is unbounded at the start.
+//     - If `end_time` is omitted, the interval is unbounded at the end.
+//     - If `delivery_time_filter` is omitted, no delivery-time filtering is
+//       applied.
+//
+// !!! note "Stream Lifetime"
+//     The stream starts immediately.
+//     - If `end_time` is set and is in the past, the server returns no entries
+//       and closes the stream immediately.
+//     - If `end_time` is omitted, the stream remains open and emits matching
+//       trades until the client closes it.
+//     - If `end_time` is set and is in the future, the server may close the
+//       stream once no further trades can match the filter (typically
+//       shortly after `end_time`).
+//
+// !!! note "Stream Termination & Reconnect"
+//     The server may terminate long-lived streams for operational reasons.
+//     Clients should treat streams as best-effort and be prepared to reconnect,
+//     resuming from the last observed `execution_time` if needed.
+//
+// !!! example "Example: Stream all trades for the next hour"
+//     ```json
+//     {
+//       "gridpool_id": 1,
+//       "filter": {
+//         "delivery_time_filter": {
+//           "time_interval": {
+//             "start_time": "2026-01-07T10:00:00Z",
+//             "end_time": "2026-01-07T11:00:00Z"
+//           }
+//         }
+//       }
+//     }
+//     ```
+//
 message ReceiveGridpoolTradesStreamRequest {
   // The Gridpool to retrieve the trades for.
   uint64 gridpool_id = 1;
@@ -1008,10 +1166,57 @@ message ReceiveGridpoolTradesStreamResponse {
   Trade trade = 1;
 }
 
-
 // Subscribe to the stream of public trades.
-// This method provides real-time updates on newly executed public trades,
-// making it useful dynamic analytics and real-time decision-making.
+//
+// This stream supports both historical replay and real-time updates.
+// Trades are included only if they match both:
+//
+//   1) the replay window defined by `start_time` / `end_time` (execution time),
+//   2) the `filter` constraints (trade attributes such as delivery period,
+//      area and/or state.
+//
+// !!! note "Time Domains"
+//     This request uses two different time concepts:
+//     - `start_time` / `end_time` filter by trade execution time
+//       (`PublicTrade.execution_time`).
+//     - `filter.delivery_period` filters by the delivery period of the traded
+//       contract (`PublicTrade.delivery_period`), i.e., which product was
+//       traded.
+//
+// !!! note "Replay Window Semantics"
+//     The replay window is a half-open interval on execution time:
+//     `start_time` ≤ execution_time < `end_time`.
+//     - If `start_time` is omitted, the stream emits only new trades observed
+//       after the connection is established.
+//     - If `end_time` is omitted, the stream remains open and continues
+//       emitting new trades.
+//     - If `end_time` is set and is in the past, the server returns no entries
+//       and closes the stream immediately.
+//
+// !!! note "Stream Termination & Reconnect"
+//     The server may terminate long-lived streams for operational reasons.
+//     Clients should treat streams as best-effort and be prepared to reconnect,
+//     resuming from the last observed `execution_time` if needed.
+//
+// !!! example "Example: Stream live trades for a delivery period"
+//     The following request streams all future public trades for the specified
+//     delivery period as they occur:
+//
+//     ```json
+//     {
+//       "filter": {
+//         "delivery_period": {
+//           "start_time": "2026-01-07T12:00:00Z",
+//           "duration": "DELIVERY_DURATION_60"
+//         }
+//       }
+//     }
+//     ```
+//
+//     Since `start_time` and `end_time` are omitted, the stream emits only new
+//     trades observed after the connection is established and remains open
+//     until closed by the server or the client.
+//
 message ReceivePublicTradesStreamRequest {
   // Optional filter to specify which trades should be included in the stream.
   PublicTradeFilter filter = 1;
@@ -1034,84 +1239,32 @@ message ReceivePublicTradesStreamResponse {
   PublicTrade public_trade = 1;
 }
 
-// PublicOrderBookRecord represents a snapshot of an order book entry at
-// a specific point in time.
+// Subscribe to the stream of public order book updates.
 //
-// Each record captures the state of an individual order when it is first
-// entered and subsequently updated.
+// This stream provides historical replay and real-time updates of public
+// order book records.
 //
-// !!! note
-//     An order may generate multiple records over time, each corresponding to a
-// different update event on the order book.
-message PublicOrderBookRecord {
-  // The order book identifier.
-  uint64 id = 1;
-
-  // Frequenz Delivery area, using the common API type.
-  frequenz.api.common.v1alpha8.grid.DeliveryArea delivery_area = 2;
-
-  // Frequenz Delivery period, using the common API type.
-  frequenz.api.common.v1alpha8.grid.DeliveryPeriod delivery_period = 3;
-
-  // Optional: The type of order (e.g., LIMIT, STOP_LIMIT, ICEBERG).
-  //
-  // If not set, the order type is unknown (for example, if the source market
-  // does not expose the order type).
-  optional OrderType type = 4;
-
-  // Indicates if the order was on the Buy or Sell side.
-  MarketSide side = 5;
-
-  // Order price, using the common API definition for price.
-  frequenz.api.common.v1alpha8.market.Price price = 6;
-
-  // Open order quantity, using the common API definition for power.
-  frequenz.api.common.v1alpha8.market.Power quantity = 7;
-
-  // Execution option (e.g., AON).
-  optional OrderExecutionOption execution_option = 8;
-
-  // Timestamp when the order was created on the order book.
-  google.protobuf.Timestamp create_time = 9;
-
-  // Timestamp when this particular update event occurred.
-  // Each update to an order will have its own update_time reflecting
-  // the moment that specific change occurred.
-  google.protobuf.Timestamp update_time = 10;
-}
-
-// Parameters for filtering order book stream results.
+// !!! note "Replay Window Semantics"
+//     The replay window is defined over the order book update time
+//     (`PublicOrderBookRecord.update_time`) using a half-open interval:
 //
-// !!! note
-//     Multiple filters can be used in combination to narrow down the returned
-//     order book entries. For example, you can apply both delivery period and
-//     delivery area filters simultaneously to list only the order book entries
-//     for a specific time period in a given delivery area.
-message PublicOrderBookFilter {
-  // Optional; if set, only order book entries for this delivery period are
-  // returned.
-  frequenz.api.common.v1alpha8.grid.DeliveryPeriod delivery_period = 1;
-
-  // Optional; if set, only order book entries for this delivery area are
-  // returned.
-  frequenz.api.common.v1alpha8.grid.DeliveryArea delivery_area = 2;
-
-  // Optional; if set, only order book entries for this delivery period are
-  // returned.
-  optional MarketSide side = 3;
-}
-
-// Request to subscribe to the public order book stream.
+//     `start_time` ≤ update_time < `end_time`
 //
-// This RPC provides real-time updates on public order book entries for use in
-// live trading and backtesting. When a client application initially connects,
-// it may specify a start_time to retrieve historical order book updates.
-// For example, setting start_time to "now - X hours" causes the server to
-// replay all stored order book updates from that time onward. If start_time is
-// omitted, only new order book updates from the moment of connection will be
-// streamed. If an end_time is provided, it must be set to a timestamp in the
-// past. This ensures that the historical data window is complete, and no future
-// (incomplete) data is expected.
+//     - If `start_time` is omitted, only new order book updates observed after
+//       the connection is established are streamed.
+//     - If `end_time` is set, it must refer to a timestamp in the past.
+//     - If `end_time` is omitted, the stream remains open and continues
+//       emitting new updates.
+//
+// !!! note "Filtering"
+//     The optional `filter` restricts which order book records are emitted
+//     (e.g., by delivery period, delivery area, or market side). Filtering is
+//     applied in addition to the replay window.
+//
+// !!! note "Stream Termination & Reconnect"
+//     The server may terminate long-lived streams for operational reasons.
+//     Clients should treat streams as best-effort and be prepared to reconnect.
+//
 message ReceivePublicOrderBookStreamRequest {
   // Optional filter to narrow down the public order book entries returned.
   PublicOrderBookFilter filter = 1;
@@ -1128,8 +1281,62 @@ message ReceivePublicOrderBookStreamRequest {
   google.protobuf.Timestamp end_time = 3;
 }
 
-// Response message for the public order book stream, returning multiple order
-// book records.
+// Response message for the public order book stream.
+//
+// Each response message contains one or more `PublicOrderBookRecord` entries.
+// Records represent order book events (new, changed, or re-published states)
+// observed by the service.
+//
+// !!! note "Record Semantics"
+//     - A record represents the state of a single visible order book entry at
+//       a specific point in time.
+//     - A single order book entry may appear multiple times over the stream as
+//       it is updated over time.
+//     - `create_time` is the timestamp when the order book entry first
+//       appeared.
+//     - `update_time` is the timestamp of this specific update event and is the
+//       time used for replay (`start_time` / `end_time`).
+//
+// !!! note "Batching"
+//     The service may batch multiple records into one response message for
+//     efficiency. Clients should not assume a fixed batch size and should
+//     process records independently.
+//
+// !!! example "Example: Response with multiple order book entries"
+//     ```json
+//     {
+//       "public_order_book_records": [
+//         {
+//           "id": "1001",
+//           "delivery_area": "DELIVERY_AREA_DE_LU",
+//           "delivery_period": {
+//             "start_time": "2026-01-07T12:00:00Z",
+//             "duration": "DELIVERY_DURATION_60"
+//           },
+//           "side": "MARKET_SIDE_BUY",
+//           "price": { "currency": "EUR", "amount": "85.50" },
+//           "quantity": { "mw": "2.0" },
+//           "create_time": "2026-01-07T11:58:10Z",
+//           "update_time": "2026-01-07T11:58:10Z"
+//         },
+//         {
+//           "id": "1002",
+//           "delivery_area": "DELIVERY_AREA_DE_LU",
+//           "delivery_period": {
+//             "start_time": "2026-01-07T12:00:00Z",
+//             "duration": "DELIVERY_DURATION_60"
+//           },
+//           "side": "MARKET_SIDE_SELL",
+//           "price": { "currency": "EUR", "amount": "86.00" },
+//           "quantity": { "mw": "1.5" },
+//           "create_time": "2026-01-07T11:58:20Z",
+//           "update_time": "2026-01-07T11:58:20Z"
+//         }
+//       ]
+//     }
+//     ```
+//
 message ReceivePublicOrderBookStreamResponse {
+  // List of order book records.
   repeated PublicOrderBookRecord public_order_book_records = 1;
 }
