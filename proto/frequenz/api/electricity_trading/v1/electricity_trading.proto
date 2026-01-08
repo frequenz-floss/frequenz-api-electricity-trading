@@ -182,6 +182,10 @@ import "frequenz/api/common/v1alpha8/types/interval.proto";
 //     This sequence represents a suggested operational flow for automated
 //     trading, position management, and portfolio optimisation.
 //
+// !!! note "Stream Termination & Reconnect"
+//     The service may terminate long-lived streams for operational reasons.
+//     Clients should treat streams as best-effort and be prepared to reconnect.
+//
 // !!! important "Authentication"
 //     All requests to ElectricityTradingService must be signed. The key
 //     identifier and signature must be included in the request metadata
@@ -227,13 +231,6 @@ service ElectricityTradingService {
       returns (stream ReceiveGridpoolTradesStreamResponse);
 
   // This stream provides both historical and real-time public trade data.
-  //
-  // - If `start_time` is set, it retrieves trades from that timestamp onwards.
-  //   If omitted, it streams only new trades from the time the connection is
-  //   established.
-  // - If `end_time` is set, the stream stops after sending trades up to this
-  //   timestamp.
-  //   If omitted, it remains open and continues streaming new trades.
   rpc ReceivePublicTradesStream(ReceivePublicTradesStreamRequest)
       returns (stream ReceivePublicTradesStreamResponse);
 
@@ -663,18 +660,21 @@ message PublicOrderBookRecord {
 // The time range is inclusive at the start and exclusive at the end, following
 // the ISO 8601 interval format and conventions in tools like Pandas and Python.
 //
-// !!! tip "Terminology"
-//     - **DeliveryDuration**: A fixed interval (e.g., 15, 30, or 60 minutes).
-//     - **DeliveryPeriod**: A combination of a start time and a
+// !!! note "Terminology"
+//     - DeliveryDuration: A fixed interval (e.g., 15, 30, or 60 minutes).
+//     - DeliveryPeriod: A combination of a start time and a
 //       DeliveryDuration.
 //
-// !!! note "Filter Logic"
-//     - `time_interval` is optional; if omitted, all time ranges are matched.
-//     - `duration_filters` is optional; If omitted or empty, all durations will
-//       be included.
-//     - Time range: `start_time` ≤ period_start < `end_time`
+// !!! note "Matching Semantics"
+//     - Delivery periods are matched by their start time using a half-open
+//       interval: `start_time` ≤ period_start < `end_time`.
+//     - If `time_interval.start_time` is omitted, the interval is unbounded at
+//       the start.
+//     - If `time_interval.end_time` is omitted, the interval is unbounded at
+//       the end.
+//     - If `time_interval` is omitted entirely, all start times are matched.
 //
-// !!! info "Flexible Duration Filtering"
+// !!! note "Flexible Duration Filtering"
 //     When `duration_filters` is omitted or empty, the filter will match
 //     delivery periods of all available durations. To restrict results to
 //     specific contract durations, provide one or more `DeliveryDuration`
@@ -728,6 +728,7 @@ message GridpoolOrderFilter {
   optional MarketSide side = 2;
 
   // Optional; Filter by delivery period.
+  // See `DeliveryTimeFilter` for matching semantics.
   optional DeliveryTimeFilter delivery_time_filter = 3;
 
   // Optional filter for delivery area.
@@ -749,7 +750,7 @@ message GridpoolOrderFilter {
 //     - Filtering over disjoint time intervals requires sending multiple
 //       requests.
 //
-// !!! example "Filtering with time interval and trade state"
+// !!! example "Example: Filtering with time interval and trade state"
 //     ```json
 //     {
 //       "states": ["TRADE_STATE_ACTIVE"],
@@ -776,6 +777,7 @@ message GridpoolTradeFilter {
   optional MarketSide side = 3;
 
   // Optional; Filter by delivery period.
+  // See `DeliveryTimeFilter` for matching semantics.
   optional DeliveryTimeFilter delivery_time_filter = 4;
 
   // Optional filter for delivery area.
@@ -1011,35 +1013,23 @@ message ListGridpoolOrdersResponse {
   frequenz.api.common.v1alpha8.pagination.PaginationInfo pagination_info = 2;
 }
 
-// Subscribe to the stream of Gridpool order updates.
+// Request message for subscribing to the stream of Gridpool order updates.
 //
-// This RPC streams order updates for the given Gridpool and optionally filters
-// the streamed orders.
-//
-// !!! note "Filter Semantics"
-//     The `delivery_time_filter` matches orders by their `delivery_period
-//     .start_time` using a half-open time interval:
-//
-//     - Time range: `start_time` ≤ period_start < `end_time`
-//     - If `start_time` is omitted, the interval is unbounded at the start.
-//     - If `end_time` is omitted, the interval is unbounded at the end.
-//     - If `delivery_time_filter` is omitted, no delivery-time filtering is
-//        applied.
+// This request selects the Gridpool whose order updates are streamed and
+// optionally restricts which orders are included in the stream.
 //
 // !!! note "Stream Lifetime"
-//     The stream starts immediately.
-//     - If `end_time` is set and is in the future, the server may close the
-//       stream once no further orders can match the filter (typically
-//       shortly after `end_time`).
-//     - If `end_time` is set and is in the past, the server returns no
-//       entries and closes the stream immediately.
-//     - If `end_time` is omitted, the stream remains open and continues
-//       emitting matching order updates until the client closes it.
+//     The lifetime of the stream depends on whether an upper delivery-time
+//     bound is specified:
 //
-// !!! note "Stream Termination & Reconnect"
-//     The server may terminate long-lived streams for operational reasons.
-//     Clients should treat streams as best-effort and be prepared to reconnect,
-//     resuming from the last observed `execution_time` if needed.
+//     - If `filter.delivery_time_filter.time_interval.end_time` is set and lies
+//       in the past, no entries are returned and the stream is closed
+//       immediately.
+//     - If `filter.delivery_time_filter.time_interval.end_time` is set and lies
+//       in the future, the server may close the stream once no further trades
+//       can match the filter (typically shortly after `end_time`).
+//     - If no `end_time` is specified, the stream remains open and continues
+//       emitting matching trade updates until closed by the client or server.
 //
 // !!! example "Example: Stream all future orders (no end bound)"
 //     ```json
@@ -1076,8 +1066,11 @@ message ReceiveGridpoolOrdersStreamRequest {
   GridpoolOrderFilter filter = 2;
 }
 
-// Response to a subscription request for a stream of Gridpool orders.
-// Real-time information on gridpool orders is pushed through this response.
+// Streamed Gridpool order update response.
+//
+// Each message contains the latest known `OrderDetail` for an order that
+// matches the request filter.
+//
 message ReceiveGridpoolOrdersStreamResponse {
   // Order detail response.
   OrderDetail order_detail = 1;
@@ -1105,35 +1098,28 @@ message ListGridpoolTradesResponse {
   frequenz.api.common.v1alpha8.pagination.PaginationInfo pagination_info = 2;
 }
 
-// Subscribe to the stream of Gridpool trades.
+// Request message for subscribing to the stream of Gridpool trade updates.
 //
-// This RPC streams newly observed trades for the given Gridpool and optionally
-// filters them.
+// This request identifies the Gridpool whose trades are streamed and optionally
+// restricts which trades are included using `filter`.
 //
-// !!! note "Filter Semantics"
-//     The `delivery_time_filter` matches trades by their `delivery_period
-//     .start_time` using a half-open time interval:
-//
-//     - Time range: `start_time` ≤ period_start < `end_time`
-//     - If `start_time` is omitted, the interval is unbounded at the start.
-//     - If `end_time` is omitted, the interval is unbounded at the end.
-//     - If `delivery_time_filter` is omitted, no delivery-time filtering is
-//       applied.
+// !!! note "Filtering"
+//     When `filter.delivery_time_filter` is set, it restricts trades based on
+//     the start time of their `delivery_period`. See `DeliveryTimeFilter` for
+//     detailed matching semantics.
 //
 // !!! note "Stream Lifetime"
-//     The stream starts immediately.
-//     - If `end_time` is set and is in the past, the server returns no entries
-//       and closes the stream immediately.
-//     - If `end_time` is omitted, the stream remains open and emits matching
-//       trades until the client closes it.
-//     - If `end_time` is set and is in the future, the server may close the
-//       stream once no further trades can match the filter (typically
-//       shortly after `end_time`).
+//     The lifetime of the stream depends on whether an upper delivery-time
+//     bound is specified:
 //
-// !!! note "Stream Termination & Reconnect"
-//     The server may terminate long-lived streams for operational reasons.
-//     Clients should treat streams as best-effort and be prepared to reconnect,
-//     resuming from the last observed `execution_time` if needed.
+//     - If `filter.delivery_time_filter.time_interval.end_time` is set and lies
+//       in the past, no entries are returned and the stream is closed
+//       immediately.
+//     - If `filter.delivery_time_filter.time_interval.end_time` is set and lies
+//       in the future, the server may close the stream once no further trades
+//       can match the filter (typically shortly after `end_time`).
+//     - If no `end_time` is specified, the stream remains open and continues
+//       emitting matching trade updates until closed by the client or server.
 //
 // !!! example "Example: Stream all trades for the next hour"
 //     ```json
@@ -1159,21 +1145,42 @@ message ReceiveGridpoolTradesStreamRequest {
 }
 
 // Response to a subscription request for a stream of Gridpool trades.
-// Real-time information on trades is pushed through this response.
+//
+// Each response message contains a single `Trade` that matches the request
+// parameters. Trades may be emitted as part of historical replay or as newly
+// observed trades.
+//
+// !!! example "Example: Gridpool trade response"
+//     ```json
+//     {
+//       "trade": {
+//         "id": "5001",
+//         "order_id": "12345",
+//         "side": "MARKET_SIDE_BUY",
+//         "delivery_area": "DELIVERY_AREA_DE_LU",
+//         "delivery_period": {
+//           "start_time": "2026-01-07T12:00:00Z",
+//           "duration": "DELIVERY_DURATION_60"
+//         },
+//         "execution_time": "2026-01-07T11:59:50Z",
+//         "price": { "currency": "EUR", "amount": "85.50" },
+//         "quantity": { "mw": "1.0" },
+//         "state": "TRADE_STATE_ACTIVE"
+//       }
+//     }
+//     ```
+//
 message ReceiveGridpoolTradesStreamResponse {
-  // The trade that has been executed and is being broadcasted in
-  // real-time.
+  // Trade belonging to the Gridpool that matches the request filter.
   Trade trade = 1;
 }
 
-// Subscribe to the stream of public trades.
+// Request message to subscribe to the stream of public trades.
 //
-// This stream supports both historical replay and real-time updates.
-// Trades are included only if they match both:
-//
-//   1) the replay window defined by `start_time` / `end_time` (execution time),
-//   2) the `filter` constraints (trade attributes such as delivery period,
-//      area and/or state.
+// This request optionally replays historical public trades and can remain open
+// to stream newly observed trades. Trades are emitted only if they match both
+// the replay window (`start_time` / `end_time`) and the attribute constraints
+// in `filter`.
 //
 // !!! note "Time Domains"
 //     This request uses two different time concepts:
@@ -1186,19 +1193,14 @@ message ReceiveGridpoolTradesStreamResponse {
 // !!! note "Replay Window Semantics"
 //     The replay window is a half-open interval on execution time:
 //     `start_time` ≤ execution_time < `end_time`.
-//     - If `start_time` is omitted, the stream emits only new trades observed
-//       after the connection is established.
+//     - If `start_time` is omitted, only trades observed after the connection
+//       is established are emitted.
 //     - If `end_time` is omitted, the stream remains open and continues
 //       emitting new trades.
 //     - If `end_time` is set and is in the past, the server returns no entries
 //       and closes the stream immediately.
 //
-// !!! note "Stream Termination & Reconnect"
-//     The server may terminate long-lived streams for operational reasons.
-//     Clients should treat streams as best-effort and be prepared to reconnect,
-//     resuming from the last observed `execution_time` if needed.
-//
-// !!! example "Example: Stream live trades for a delivery period"
+// !!! example "Example: Stream live trades for 60-min delivery periods"
 //     The following request streams all future public trades for the specified
 //     delivery period as they occur:
 //
@@ -1213,36 +1215,56 @@ message ReceiveGridpoolTradesStreamResponse {
 //     }
 //     ```
 //
-//     Since `start_time` and `end_time` are omitted, the stream emits only new
-//     trades observed after the connection is established and remains open
-//     until closed by the server or the client.
+//     Since `end_time` is omitted, the stream remains open until closed by
+//     the server or the client.
 //
 message ReceivePublicTradesStreamRequest {
   // Optional filter to specify which trades should be included in the stream.
   PublicTradeFilter filter = 1;
 
-  // Optional; if set, retrieves trades executed at or after this timestamp.
-  // If omitted, streams only new trades from the time of connection.
+  // Optional; start of the replay window for trade execution time (inclusive).
+  // If omitted, only new trades observed after the connection is established
+  // are emitted.
   google.protobuf.Timestamp start_time = 2;
 
-  // Optional; if set, the stream stops after sending trades up to this
-  // timestamp.
-  // If omitted, the stream continues to stream new trades as they occur.
+  // Optional; end of the replay window for trade execution time (exclusive).
+  // If omitted, the stream remains open and continues emitting new trades.
   google.protobuf.Timestamp end_time = 3;
 }
 
 // Response to a subscription request for a stream of public trades.
-// Real-time information on public trades is pushed through this response.
+//
+// !!! example "Example: Public trade response"
+//     ```json
+//     {
+//       "public_trade": {
+//         "id": "9001",
+//         "buy_delivery_area": "DELIVERY_AREA_DE_LU",
+//         "sell_delivery_area": "DELIVERY_AREA_DE_LU",
+//         "delivery_period": {
+//           "start_time": "2026-01-07T12:00:00Z",
+//           "duration": "DELIVERY_DURATION_60"
+//         },
+//         "execution_time": "2026-01-07T11:59:45Z",
+//         "price": { "currency": "EUR", "amount": "85.75" },
+//         "quantity": { "mw": "1.0" },
+//         "state": "TRADE_STATE_ACTIVE"
+//       }
+//     }
+//     ```
+//
 message ReceivePublicTradesStreamResponse {
   // The public trade that has been executed and is being broadcasted in
   // real-time.
   PublicTrade public_trade = 1;
 }
 
-// Subscribe to the stream of public order book updates.
+// Request message to subscribe to the stream of public order book updates.
 //
-// This stream provides historical replay and real-time updates of public
-// order book records.
+// This request optionally replays historical public order book updates and can
+// remain open to stream newly observed updates. Records are emitted only if
+// they match both the replay window (`start_time` / `end_time`) and the
+// attribute constraints in `filter`.
 //
 // !!! note "Replay Window Semantics"
 //     The replay window is defined over the order book update time
@@ -1250,34 +1272,30 @@ message ReceivePublicTradesStreamResponse {
 //
 //     `start_time` ≤ update_time < `end_time`
 //
-//     - If `start_time` is omitted, only new order book updates observed after
-//       the connection is established are streamed.
-//     - If `end_time` is set, it must refer to a timestamp in the past.
+//     - If `start_time` is omitted, only updates observed after the connection
+//       is established are emitted.
 //     - If `end_time` is omitted, the stream remains open and continues
 //       emitting new updates.
+//     - If `end_time` is set, it must refer to a timestamp in the past. If it
+//       lies in the past relative to the connection time, the server returns no
+//       entries and closes the stream immediately.
 //
 // !!! note "Filtering"
 //     The optional `filter` restricts which order book records are emitted
 //     (e.g., by delivery period, delivery area, or market side). Filtering is
 //     applied in addition to the replay window.
 //
-// !!! note "Stream Termination & Reconnect"
-//     The server may terminate long-lived streams for operational reasons.
-//     Clients should treat streams as best-effort and be prepared to reconnect.
-//
 message ReceivePublicOrderBookStreamRequest {
   // Optional filter to narrow down the public order book entries returned.
   PublicOrderBookFilter filter = 1;
 
-  // Optional; if set, retrieves order book updates executed at or after this
-  // timestamp. For example, setting this to "now - X hours" allows a client to
-  // receive historical updates covering the last X hours. If omitted, only new
-  // order book updates from the time of connection are streamed.
+  // Optional; start of the replay window for order book update time
+  // (inclusive). If omitted, only new updates observed after the connection
+  // is established are emitted.
   google.protobuf.Timestamp start_time = 2;
 
-  // Optional; if set, stops streaming order book updates after this timestamp.
-  // !!! note
-  //     end_time must be in the past.
+  // Optional; end of the replay window for order book update time
+  // (exclusive). If set, it must refer to a timestamp in the past.
   google.protobuf.Timestamp end_time = 3;
 }
 
