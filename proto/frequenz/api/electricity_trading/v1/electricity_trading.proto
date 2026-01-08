@@ -662,8 +662,7 @@ message PublicOrderBookRecord {
 //
 // !!! note "Terminology"
 //     - DeliveryDuration: A fixed interval (e.g., 15, 30, or 60 minutes).
-//     - DeliveryPeriod: A combination of a start time and a
-//       DeliveryDuration.
+//     - DeliveryPeriod: A combination of a start time and a DeliveryDuration.
 //
 // !!! note "Matching Semantics"
 //     - Delivery periods are matched by their start time using a half-open
