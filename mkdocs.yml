@@ -95,22 +95,12 @@ plugins:
   - mike:
       alias_type: redirect
       canonical_version: latest
-
   - mkdocstrings:
       default_handler: python
       handlers:
         python:
           options:
-            extra:
-              paths: ["py"]
-
-            # Avoid strict-mode failure from generated grpc/protobuf code
-            # (prevents griffe warnings like "No type or annotation for
-            # parameter 'channel'")
-            filters:
-              - "!.*_pb2$"
-              - "!.*_pb2_grpc$"
-
+            paths: ["py"]
             docstring_section_style: spacy
             inherited_members: true
             merge_init_into_class: false
@@ -121,14 +111,12 @@ plugins:
             show_signature_annotations: true
             show_source: true
             signature_crossrefs: true
-
-          inventories:
+          import:
             # See https://mkdocstrings.github.io/python/usage/#import for details
             - https://docs.python.org/3/objects.inv
             - https://frequenz-floss.github.io/frequenz-api-common/v0.3/objects.inv
             - https://grpc.github.io/grpc/python/objects.inv
             - https://typing-extensions.readthedocs.io/en/stable/objects.inv
-
   # Note this plugin must be loaded after mkdocstrings to be able to use macros
   # inside docstrings.
   - macros:
