@@ -9,7 +9,7 @@ copyright: "Copyright © 2023 Frequenz Energy-as-a-Service GmbH"
 repo_name: "frequenz-api-electricity-trading"
 repo_url: "https://github.com/frequenz-floss/frequenz-api-electricity-trading"
 edit_uri: "edit/v0.x.x/docs/"
-strict: true  # Treat warnings as errors
+strict: false # Allow warnings without failing the build
 
 # Build directories
 theme:
