@@ -14,4 +14,6 @@
 
 ## Bug Fixes
 
+* Disable strict mode in mkdocs to prevent build failures due to Griffe warnings ([#206](https://github.com/frequenz-floss/frequenz-api-electricity-trading/issues/206)).
+
 <!-- Here goes notable bug fixes that are worth a special mention or explanation -->
