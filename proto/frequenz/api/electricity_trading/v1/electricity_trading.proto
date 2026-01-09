@@ -1025,7 +1025,7 @@ message ListGridpoolOrdersResponse {
 //       in the past, no entries are returned and the stream is closed
 //       immediately.
 //     - If `filter.delivery_time_filter.time_interval.end_time` is set and lies
-//       in the future, the server may close the stream once no further trades
+//       in the future, the server may close the stream once no further orders
 //       can match the filter (typically shortly after `end_time`).
 //     - If no `end_time` is specified, the stream remains open and continues
 //       emitting matching trade updates until closed by the client or server.
