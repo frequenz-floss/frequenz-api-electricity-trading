@@ -3788,6 +3788,40 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="ReceivePublicOrderBookStreamResponse">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#frequenz.api.electricity_trading.v1.electricity_trading_pb2.ReceivePublicOrderBookStreamResponse-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Attributes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Attributes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#frequenz.api.electricity_trading.v1.electricity_trading_pb2.ReceivePublicOrderBookStreamResponse.public_order_book_records" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        public_order_book_records
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -6715,6 +6749,40 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="ReceivePublicOrderBookStreamResponse">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#frequenz.api.electricity_trading.v1.electricity_trading_pb2.ReceivePublicOrderBookStreamResponse-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Attributes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Attributes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#frequenz.api.electricity_trading.v1.electricity_trading_pb2.ReceivePublicOrderBookStreamResponse.public_order_book_records" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        public_order_book_records
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -8456,7 +8524,7 @@ exists, exceptions are countries like e.g. Australia, Germany and the US.</p>
 
 
 
-        <p>Represents the server's response after a new order has been successfully
+        <p>Represents the service's response after a new order has been successfully
 created for a specific Gridpool.</p>
 <p>This response provides essential details about the newly created order, such
 as the unique order ID and the state of the order. By receiving this
@@ -8564,24 +8632,26 @@ delivery periods that start within an optional time range and optionally
 match one or more specific durations.</p>
 <p>The time range is inclusive at the start and exclusive at the end, following
 the ISO 8601 interval format and conventions in tools like Pandas and Python.</p>
-<div class="admonition tip">
+<div class="admonition note">
 <p class="admonition-title">Terminology</p>
 <ul>
-<li><strong>DeliveryDuration</strong>: A fixed interval (e.g., 15, 30, or 60 minutes).</li>
-<li><strong>DeliveryPeriod</strong>: A combination of a start time and a
-  DeliveryDuration.</li>
+<li>DeliveryDuration: A fixed interval (e.g., 15, 30, or 60 minutes).</li>
+<li>DeliveryPeriod: A combination of a start time and a DeliveryDuration.</li>
 </ul>
 </div>
 <div class="admonition note">
-<p class="admonition-title">Filter Logic</p>
+<p class="admonition-title">Matching Semantics</p>
 <ul>
-<li><code>time_interval</code> is optional; if omitted, all time ranges are matched.</li>
-<li><code>duration_filters</code> is optional; If omitted or empty, all durations will
-  be included.</li>
-<li>Time range: <code>start_time</code> ≤ period_start &lt; <code>end_time</code></li>
+<li>Delivery periods are matched by their start time using a half-open
+  interval: <code>start_time</code> ≤ period_start &lt; <code>end_time</code>.</li>
+<li>If <code>time_interval.start_time</code> is omitted, the interval is unbounded at
+  the start.</li>
+<li>If <code>time_interval.end_time</code> is omitted, the interval is unbounded at
+  the end.</li>
+<li>If <code>time_interval</code> is omitted entirely, all start times are matched.</li>
 </ul>
 </div>
-<div class="admonition info">
+<div class="admonition note">
 <p class="admonition-title">Flexible Duration Filtering</p>
 <p>When <code>duration_filters</code> is omitted or empty, the filter will match
 delivery periods of all available durations. To restrict results to
@@ -8968,7 +9038,8 @@ matched.</p>
 
     <div class="doc doc-contents ">
 
-        <p>Optional; Filter by delivery period.</p>
+        <p>Optional; Filter by delivery period.
+See <code>DeliveryTimeFilter</code> for matching semantics.</p>
 
     </div>
 
@@ -9109,7 +9180,7 @@ matched.</p>
 </ul>
 </div>
 <div class="admonition example">
-<p class="admonition-title">Filtering with time interval and trade state</p>
+<p class="admonition-title">Example: Filtering with time interval and trade state</p>
 <div class="language-json highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">&quot;states&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;TRADE_STATE_ACTIVE&quot;</span><span class="p">],</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nt">&quot;side&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MARKET_SIDE_SELL&quot;</span><span class="p">,</span>
@@ -9185,7 +9256,8 @@ matched.</p>
 
     <div class="doc doc-contents ">
 
-        <p>Optional; Filter by delivery period.</p>
+        <p>Optional; Filter by delivery period.
+See <code>DeliveryTimeFilter</code> for matching semantics.</p>
 
     </div>
 
@@ -11037,8 +11109,8 @@ the end of the trading session.</p>
 </span><span id="__span-0-65"><a id="__codelineno-0-65" name="__codelineno-0-65"></a><span class="n">_globals</span><span class="p">[</span><span class="s1">&#39;_TRADE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_serialized_end</span><span class="o">=</span><span class="mi">3400</span>
 </span><span id="__span-0-66"><a id="__codelineno-0-66" name="__codelineno-0-66"></a><span class="n">_globals</span><span class="p">[</span><span class="s1">&#39;_PUBLICTRADE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_serialized_start</span><span class="o">=</span><span class="mi">3403</span>
 </span><span id="__span-0-67"><a id="__codelineno-0-67" name="__codelineno-0-67"></a><span class="n">_globals</span><span class="p">[</span><span class="s1">&#39;_PUBLICTRADE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_serialized_end</span><span class="o">=</span><span class="mi">3914</span>
-</span><span id="__span-0-68"><a id="__codelineno-0-68" name="__codelineno-0-68"></a><span class="n">_globals</span><span class="p">[</span><span class="s1">&#39;_DELIVERYTIMEFILTER&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_serialized_start</span><span class="o">=</span><span class="mi">3917</span>
-</span><span id="__span-0-69"><a id="__codelineno-0-69" name="__codelineno-0-69"></a><span class="n">_globals</span><span class="p">[</span><span class="s1">&#39;_DELIVERYTIMEFILTER&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_serialized_end</span><span class="o">=</span><span class="mi">4085</span>
+</span><span id="__span-0-68"><a id="__codelineno-0-68" name="__codelineno-0-68"></a><span class="n">_globals</span><span class="p">[</span><span class="s1">&#39;_PUBLICORDERBOOKRECORD&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_serialized_start</span><span class="o">=</span><span class="mi">3917</span>
+</span><span id="__span-0-69"><a id="__codelineno-0-69" name="__codelineno-0-69"></a><span class="n">_globals</span><span class="p">[</span><span class="s1">&#39;_PUBLICORDERBOOKRECORD&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_serialized_end</span><span class="o">=</span><span class="mi">4629</span>
 </span></code></pre></div></td></tr></table></div>
               </details>
 
@@ -12026,9 +12098,65 @@ a specific delivery area.</p>
 
 
 
-        <p>Subscribe to Gridpool order stream.
-This method provides real-time updates on Gridpool orders, making it useful
-for dynamic analytics and real-time decision-making.</p>
+        <p>Request message for subscribing to the stream of Gridpool order updates.</p>
+<p>This request identifies the Gridpool whose order updates are streamed and
+optionally restricts which orders are included using <code>filter</code>. Order updates
+are emitted as they are observed by the service and match the request filter.</p>
+<div class="admonition note">
+<p class="admonition-title">Stream Lifetime</p>
+<p>Stream termination is best-effort. The service may close the stream
+once it determines that no further order updates are expected to match
+the request filter (for example, when a bounded delivery-time window
+has been fully exhausted).</p>
+<ul>
+<li>If <code>filter.delivery_time_filter.time_interval.end_time</code> lies in the
+  past relative to the connection time, the service may return no
+  entries and close the stream immediately, as no further matching
+  order updates are expected (best-effort).</li>
+<li>If <code>filter.delivery_time_filter.time_interval.end_time</code> lies in the
+  future, the service may close the stream once the bound has passed and
+  the filter is exhausted (typically shortly after <code>end_time</code>).</li>
+<li>If no upper delivery-time bound is specified, the stream may remain
+  open and continues emitting matching order updates until closed by
+  the client or service.</li>
+</ul>
+<p>Streams reflect order updates as they are observed by the service.
+Late-arriving updates for delivery periods in the past may still be
+emitted if they are observed before the stream is closed.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Example: Stream all future orders (no end bound)</p>
+<p>Streams order updates for all delivery periods whose delivery start
+time is greater than or equal to <code>2026-01-07T00:00:00Z</code>.</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">&quot;gridpool_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nt">&quot;filter&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nt">&quot;delivery_time_filter&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">      </span><span class="nt">&quot;time_interval&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;start_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-01-07T00:00:00Z&quot;</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="p">}</span>
+</span></code></pre></div>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Example: Stream orders for a delivery window</p>
+<p>This example streams order updates for all delivery periods whose
+delivery start time falls within the specified time interval.
+The filter does not select a single delivery period, but a set of
+delivery periods matched by their start time.</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">&quot;gridpool_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">&quot;filter&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="nt">&quot;delivery_time_filter&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">      </span><span class="nt">&quot;time_interval&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">        </span><span class="nt">&quot;start_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-01-07T00:00:00Z&quot;</span><span class="p">,</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">        </span><span class="nt">&quot;end_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-01-07T03:00:00Z&quot;</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">      </span><span class="p">}</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="p">}</span>
+</span></code></pre></div>
+</div>
 
 
 
@@ -12066,13 +12194,7 @@ for dynamic analytics and real-time decision-making.</p>
 
     <div class="doc doc-contents ">
 
-        <p>Optional public orders filter.</p>
-<div class="admonition important note regarding">
-<p class="admonition-title">DeliveryPeriod Filter</p>
-<p>Ensure that the specified DeliveryPeriod is set for a future timeframe.
-If a past or present period is selected, the stream will automatically
-close and return no entries.</p>
-</div>
+        <p>Optional Gridpool orders filter.</p>
 
     </div>
 
@@ -12130,8 +12252,9 @@ close and return no entries.</p>
 
 
 
-        <p>Response to a subscription request for a stream of Gridpool orders.
-Real-time information on gridpool orders is pushed through this response.</p>
+        <p>Streamed Gridpool order update response.</p>
+<p>Each message contains the latest known <code>OrderDetail</code> for an order that
+matches the request filter.</p>
 
 
 
@@ -12203,9 +12326,49 @@ Real-time information on gridpool orders is pushed through this response.</p>
 
 
 
-        <p>Subscribe to the stream of gridpool trades.
-This method provides real-time updates on newly executed gridpool trades,
-making it useful dynamic analytics and real-time decision-making.</p>
+        <p>Request message for subscribing to the stream of Gridpool trade updates.</p>
+<p>This request identifies the Gridpool whose trades are streamed and optionally
+restricts which trades are included using <code>filter</code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Stream Lifetime</p>
+<p>Stream termination is best-effort. The service may close the stream once
+it determines that no further trade updates are expected to match the
+request filter (for example, when a bounded delivery-time window has
+been fully exhausted).</p>
+<ul>
+<li>If <code>filter.delivery_time_filter.time_interval.end_time</code> lies in the
+  past relative to the connection time, the service may return no
+  entries and close the stream immediately, as no further matching
+  trades are expected (best-effort).</li>
+<li>If <code>filter.delivery_time_filter.time_interval.end_time</code> lies in the
+  future, the service may close the stream once the bound has passed and
+  the filter is exhausted (typically shortly after <code>end_time</code>).</li>
+<li>If no upper delivery-time bound is specified, the stream may remain
+  open and continues emitting matching trade updates until closed by
+  the client or service.</li>
+</ul>
+<p>Streams reflect trades as they are observed by the service. Late-arriving
+records for delivery periods in the past may still be emitted if they are
+observed before the stream is closed.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Example: Stream all trades for the next hour</p>
+<p>Streams trades for all delivery periods whose delivery start time
+falls within the specified time interval.
+The filter matches a set of delivery periods, not a single contract.</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">&quot;gridpool_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nt">&quot;filter&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nt">&quot;delivery_time_filter&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">      </span><span class="nt">&quot;time_interval&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">        </span><span class="nt">&quot;start_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-01-07T10:00:00Z&quot;</span><span class="p">,</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">        </span><span class="nt">&quot;end_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-01-07T11:00:00Z&quot;</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">      </span><span class="p">}</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="p">}</span>
+</span></code></pre></div>
+</div>
 
 
 
@@ -12301,8 +12464,30 @@ making it useful dynamic analytics and real-time decision-making.</p>
 
 
 
-        <p>Response to a subscription request for a stream of Gridpool trades.
-Real-time information on trades is pushed through this response.</p>
+        <p>Response to a subscription request for a stream of Gridpool trades.</p>
+<p>Each response message contains a single <code>Trade</code> that matches the request
+parameters. Trades may be emitted as part of historical replay or as newly
+observed trades.</p>
+<div class="admonition example">
+<p class="admonition-title">Example: Gridpool trade response</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">&quot;trade&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;5001&quot;</span><span class="p">,</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nt">&quot;order_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;12345&quot;</span><span class="p">,</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="nt">&quot;side&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MARKET_SIDE_BUY&quot;</span><span class="p">,</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="nt">&quot;delivery_area&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DELIVERY_AREA_DE_LU&quot;</span><span class="p">,</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="nt">&quot;delivery_period&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">      </span><span class="nt">&quot;start_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-01-07T12:00:00Z&quot;</span><span class="p">,</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">      </span><span class="nt">&quot;duration&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DELIVERY_DURATION_60&quot;</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="p">},</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="nt">&quot;execution_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-01-07T11:59:50Z&quot;</span><span class="p">,</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">    </span><span class="nt">&quot;price&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;currency&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;EUR&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;amount&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;85.50&quot;</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">    </span><span class="nt">&quot;quantity&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;mw&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1.0&quot;</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">    </span><span class="nt">&quot;state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TRADE_STATE_ACTIVE&quot;</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="p">}</span>
+</span></code></pre></div>
+</div>
 
 
 
@@ -12340,8 +12525,7 @@ Real-time information on trades is pushed through this response.</p>
 
     <div class="doc doc-contents ">
 
-        <p>The trade that has been executed and is being broadcasted in
-real-time.</p>
+        <p>Trade belonging to the Gridpool that matches the request filter.</p>
 
     </div>
 
@@ -12375,16 +12559,30 @@ real-time.</p>
 
 
 
-        <p>Request to subscribe to the public order book stream.</p>
-<p>This RPC provides real-time updates on public order book entries for use in
-live trading and backtesting. When a client application initially connects,
-it may specify a start_time to retrieve historical order book updates.
-For example, setting start_time to "now - X hours" causes the server to
-replay all stored order book updates from that time onward. If start_time is
-omitted, only new order book updates from the moment of connection will be
-streamed. If an end_time is provided, it must be set to a timestamp in the
-past. This ensures that the historical data window is complete, and no future
-(incomplete) data is expected.</p>
+        <p>Request message to subscribe to the stream of public order book updates.</p>
+<p>This request optionally replays historical public order book updates and can
+remain open to stream newly observed updates. Records are emitted only if
+they match both the replay window (<code>start_time</code> / <code>end_time</code>) and the
+attribute constraints in <code>filter</code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Replay Window Semantics</p>
+<p>The replay window is defined over the order book update time
+(<code>PublicOrderBookRecord.update_time</code>) using a half-open interval:</p>
+<p><code>start_time</code> ≤ update_time &lt; <code>end_time</code></p>
+<ul>
+<li>If <code>start_time</code> is omitted, only order book updates observed after the
+  connection is established are emitted.</li>
+<li>If <code>end_time</code> is omitted, the stream may remain open and continues
+  emitting new order book updates until closed by the client or service.</li>
+<li>If <code>end_time</code> is set, it must refer to a timestamp in the past. If it
+  lies in the past relative to the connection time, the service returns
+  no entries and closes the stream immediately.</li>
+</ul>
+<p>Stream termination is best-effort. The service may close the stream once
+it determines that no further records can match the request (for example,
+when <code>filter</code> selects a delivery period that is already in the past and
+no further updates are expected).</p>
+</div>
 
 
 
@@ -12422,11 +12620,8 @@ past. This ensures that the historical data window is complete, and no future
 
     <div class="doc doc-contents ">
 
-        <p>Optional; if set, stops streaming order book updates after this timestamp.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>end_time must be in the past.</p>
-</div>
+        <p>Optional; end of the replay window for order book update time
+(exclusive). If set, it must refer to a timestamp in the past.</p>
 
     </div>
 
@@ -12474,10 +12669,9 @@ past. This ensures that the historical data window is complete, and no future
 
     <div class="doc doc-contents ">
 
-        <p>Optional; if set, retrieves order book updates executed at or after this
-timestamp. For example, setting this to "now - X hours" allows a client to
-receive historical updates covering the last X hours. If omitted, only new
-order book updates from the time of connection are streamed.</p>
+        <p>Optional; start of the replay window for order book update time
+(inclusive). If omitted, only new updates observed after the connection
+is established are emitted.</p>
 
     </div>
 
@@ -12511,8 +12705,63 @@ order book updates from the time of connection are streamed.</p>
 
 
 
-        <p>Response message for the public order book stream, returning multiple order
-book records.</p>
+        <p>Response message for the public order book stream.</p>
+<p>Each response message contains one or more <code>PublicOrderBookRecord</code> entries.
+Records represent order book events (new, changed, or re-published states)
+observed by the service.</p>
+<div class="admonition note">
+<p class="admonition-title">Record Semantics</p>
+<ul>
+<li>A record represents the state of a single visible order book entry at
+  a specific point in time.</li>
+<li>A single order book entry may appear multiple times over the stream as
+  it is updated over time.</li>
+<li><code>create_time</code> is the timestamp when the order book entry first
+  appeared.</li>
+<li><code>update_time</code> is the timestamp of this specific update event and is the
+  time used for replay (<code>start_time</code> / <code>end_time</code>).</li>
+</ul>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Batching</p>
+<p>The service may batch multiple records into one response message for
+efficiency. Clients should not assume a fixed batch size and should
+process records independently.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Example: Response with multiple order book entries</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">&quot;public_order_book_records&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">      </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1001&quot;</span><span class="p">,</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">      </span><span class="nt">&quot;delivery_area&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DELIVERY_AREA_DE_LU&quot;</span><span class="p">,</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">      </span><span class="nt">&quot;delivery_period&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">        </span><span class="nt">&quot;start_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-01-07T12:00:00Z&quot;</span><span class="p">,</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">        </span><span class="nt">&quot;duration&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DELIVERY_DURATION_60&quot;</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">      </span><span class="p">},</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">      </span><span class="nt">&quot;side&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MARKET_SIDE_BUY&quot;</span><span class="p">,</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">      </span><span class="nt">&quot;price&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;currency&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;EUR&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;amount&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;85.50&quot;</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">      </span><span class="nt">&quot;quantity&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;mw&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2.0&quot;</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">      </span><span class="nt">&quot;create_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-01-07T11:58:10Z&quot;</span><span class="p">,</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">      </span><span class="nt">&quot;update_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-01-07T11:58:10Z&quot;</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">    </span><span class="p">},</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">      </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1002&quot;</span><span class="p">,</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">      </span><span class="nt">&quot;delivery_area&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DELIVERY_AREA_DE_LU&quot;</span><span class="p">,</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">      </span><span class="nt">&quot;delivery_period&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">        </span><span class="nt">&quot;start_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-01-07T12:00:00Z&quot;</span><span class="p">,</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">        </span><span class="nt">&quot;duration&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DELIVERY_DURATION_60&quot;</span>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">      </span><span class="p">},</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="w">      </span><span class="nt">&quot;side&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MARKET_SIDE_SELL&quot;</span><span class="p">,</span>
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">      </span><span class="nt">&quot;price&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;currency&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;EUR&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;amount&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;86.00&quot;</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="w">      </span><span class="nt">&quot;quantity&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;mw&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1.5&quot;</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="w">      </span><span class="nt">&quot;create_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-01-07T11:58:20Z&quot;</span><span class="p">,</span>
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="w">      </span><span class="nt">&quot;update_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-01-07T11:58:20Z&quot;</span>
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="w">  </span><span class="p">]</span>
+</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a><span class="p">}</span>
+</span></code></pre></div>
+</div>
 
 
 
@@ -12530,7 +12779,33 @@ book records.</p>
 
 
 
+<h5 id="frequenz.api.electricity_trading.v1.electricity_trading_pb2.ReceivePublicOrderBookStreamResponse-attributes">Attributes<a href="#frequenz.api.electricity_trading.v1.electricity_trading_pb2.ReceivePublicOrderBookStreamResponse-attributes" class="headerlink" title="Permanent link">¤</a></h5>
 
+<div class="doc doc-object doc-attribute">
+
+
+
+<h6 id="frequenz.api.electricity_trading.v1.electricity_trading_pb2.ReceivePublicOrderBookStreamResponse.public_order_book_records" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">public_order_book_records</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#frequenz.api.electricity_trading.v1.electricity_trading_pb2.ReceivePublicOrderBookStreamResponse.public_order_book_records" class="headerlink" title="Permanent link">¤</a></h6>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">public_order_book_records</span><span class="p">:</span> <span class="n"><span title="google.protobuf.internal.containers.RepeatedCompositeFieldContainer">RepeatedCompositeFieldContainer</span></span><span class="p">[</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n"><span title="frequenz.api.electricity_trading.v1.electricity_trading_pb2.Global___PublicOrderBookRecord">Global___PublicOrderBookRecord</span></span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">]</span>
+</span></code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>List of order book records.</p>
+
+    </div>
+
+</div>
 
 
 
@@ -12560,9 +12835,46 @@ book records.</p>
 
 
 
-        <p>Subscribe to the stream of public trades.
-This method provides real-time updates on newly executed public trades,
-making it useful dynamic analytics and real-time decision-making.</p>
+        <p>Request message to subscribe to the stream of public trades.</p>
+<p>This request optionally replays historical public trades and can remain open
+to stream newly observed trades. Trades are emitted only if they match both
+the replay window (<code>start_time</code> / <code>end_time</code>) and the attribute constraints
+in <code>filter</code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Replay Window Semantics</p>
+<p>The replay window is a half-open interval on trade execution time
+(<code>PublicTrade.execution_time</code>):</p>
+<p><code>start_time</code> ≤ execution_time &lt; <code>end_time</code>.</p>
+<ul>
+<li>If <code>start_time</code> is omitted, only trades observed after the connection
+  is established are emitted.</li>
+<li>If <code>end_time</code> is omitted, the stream may remain open and continues
+  emitting new trades until closed by the client or service.</li>
+<li>If <code>end_time</code> is set and lies in the past, the service returns no
+  entries and closes the stream immediately.</li>
+</ul>
+<p>Stream termination is best-effort. The service may close the stream once
+it determines that no further trades can match the request (for example,
+when the replay window is bounded and exhausted, or when <code>filter</code> selects
+a delivery period that is already in the past and no further trades are
+expected).</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Example: Stream live trades for 60-min delivery periods</p>
+<p>The following request streams all future public trades for the specified
+delivery period as they occur:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">&quot;filter&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nt">&quot;delivery_period&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">      </span><span class="nt">&quot;start_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-01-07T12:00:00Z&quot;</span><span class="p">,</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">      </span><span class="nt">&quot;duration&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DELIVERY_DURATION_60&quot;</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>Since <code>start_time</code> and <code>end_time</code> (replay window) are omitted, the
+stream remains open until closed by the service or the client.</p>
+</div>
 
 
 
@@ -12600,9 +12912,8 @@ making it useful dynamic analytics and real-time decision-making.</p>
 
     <div class="doc doc-contents ">
 
-        <p>Optional; if set, the stream stops after sending trades up to this
-timestamp.
-If omitted, the stream continues to stream new trades as they occur.</p>
+        <p>Optional; end of the replay window for trade execution time (exclusive).
+If omitted, the stream remains open and continues emitting new trades.</p>
 
     </div>
 
@@ -12650,8 +12961,9 @@ If omitted, the stream continues to stream new trades as they occur.</p>
 
     <div class="doc doc-contents ">
 
-        <p>Optional; if set, retrieves trades executed at or after this timestamp.
-If omitted, streams only new trades from the time of connection.</p>
+        <p>Optional; start of the replay window for trade execution time (inclusive).
+If omitted, only new trades observed after the connection is established
+are emitted.</p>
 
     </div>
 
@@ -12685,8 +12997,26 @@ If omitted, streams only new trades from the time of connection.</p>
 
 
 
-        <p>Response to a subscription request for a stream of public trades.
-Real-time information on public trades is pushed through this response.</p>
+        <p>Response to a subscription request for a stream of public trades.</p>
+<div class="admonition example">
+<p class="admonition-title">Example: Public trade response</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">&quot;public_trade&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;9001&quot;</span><span class="p">,</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nt">&quot;buy_delivery_area&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DELIVERY_AREA_DE_LU&quot;</span><span class="p">,</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="nt">&quot;sell_delivery_area&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DELIVERY_AREA_DE_LU&quot;</span><span class="p">,</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="nt">&quot;delivery_period&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">      </span><span class="nt">&quot;start_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-01-07T12:00:00Z&quot;</span><span class="p">,</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">      </span><span class="nt">&quot;duration&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DELIVERY_DURATION_60&quot;</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="p">},</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="nt">&quot;execution_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2026-01-07T11:59:45Z&quot;</span><span class="p">,</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="nt">&quot;price&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;currency&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;EUR&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;amount&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;85.75&quot;</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">    </span><span class="nt">&quot;quantity&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;mw&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1.0&quot;</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">    </span><span class="nt">&quot;state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TRADE_STATE_ACTIVE&quot;</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="p">}</span>
+</span></code></pre></div>
+</div>
 
 
 
