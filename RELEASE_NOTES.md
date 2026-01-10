@@ -10,7 +10,7 @@
 
 ## New Features
 
-* Update all Delivery Period examples in the docs to 15 minutes
+* Electricity Trading: improved documentation for public trades and order book streams (time filtering semantics, reconnect expectations, and examples).
 
 ## Bug Fixes
 
