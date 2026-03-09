@@ -5,12 +5,12 @@
 requires = [
   "setuptools == 80.10.2",
   "setuptools_scm[toml] == 9.2.2",
-  "frequenz-repo-config[api] == 0.13.8",
+  "frequenz-repo-config[api] == 0.14.0",
   # We need to pin the protobuf, grpcio and  grpcio-tools dependencies to make
   # sure the code is generated using the minimum supported versions, as older
   # versions can't work with code that was generated with newer versions.
   # https://protobuf.dev/support/cross-version-runtime-guarantee/#backwards
-  "protobuf == 7.34.0",
+  "protobuf == 6.33.5",
   "grpcio-tools == 1.78.0",
   "grpcio == 1.78.0",
 ]
@@ -49,7 +49,7 @@ dependencies = [
   # We couldn't find any document with a spec about the cross-version runtime
   # guarantee for grpcio, so unless we find one in the future, we'll assume
   # major version jumps are not compatible
-  "grpcio >= 1.76.0, < 2", # Do not widen beyond 2!
+  "grpcio >= 1.78.0, < 2", # Do not widen beyond 2!
 ]
 dynamic = ["version"]
 
@@ -75,7 +75,7 @@ dev-mkdocs = [
   "mkdocs-macros-plugin == 1.5.0",
   "mkdocs-material == 9.7.3",
   "mkdocstrings[python] == 1.0.3",
-  "frequenz-repo-config[api] == 0.13.8",
+  "frequenz-repo-config[api] == 0.14.0",
 ]
 dev-mypy = [
   "mypy == 1.19.1",
@@ -84,7 +84,7 @@ dev-mypy = [
   # For checking the noxfile, docs/ script, and tests
   "frequenz-api-electricity-trading[dev-mkdocs,dev-noxfile,dev-pytest]",
 ]
-dev-noxfile = ["nox == 2026.2.9", "frequenz-repo-config[api] == 0.13.8"]
+dev-noxfile = ["nox == 2026.2.9", "frequenz-repo-config[api] == 0.14.0"]
 dev-pylint = [
   "pylint == 4.0.5",
   # For checking the noxfile, docs/ script, and tests
@@ -92,7 +92,7 @@ dev-pylint = [
 ]
 dev-pytest = [
   "pytest == 9.0.2",
-  "frequenz-repo-config[extra-lint-examples] == 0.13.8",
+  "frequenz-repo-config[extra-lint-examples] == 0.14.0",
 ]
 dev = [
   "frequenz-api-electricity-trading[dev-mkdocs,dev-flake8,dev-formatting,dev-mkdocs,dev-mypy,dev-noxfile,dev-pylint,dev-pytest]",
