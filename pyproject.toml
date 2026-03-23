@@ -66,15 +66,15 @@ dev-flake8 = [
   "pydoclint == 0.8.3",
   "pydocstyle == 6.3.0",
 ]
-dev-formatting = ["black == 26.3.0", "isort == 8.0.1"]
+dev-formatting = ["black == 26.3.1", "isort == 8.0.1"]
 dev-mkdocs = [
-  "black == 26.3.0",
+  "black == 26.3.1",
   "Markdown==3.10.2",
   "mike == 2.1.4",
-  "mkdocs-gen-files == 0.6.0",
-  "mkdocs-literate-nav == 0.6.2",
+  "mkdocs-gen-files == 0.6.1",
+  "mkdocs-literate-nav == 0.6.3",
   "mkdocs-macros-plugin == 1.5.0",
-  "mkdocs-material == 9.7.4",
+  "mkdocs-material == 9.7.6",
   "mkdocstrings[python] == 1.0.3",
   "frequenz-repo-config[api] == 0.15.1",
 ]
