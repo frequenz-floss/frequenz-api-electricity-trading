@@ -61,90 +61,72 @@ import "frequenz/api/common/v1alpha8/types/interval.proto";
 //     specified price, possibly with execution constraints. A trade
 //     represents the executed match between a buy order and a sell order.
 //
-// !!! note "What Is a Gridpool?"
-//     A Gridpool is a virtual trading portfolio that aggregates the energy
-//     volumes of multiple contributors (Gridpool members) into a unified
-//     trading position. It acts within a balancing group, market account,
-//     or scheduling entity and represents the unit for which trades are
-//     executed.
+// !!! note "What is a Gridpool?"
+//     This API uses the canonical Gridpool definition from
+//     `frequenz.api.common.v1alpha8.gridpool.Gridpool`.
 //
-//     Gridpools may contain the following categories of contributors:
-//       • Market locations - metering points representing consumption or
-//         generation.
-//       • Microgrids - single-site energy systems containing multiple assets
-//         (e.g., batteries, PV, generators,
-//         flexible loads), operated through a local edge controller.
-//       • FlexClusters — distributed pools of flexible assets (e.g.,
-//         stand-alone batteries, home storage
-//         systems, small PV-battery deployments, EV chargers).
-//       • Transfer schedules - scheduled energy transfers between balancing
-//         areas or market participant accounts.
-//       • Virtual contributions — synthetic or model-derived volumes used for
-//         virtual trading. These volumes do not correspond to physical assets
-//         or metering points and are independent of the physical flexibility
-//         range of the Gridpool. A Gridpool may trade purely virtually even if
-//         it contains no physical contributors.
+//     In the Electricity Trading API, a Gridpool is the trading and balancing
+//     context for which orders and trades are created, updated, cancelled,
+//     listed, and streamed.
 //
-//     Gridpools bring physical and virtual contributors together into a single
-//     tradable portfolio:
+//     A Gridpool's tradable position may be influenced by Gridpool members and
+//     other Gridpool contributions.
 //
-//     ```text
-//     Balancing Group / Market Account
-//     └── Gridpool  (virtual sub-balancing group)
-//         ├── Physical contributors
-//         │     ├── Market locations (metering points)
-//         │     ├── Microgrids (DER sites like batteries, PV, generators;
-//         │     │   controlled via edge controller)
-//         │     ├── FlexClusters (distributed flexible assets, individual
-//         │     │   assets; controlled via cloud)
-//         │     └── Transfer schedules (scheduled imports/exports; planned
-//         │         volumes)
-//         └── Virtual contributors
-//               └── Synthetic or model-derived volumes for forecasting,
-//                   hedging, or virtual trading
-//     ```
+//     Gridpool members are explicit assignments of entities or relationships to
+//     a Gridpool, such as Market Locations, Microgrids,
+//     Microgrid-to-Market-Location links, or distributed flexible asset groups.
 //
-//     Conceptually, a Gridpool functions as a virtual sub-balancing group. It
-//     aggregates physical and virtual contributors into a single position
-//     that must be balanced through trading, similar to how a balancing
-//     group operates. However, a Gridpool does not have a standalone settlement
-//     identity with a grid operator (e.g. TSO or DSO). All physical settlement
-//     and imbalance accounting occur at the parent balancing-group
-//     (market-account) level.
+//     Gridpool contributions are the measured, forecasted, scheduled,
+//     contractual, flexible, or virtual effects that influence the Gridpool's
+//     operational, commercial, balance-relevant, or tradable position.
 //
-//     These contributors define a Gridpool’s physical and financial profile and
-//     determine its tradable position. A Gridpool’s aggregated consumption
-//     and production influence how closely it aligns with its scheduled,
-//     forecasted, or contracted positions.
+//     Examples include measured consumption or generation, forecasts, energy
+//     schedules, transfer schedules, contracted positions, flexibility
+//     availability, activated flexibility, and virtual contributions.
 //
+//     This API does not manage Gridpool topology, membership, services,
+//     schedules, or application variables. Those are exposed by Gridpool
+//     topology and configuration APIs. This API focuses on market orders,
+//     private trades, public trades, public order book data, delivery periods,
+//     and delivery-area-specific market activity.
+//
+// !!! note "Delivery areas and orders"
 //     Electricity markets define delivery or pricing locations such as bidding
-//     zones, regional markets, ISO/TSO regions, or nodes. A single Gridpool
-//     may contain contributors across multiple such delivery areas. Orders
-//     must be submitted per delivery area. If a Gridpool spans multiple
-//     delivery or pricing areas, separate orders must be submitted—one per
-//     area. A single multi-area order is not supported.
+//     zones, regional markets, ISO/TSO regions, or nodes.
 //
-//     In addition to physical contributors, Gridpools may include virtual
-//     contributions. These represent synthetic or model-derived volumes used
-//     for forecasting, strategy development, or virtual trading.
+//     A single Gridpool may contain members and contributions across multiple
+//     delivery or pricing areas. Orders are submitted for one delivery or
+//     pricing area at a time. If a Gridpool spans multiple delivery or pricing
+//     areas, clients must submit separate orders per area.
+//
+//     A single multi-area order is not supported.
+//
+// !!! note "Virtual trading and open exposure"
+//     In addition to physical, scheduled, contractual, and flexible
+//     contributions, Gridpools may include virtual contributions.
+//
+//     Virtual contributions are synthetic or model-derived volumes used for
+//     forecasting, strategy development, hedging, or virtual trading. They do
+//     not represent physical assets, Microgrids, Market Locations, or metering
+//     points, and they are independent of the physical flexibility range of the
+//     Gridpool.
 //
 //     Virtual trading occurs within the Gridpool and enables a participant to
-//     take market positions without relying on available physical volume.
-//     These positions can be closed again before delivery, allowing
-//     speculative or hedging behaviour without causing physical imbalances.
+//     take market positions without relying on immediately available physical
+//     volume. A Gridpool may therefore trade purely virtually for a specific
+//     delivery period, even if it has no matching physical contribution for
+//     that period.
 //
-//     Virtual contributors do not represent physical metering points or market
-//     locations. They act as placeholders for forecasted or simulated
-//     behaviour and can be used to:
-//       • test or calibrate trading strategies,
-//       • hedge or offset expected future positions,
-//       • represent synthetic or aggregated positions within a balancing group.
+//     Virtual positions can be closed again before delivery by placing opposite
+//     trades, allowing speculative or hedging behavior without causing physical
+//     imbalances.
 //
-//     A virtual position is simply an open exposure created by unmatched buy
-//     and sell volumes. It is not an imbalance by itself. It can be closed with
-//     opposite trades as long as the market is open. Once the delivery period
-//     begins, any remaining open exposure becomes a settlement imbalance for
-//     the balancing group and cannot be resolved through trading.
+//     A virtual position is an open exposure created by unmatched buy and sell
+//     volumes. It is not an imbalance by itself. It can be closed with opposite
+//     trades as long as the market is open. Once the delivery period begins,
+//     any remaining open exposure becomes a settlement imbalance for the parent
+//     balancing group, market account, or scheduling entity and can no longer
+//     be resolved through trading.
 //
 // !!! note "Typical Lifecycle & Sequence of Operations"
 //     Applications interacting with the Electricity Trading Service typically
