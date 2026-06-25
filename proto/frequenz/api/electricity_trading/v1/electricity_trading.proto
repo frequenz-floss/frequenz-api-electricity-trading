@@ -66,8 +66,9 @@ import "frequenz/api/common/v1alpha8/types/interval.proto";
 //     `frequenz.api.common.v1alpha8.gridpool.Gridpool`.
 //
 //     In the Electricity Trading API, a Gridpool is the trading and balancing
-//     context for which orders and trades are created, updated, cancelled,
-//     listed, and streamed.
+//     context for which electricity is traded. Orders are placed, updated, and
+//     cancelled for a Gridpool, while trades represent the resulting executed
+//     market transactions.
 //
 //     A Gridpool's tradable position may be influenced by Gridpool members and
 //     other Gridpool contributions.
@@ -76,19 +77,12 @@ import "frequenz/api/common/v1alpha8/types/interval.proto";
 //     a Gridpool, such as Market Locations, Microgrids,
 //     Microgrid-to-Market-Location links, or distributed flexible asset groups.
 //
-//     Gridpool contributions are the measured, forecasted, scheduled,
-//     contractual, flexible, or virtual effects that influence the Gridpool's
-//     operational, commercial, balance-relevant, or tradable position.
-//
-//     Examples include measured consumption or generation, forecasts, energy
-//     schedules, transfer schedules, contracted positions, flexibility
-//     availability, activated flexibility, and virtual contributions.
-//
-//     This API does not manage Gridpool topology, membership, services,
-//     schedules, or application variables. Those are exposed by Gridpool
-//     topology and configuration APIs. This API focuses on market orders,
-//     private trades, public trades, public order book data, delivery periods,
-//     and delivery-area-specific market activity.
+//     A Gridpool's operational, commercial, balance-relevant, and tradable
+//     position is derived from measured energy flows, submitted schedules,
+//     contractual obligations, virtual positions, forecasts, and available
+//     flexibility. Examples include measured consumption and generation,
+//     transfer schedules, contracted positions, activated flexibility, and
+//     virtual trading positions.
 //
 // !!! note "Delivery areas and orders"
 //     Electricity markets define delivery or pricing locations such as bidding
